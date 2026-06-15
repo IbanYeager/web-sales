@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Promo & Paket</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <h2>Promo & Paket</h2>
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top: 18px;">
+      <div class="promo-section" style="margin-top: 0; margin-bottom: 20px;">
+        <div class="promo-section-header">
+          <h3 class="section-title" style="margin-bottom: 0;">Rekomendasi Promo</h3>
+          <a href="#" style="pointer-events:none;">Demo</a>
+        </div>
+
+        <div class="promo-scroll">
+          <div class="promo-card">
+            <div class="promo-card-header red-gradient">
+              <span><i class="fa-solid fa-fire"></i> Paket DP Ringan</span>
+            </div>
+            <div class="promo-card-body">
+              <div class="promo-car-name">Toyota Avanza 1.5 G CVT</div>
+              <div class="promo-info-grid">
+                <div class="promo-info-item">
+                  <span>Tenor</span>
+                  <strong>60 Bulan</strong>
+                </div>
+                <div class="promo-info-item">
+                  <span>Angsuran per Bulan</span>
+                  <strong>Rp 5.350.000</strong>
+                </div>
+                <div class="promo-info-item full-width">
+                  <span>Total Bayar Pertama (TDP)</span>
+                  <strong class="text-red highlight-price">Rp 15.500.000</strong>
+                </div>
+              </div>
+              <button class="btn-outline-blue" onclick="sharePromo('Avanza 1.5 G CVT', 'Paket DP Ringan', 'Rp 15.500.000')">
+                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
+              </button>
+            </div>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-card-header blue-gradient">
+              <span><i class="fa-solid fa-star"></i> Paket Bunga 0%</span>
+            </div>
+            <div class="promo-card-body">
+              <div class="promo-car-name">Innova Zenix 2.0 V CVT</div>
+              <div class="promo-info-grid">
+                <div class="promo-info-item">
+                  <span>Tenor</span>
+                  <strong>12 Bulan</strong>
+                </div>
+                <div class="promo-info-item">
+                  <span>Angsuran per Bulan</span>
+                  <strong>Rp 12.500.000</strong>
+                </div>
+                <div class="promo-info-item full-width">
+                  <span>Total Bayar Pertama (TDP)</span>
+                  <strong class="text-red highlight-price">Rp 150.000.000</strong>
+                </div>
+              </div>
+              <button class="btn-outline-blue" onclick="sharePromo('Innova Zenix 2.0 V CVT', 'Paket Bunga 0%', 'Rp 150.000.000')">
+                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom: 10px;">Paket Lainnya (Dummy)</div>
+        <div class="promo-scroll" style="padding-bottom: 0;">
+          <div class="promo-card">
+            <div class="promo-card-header red-gradient">
+              <span><i class="fa-solid fa-gift"></i> Paket Gratis Admin</span>
+            </div>
+            <div class="promo-card-body">
+              <div class="promo-car-name">Yaris 1.5</div>
+              <div class="promo-info-grid">
+                <div class="promo-info-item">
+                  <span>Tenor</span>
+                  <strong>36 Bulan</strong>
+                </div>
+                <div class="promo-info-item">
+                  <span>Angsuran per Bulan</span>
+                  <strong>Rp 4.750.000</strong>
+                </div>
+                <div class="promo-info-item full-width">
+                  <span>Total Bayar Pertama (TDP)</span>
+                  <strong class="text-red highlight-price">Rp 9.900.000</strong>
+                </div>
+              </div>
+              <button class="btn-outline-blue" onclick="sharePromo('Yaris 1.5', 'Paket Gratis Admin', 'Rp 9.900.000')">
+                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
+              </button>
+            </div>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-card-header blue-gradient">
+              <span><i class="fa-solid fa-coins"></i> Paket DP Rendah</span>
+            </div>
+            <div class="promo-card-body">
+              <div class="promo-car-name">Brio Satya</div>
+              <div class="promo-info-grid">
+                <div class="promo-info-item">
+                  <span>Tenor</span>
+                  <strong>24 Bulan</strong>
+                </div>
+                <div class="promo-info-item">
+                  <span>Angsuran per Bulan</span>
+                  <strong>Rp 3.850.000</strong>
+                </div>
+                <div class="promo-info-item full-width">
+                  <span>Total Bayar Pertama (TDP)</span>
+                  <strong class="text-red highlight-price">Rp 6.500.000</strong>
+                </div>
+              </div>
+              <button class="btn-outline-blue" onclick="sharePromo('Brio Satya', 'Paket DP Rendah', 'Rp 6.500.000')">
+                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom: 10px;">Cara kerja</div>
+        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+          (Demo) Pada aplikasi asli, promo ini diambil dari backend dan bisa langsung dibagikan ke calon customer.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+      <a href="promo.html" class="nav-item active"><i class="fa-solid fa-percent"></i></a>
+      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
+      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+    </nav>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>
+

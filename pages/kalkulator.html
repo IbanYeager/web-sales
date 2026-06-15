@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Kalkulator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Kalkulator</h2>
+      <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top:18px;">
+      <div class="card" style="padding:18px;">
+        <h3 class="section-title" style="margin-bottom:6px;">Simulasi Cicilan (Demo)</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Masukkan estimasi harga dan TDP untuk melihat estimasi cicilan.</p>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label>Harga Mobil (Rp)</label>
+          <input class="form-control" type="number" id="hargaMobil" value="200000000" />
+        </div>
+
+        <div class="form-group">
+          <label>TDP (Rp)</label>
+          <input class="form-control" type="number" id="tdp" value="30000000" />
+        </div>
+
+        <div class="form-group">
+          <label>Tahun Pembiayaan</label>
+          <select class="form-control" id="tahun">
+            <option value="3">3 Tahun</option>
+            <option value="4" selected>4 Tahun</option>
+            <option value="5">5 Tahun</option>
+          </select>
+        </div>
+
+        <button class="btn-main" style="margin-top:8px;">
+          <i class="fa-solid fa-wand-magic-sparkles" style="margin-right:10px;"></i>
+          Simulasikan
+        </button>
+        <div id="hasilKalkulasi" style="margin-top:14px; font-size:12px; color:var(--text-muted); line-height:1.6;"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin:0 0 10px 0; font-size:14px;">Catatan</div>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+          Perhitungan di sini demo sederhana. Nanti bisa diganti menggunakan rumus/parameter pembiayaan yang sebenarnya.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.querySelector('.btn-main');
+      if(!btn) return;
+      btn.addEventListener('click', () => {
+        const harga = Number(document.getElementById('hargaMobil').value || 0);
+        const tdp = Number(document.getElementById('tdp').value || 0);
+        const tahun = Number(document.getElementById('tahun').value || 0);
+        const bulan = tahun * 12;
+
+        if (harga <= 0) {
+          document.getElementById('hasilKalkulasi').innerHTML = 'Harga tidak valid.';
+          return;
+        }
+
+        // Demo: cicilan = (harga - tdp) / bulan
+        const pokok = Math.max(harga - tdp, 0);
+        const cicilan = bulan > 0 ? pokok / bulan : 0;
+
+        const formatRp = (n) => 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        document.getElementById('hasilKalkulasi').innerHTML = `Estimasi cicilan per bulan (demo): <b>${formatRp(cicilan)}</b> untuk ${tahun} tahun (${bulan} bulan).`;
+      });
+    });
+  </script>
+</body>
+</html>
+

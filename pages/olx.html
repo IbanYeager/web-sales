@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - OLX Kendaraan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app" style="padding-bottom: 110px;">
+    <header class="header-page">
+      <h2>OLX (Upload Kendaraan)</h2>
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top: 18px;">
+      <h3 class="section-title" style="margin-bottom: 5px;">Upload kendaraan yang ingin dijual</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">
+        (Demo) Data akan disimpan lokal dan tidak benar-benar terunggah.
+      </p>
+
+      <form id="formOlx">
+        <div class="form-group">
+          <label>Nama kendaraan / Model <span style="color: var(--primary-red);">*</span></label>
+          <input class="form-control" type="text" placeholder="Contoh: Avanza 1.5 G" required />
+        </div>
+
+        <div class="form-group">
+          <label>Jenis tipe mobil <span style="color: var(--primary-red);">*</span></label>
+          <select class="form-control" required>
+            <option value="" disabled selected>Pilih tipe...</option>
+            <option>MPV (Avanza/Calya)</option>
+            <option>SUV (HR-V/Raize)</option>
+            <option>Sedan (Civic/Accord)</option>
+            <option>Low MPV (Xenia)</option>
+            <option>Hatchback (Jazz)</option>
+            <option>LWB/Commercial</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Harga (Rp) <span style="color: var(--primary-red);">*</span></label>
+          <input class="form-control" type="number" placeholder="Contoh: 150000000" required />
+        </div>
+
+        <div class="form-group">
+          <label>Lokasi (Kecamatan) <span style="color: var(--primary-red);">*</span></label>
+          <select class="form-control" required>
+            <option value="" disabled selected>Pilih kecamatan...</option>
+            <option>Coblong</option>
+            <option>Antapani</option>
+            <option>Bojongloa Kaler</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Deskripsi <span style="color: var(--primary-red);">*</span></label>
+          <textarea class="form-control" placeholder="Tulis detail kondisi kendaraan..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Foto kendaraan</label>
+          <div class="photo-preview">
+            <i class="fa-regular fa-image" style="font-size: 40px; opacity: 0.5;"></i>
+          </div>
+          <div class="btn-upload" style="margin-top: 10px;" onclick="alert('Demo upload foto')">
+            <i class="fa-solid fa-camera"></i> Tambah Foto
+          </div>
+        </div>
+
+        <button type="button" class="btn-main" onclick="simpanOlx()" style="justify-content: center; margin-top: 10px;">
+          <i class="fa-solid fa-upload" style="margin-right: 10px;"></i> Simpan Listing
+        </button>
+      </form>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+        <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
+        <a href="testdrive.html" class="nav-item active"><i class="fa-solid fa-car-side"></i></a>
+                <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+    </nav>
+  </div>
+
+  <script>
+    function simpanOlx() {
+      const form = document.getElementById('formOlx');
+      if (form && form.checkValidity()) {
+        alert('Listing berhasil disimpan (demo)!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Mohon lengkapi semua field wajib (*)');
+      }
+    }
+  </script>
+</body>
+</html>
+

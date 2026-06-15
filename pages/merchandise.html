@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Merchandise</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Merchandise</h2>
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top: 18px;">
+      <div class="card" style="padding: 18px; margin-bottom: 18px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div>
+            <h3 class="section-title" style="margin-bottom: 6px;">Pilih Merchandise</h3>
+            <p style="font-size:12px;color:var(--text-muted);line-height:1.5;">
+              Daftar merchandise dari database. Pilih ukuran untuk melihat stok spesifik.
+            </p>
+          </div>
+          <div style="flex-shrink:0;">
+            <span style="font-size:11px;font-weight:800;color:var(--primary-blue);background:#eef3fb;border:1px solid #dbe6ff;padding:6px 10px;border-radius:999px;">
+              <i class="fa-solid fa-bag-shopping" style="margin-right:6px;"></i> Ready Stock
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header-row" style="margin-top: 6px;">
+        <h3 class="section-title" style="margin-bottom:0;">Kategori</h3>
+      </div>
+
+      <div class="card" style="padding: 0;">
+        <div class="category-grid" style="padding: 14px 15px; grid-template-columns: repeat(5, 1fr); overflow-x: auto;">
+          <a href="#" class="category-item" onclick="selectCategory(event,'Semua')">
+            <div class="category-icon" style="background:#ebf5fb; color:var(--primary-blue);"><i class="fa-solid fa-border-all" aria-hidden="true"></i></div>
+            <span class="category-text">Semua</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Kaos')">
+            <div class="category-icon"><i class="fa-solid fa-shirt" aria-hidden="true"></i></div>
+            <span class="category-text">Kaos</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Topi')">
+            <div class="category-icon"><i class="fa-solid fa-hat-cowboy" aria-hidden="true"></i></div>
+            <span class="category-text">Topi</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Jaket')">
+            <div class="category-icon"><i class="fa-solid fa-shirt -fall" aria-hidden="true"></i></div>
+            <span class="category-text">Jaket</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Mug & Botol')">
+            <div class="category-icon"><i class="fa-solid fa-mug-hot" aria-hidden="true"></i></div>
+            <span class="category-text">Mug</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="section-header-row" style="margin-top: 20px;">
+        <h3 class="section-title" style="margin-bottom:0;" id="kategoriTitle">Semua Merchandise</h3>
+      </div>
+
+      <div id="loadingIndicator" style="text-align:center; padding: 30px; font-size:12px; color:var(--text-muted);">
+        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:24px; margin-bottom:10px; color:var(--primary-red);"></i><br>
+        Memuat data dari server...
+      </div>
+
+      <div class="grid-2" id="merchGrid" style="margin-bottom: 110px;">
+        </div>
+    </div>
+  </div>
+
+  <script>
+    let rawData = [];
+    let groupedMerch = [];
+    let selectedKategori = 'Semua';
+
+    // Pembersih angka (Karena di database ada teks "Rp. " di kolom harga)
+    function extractNumber(priceStr) {
+      if (!priceStr) return 0;
+      // Menghapus semua karakter selain angka
+      return parseInt(String(priceStr).replace(/[^0-9]/g, '')) || 0;
+    }
+
+    // Fungsi Format Rupiah
+    function formatRupiah(angka) {
+      return new Intl.NumberFormat('id-ID', { 
+        style: 'currency', 
+        currency: 'IDR', 
+        minimumFractionDigits: 0 
+      }).format(angka);
+    }
+
+    // Fungsi ikon kategori
+    function getIconByName(name) {
+      const n = name.toLowerCase();
+      if (n.includes('kaos') || n.includes('shirt') || n.includes('polo')) return 'fa-shirt';
+      if (n.includes('topi') || n.includes('hat') || n.includes('cap')) return 'fa-hat-cowboy';
+      if (n.includes('jaket') || n.includes('jacket') || n.includes('sweater')) return 'fa-jacket-fall';
+      if (n.includes('mug') || n.includes('botol') || n.includes('tumbler')) return 'fa-mug-hot';
+      return 'fa-box-open';
+    }
+
+    // Mengelompokkan barang berdasarkan nama agar tidak menumpuk di layar
+    function groupDataByName(data) {
+      const groups = {};
+      data.forEach(item => {
+        const name = item.name.trim();
+        if (!groups[name]) {
+          groups[name] = {
+            name: name,
+            image: item.image,
+            icon: getIconByName(name),
+            variants: [] // Menyimpan ukuran S, M, L, dst
+          };
+        }
+        groups[name].variants.push(item);
+      });
+      return Object.values(groups);
+    }
+
+    // Template HTML Kartu
+    function cardMerch(group, groupIndex) {
+      // Default: ambil varian pertama (Misal S) untuk tampilan awal
+      const def = group.variants[0];
+      
+      // PERBAIKAN PATH GAMBAR: Menambahkan '../' di depan path database
+      let imageSrc = 'https://placehold.co/600x400/f1f2f6/a0aab5?text=No+Image';
+      if (group.image && group.image !== 'NULL') {
+          // Jika path dari database sudah pakai http (URL eksternal), gunakan apa adanya.
+          // Jika tidak, tambahkan '../' agar mengarah ke root folder yang benar.
+          if(group.image.startsWith('http')) {
+              imageSrc = group.image;
+          } else {
+              imageSrc = '../' + group.image; 
+          }
+      }
+      
+      // Membuat Opsi Dropdown Ukuran
+      let sizeOptions = group.variants.map((v, i) => {
+        const sizeLabel = v.size ? v.size : 'All Size';
+        return `<option value="${i}">Ukuran: ${sizeLabel}</option>`;
+      }).join('');
+
+      return `
+        <div class="summary-card" id="card-${groupIndex}" style="padding:14px;flex-direction:column;align-items:flex-start;gap:10px;">
+          
+          <div style="display:flex;align-items:center;gap:10px;width:100%;">
+            <div class="icon-box bg-blue" style="width:42px;height:42px;flex-shrink:0;">
+              <i class="fa-solid ${group.icon}" aria-hidden="true"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:800;color:var(--text-dark);font-size:13px;line-height:1.2;">${group.name}</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">
+                Part: <b class="part-number-display">${def.part_number || '-'}</b>
+              </div>
+            </div>
+          </div>
+          
+          <img src="${imageSrc}" alt="${group.name}" style="width:100%;height:120px;object-fit:cover;border-radius:10px;background:#f1f2f6;display:block;">
+          
+          <div style="width: 100%;">
+            <select class="form-control" style="padding: 6px 10px; font-size:11px; height:auto; margin-bottom: 8px; font-weight:700;" onchange="updateCardVariant(this, ${groupIndex})">
+              ${sizeOptions}
+            </select>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+            <div class="price-display" style="font-weight:800;color:var(--primary-blue);font-size:14px;">
+              ${formatRupiah(extractNumber(def.retail_price))}
+            </div>
+          </div>
+
+          <div style="display:flex; gap:6px; margin-top:2px; width: 100%;">
+            <div style="font-size:10px;font-weight:800;color:var(--text-dark);background:#f5eef8;border:1px solid #eadcf4;padding:6px 10px;border-radius:8px; flex:1; text-align:center;">
+              Cabang: <b class="stock-cabang-display">${def.stock_cabang || 0}</b>
+            </div>
+            <div style="font-size:10px;font-weight:800;color:var(--text-dark);background:#fef5e7;border:1px solid #fdebd0;padding:6px 10px;border-radius:8px; flex:1; text-align:center;">
+              TAM: <b class="stock-tam-display">${def.stock_tam || 0}</b>
+            </div>
+          </div>
+
+          <button class="btn-outline-blue btn-request" style="margin-top: 6px; width: 100%;" onclick="requestMerch('${group.name}', '${def.part_number}', '${def.size || 'All Size'}')">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Minta Barang
+          </button>
+        </div>
+      `;
+    }
+
+    // Update isi kartu saat ukuran diganti dari dropdown
+    function updateCardVariant(selectElem, groupIndex) {
+      const variantIndex = selectElem.value;
+      const variant = groupedMerch[groupIndex].variants[variantIndex];
+      const card = document.getElementById(`card-${groupIndex}`);
+
+      // Ubah teks di dalam kartu
+      card.querySelector('.part-number-display').textContent = variant.part_number || '-';
+      card.querySelector('.price-display').textContent = formatRupiah(extractNumber(variant.retail_price));
+      card.querySelector('.stock-cabang-display').textContent = variant.stock_cabang || 0;
+      card.querySelector('.stock-tam-display').textContent = variant.stock_tam || 0;
+      
+      // Update aksi tombol dengan ukuran dan part number baru
+      const btn = card.querySelector('.btn-request');
+      btn.setAttribute('onclick', `requestMerch('${groupedMerch[groupIndex].name}', '${variant.part_number}', '${variant.size || 'All Size'}')`);
+    }
+
+    // Render Grid sesuai Kategori
+    function renderGrid(kategori) {
+      const grid = document.getElementById('merchGrid');
+      document.getElementById('kategoriTitle').textContent = kategori === 'Semua' ? 'Semua Merchandise' : `Kategori: ${kategori}`;
+      
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      let itemsToDisplay = [];
+      if (kategori === 'Semua') {
+        itemsToDisplay = groupedMerch;
+      } else {
+        itemsToDisplay = groupedMerch.filter(g => {
+          const n = g.name.toLowerCase();
+          if (kategori === 'Kaos') return n.includes('kaos') || n.includes('polo') || n.includes('shirt');
+          if (kategori === 'Topi') return n.includes('topi') || n.includes('cap') || n.includes('hat');
+          if (kategori === 'Jaket') return n.includes('jaket') || n.includes('jacket') || n.includes('sweater') || n.includes('hoodie');
+          if (kategori === 'Mug & Botol') return n.includes('mug') || n.includes('botol') || n.includes('tumbler') || n.includes('gelas');
+          return false;
+        });
+      }
+
+      if (itemsToDisplay.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align:center; padding: 20px; font-size:12px; color:var(--text-muted); background:var(--card-bg); border-radius:12px; border:1px solid var(--border-color);">Tidak ada merchandise di kategori ini.</div>';
+        return;
+      }
+
+      itemsToDisplay.forEach(group => {
+        const originalIndex = groupedMerch.indexOf(group); // Ambil ID aslinya
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = cardMerch(group, originalIndex);
+        grid.appendChild(wrapper.firstElementChild);
+      });
+    }
+
+    // Klik Kategori
+    function selectCategory(e, kategori) {
+      if (e && e.preventDefault) e.preventDefault();
+      selectedKategori = kategori;
+      renderGrid(kategori);
+    }
+
+    // Tombol Minta Barang
+    function requestMerch(namaBarang, partNumber, size) {
+      alert(`Permintaan merchandise:\n\nNama: ${namaBarang}\nUkuran: ${size}\nPart Number: ${partNumber}\n\nPermintaan akan diteruskan ke admin inventory.`);
+    }
+
+    // Fetch API
+    async function fetchMerchandiseData() {
+      const loading = document.getElementById('loadingIndicator');
+      
+      try {
+        const response = await fetch('../api/api_merchandise.php');
+        const json = await response.json();
+
+        if (json.ok) {
+            rawData = json.data;
+            groupedMerch = groupDataByName(rawData); // Olah data mentah menjadi berkelompok
+            loading.style.display = 'none';
+            renderGrid(selectedKategori);
+        } else {
+            loading.innerHTML = `<span style="color:var(--primary-red);"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat data: ${json.message}</span>`;
+        }
+      } catch (error) {
+        console.error("Kesalahan koneksi:", error);
+        loading.innerHTML = '<span style="color:var(--primary-red);"><i class="fa-solid fa-link-slash"></i> Gagal terhubung ke Server Database.</span>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchMerchandiseData();
+    });
+  </script>
+</body>
+</html>

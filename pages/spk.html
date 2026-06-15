@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Form SPK</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Form SPK</h2>
+      <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top:18px;">
+      <div class="card" style="padding:18px;">
+        <h3 class="section-title" style="margin-bottom:6px;">Buat SPK (Demo)</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Form ini demo. Nanti bisa dihubungkan dengan sistem SPK & approval.</p>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label>Nama Customer</label>
+          <input class="form-control" type="text" id="namaCustomer" placeholder="Nama customer" />
+        </div>
+
+        <div class="form-group">
+          <label>No. HP</label>
+          <input class="form-control" type="tel" id="noHp" placeholder="08xxxxxxxxxx" />
+        </div>
+
+        <div class="form-group">
+          <label>Pilih Model</label>
+          <select class="form-control" id="model">
+            <option value="Avanza">Avanza</option>
+            <option value="Calya">Calya</option>
+            <option value="Raize" selected>Raize</option>
+            <option value="Raush">Rush</option>
+          </select>
+        </div>
+
+        <button class="btn-main" style="margin-top:8px;" onclick="submitSpk()">
+          <i class="fa-solid fa-paper-plane" style="margin-right:10px;"></i>
+          Submit SPK
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin:0 0 10px 0; font-size:14px;">Status</div>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;" id="statusSpk">Belum ada pengajuan.</p>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
+      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
+      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+    </nav>
+  </div>
+
+  <script>
+    function submitSpk() {
+      const nama = document.getElementById('namaCustomer').value.trim();
+      const hp = document.getElementById('noHp').value.trim();
+      const model = document.getElementById('model').value;
+
+      if (!nama || !hp) {
+        alert('Nama customer dan No. HP wajib diisi.');
+        return;
+      }
+
+      document.getElementById('statusSpk').innerHTML = `SPK untuk <b>${nama}</b> (${model}) sudah diajukan (Demo).`;
+      alert('SPK berhasil diajukan ke Supervisor! (Demo)');
+    }
+  </script>
+</body>
+</html>
+

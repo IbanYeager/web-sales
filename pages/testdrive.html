@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Test Drive</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app" style="padding-bottom: 110px;">
+    <header class="header-page">
+      <h2>Test Drive</h2>
+      <i class="fa-solid fa-car-side-side" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top:18px;">
+      <div class="card" style="padding:18px; margin-bottom:18px;">
+        <h3 class="section-title" style="margin-bottom:6px;">Unit tersedia (Demo)</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+          Pilih unit test drive untuk membuat aktivitas. Pilihan akan disimpan sementara di perangkat.
+        </p>
+      </div>
+
+      <div class="card" style="padding:0;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
+          <div class="section-title" style="margin:0;font-size:14px;">Daftar Unit</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Tampilan demo</div>
+        </div>
+
+        <div id="unitList" style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;"></div>
+      </div>
+
+      <div class="card" style="padding:18px; margin-top:18px;">
+        <h3 class="section-title" style="margin-bottom:8px;font-size:14px;">Catatan</h3>
+        <ul style="padding-left:16px;color:var(--text-muted);font-size:12px;line-height:1.7;">
+          <li>Data unit ini bersifat demo.</li>
+          <li>Setelah memilih unit, buka <b>Input Aktivitas</b> untuk melengkapi keterangan.</li>
+        </ul>
+
+        <button class="btn-main" style="justify-content:center;margin-top:10px;background:var(--primary-blue)" onclick="goToInputForSelected()">
+          <i class="fa-solid fa-pen-to-square" style="margin-right:10px;"></i>
+          Buat Aktivitas Test Drive
+        </button>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
+      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
+      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+    </nav>
+  </div>
+
+  <script>
+    const units = [
+      {
+        id: 'TD-AVZ-001',
+        model: 'Avanza 1.5 G',
+        tipe: 'AT',
+        ketersediaan: 'tersedia',
+        lokasi: 'Tunas Toyota Kiara Condong',
+        warna: 'Silver'
+      },
+      {
+        id: 'TD-RAZ-002',
+        model: 'Raize 1.2 R',
+        tipe: 'MT',
+        ketersediaan: 'terbatas',
+        lokasi: 'Tunas Toyota Kiara Condong',
+        warna: 'Putih'
+      },
+      {
+        id: 'TD-RSH-003',
+        model: 'Rush 1.5 G',
+        tipe: 'AT',
+        ketersediaan: 'tersedia',
+        lokasi: 'Tunas Toyota Kiara Condong',
+        warna: 'Merah'
+      },
+      {
+        id: 'TD-CLY-004',
+        model: 'Calya 1.2',
+        tipe: 'MT',
+        ketersediaan: 'terbatas',
+        lokasi: 'Tunas Toyota Kiara Condong',
+        warna: 'Hitam'
+      }
+    ];
+
+    function badgeHtml(status){
+      if(status === 'tersedia'){
+        return '<span style="font-size:10px;font-weight:800;background:#eafaf1;color:#27ae60;padding:6px 10px;border-radius:999px;border:1px solid #d6f5e0;white-space:nowrap;">Tersedia</span>';
+      }
+      return '<span style="font-size:10px;font-weight:800;background:#ebf5fb;color:#2980b9;padding:6px 10px;border-radius:999px;border:1px solid #dbe6ff;white-space:nowrap;">Terbatas</span>';
+    }
+
+    function renderUnits(){
+      const el = document.getElementById('unitList');
+      if(!el) return;
+      el.innerHTML = '';
+
+      units.forEach(u => {
+        const node = document.createElement('div');
+        node.className = 'summary-card';
+        node.style.padding = '14px';
+        node.style.flexDirection = 'column';
+        node.style.alignItems = 'stretch';
+        node.style.gap = '10px';
+
+        node.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+            <div>
+              <div style="font-weight:900;color:var(--text-dark);font-size:13px;">${u.model}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Tipe: ${u.tipe} • Warna: ${u.warna}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">ID: ${u.id}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Lokasi: ${u.lokasi}</div>
+            </div>
+            <div>${badgeHtml(u.ketersediaan)}</div>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button class="btn-outline-blue" style="flex:1;" onclick="pickUnit('${u.id}')">
+              <i class="fa-solid fa-check" style="margin-right:8px;"></i>
+              Pilih Unit
+            </button>
+            <button class="btn-outline" style="flex:1;border-color:var(--primary-red);color:var(--primary-red);" onclick="alert('Info jadwal test drive untuk ${u.model} (Demo)')">
+              <i class="fa-solid fa-calendar" style="margin-right:8px;"></i>
+              Jadwal
+            </button>
+          </div>
+        `;
+
+        el.appendChild(node);
+      });
+    }
+
+    function pickUnit(unitId){
+      const u = units.find(x => x.id === unitId);
+      if(!u) return;
+
+      localStorage.setItem('selectedTestDriveUnitId', u.id);
+      localStorage.setItem('selectedTestDriveUnitModel', u.model);
+      localStorage.setItem('selectedTestDriveUnitTipe', u.tipe);
+
+      alert(`Unit dipilih: ${u.model} (${u.tipe}) (Demo)`);
+    }
+
+    function goToInputForSelected(){
+      const id = localStorage.getItem('selectedTestDriveUnitId');
+      if(!id){
+        alert('Pilih dulu unit Test Drive yang tersedia.');
+        return;
+      }
+      window.location.href = 'input.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderUnits();
+    });
+  </script>
+</body>
+</html>
+

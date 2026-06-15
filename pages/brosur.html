@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Brosur</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Brosur</h2>
+      <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top:18px;">
+      <div class="card" style="padding:18px;">
+        <h3 class="section-title" style="margin-bottom:6px;">Pilih Brosur (Demo)</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+          Daftar brosur untuk ditampilkan dan dibagikan ke customer.
+        </p>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+          <button class="btn-outline-blue" style="width:auto;padding:10px 14px;" onclick="alert('Bagikan Brosur (Demo)')">
+            <i class="fa-solid fa-paper-plane"></i> Bagikan
+          </button>
+          <button class="btn-outline-blue" style="width:auto;padding:10px 14px;" onclick="alert('Simpan favorit (Demo)')">
+            <i class="fa-regular fa-star"></i> Favorit
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
+          <div class="section-title" style="margin:0;font-size:14px;">Daftar Brosur</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Demo data</div>
+        </div>
+
+        <div style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;">
+          <a href="#" class="summary-item" onclick="alert('Buka brosur: Toyota Avanza (Demo)');return false;" style="cursor:pointer;">
+            <div class="icon-box bg-blue"><i class="fa-solid fa-file-pdf"></i></div>
+            <div class="summary-text">
+              <h4>Avanza</h4>
+              <p>PDF - Spesifikasi & Promo</p>
+            </div>
+          </a>
+
+          <a href="#" class="summary-item" onclick="alert('Buka brosur: Toyota Calya (Demo)');return false;" style="cursor:pointer;">
+            <div class="icon-box bg-red"><i class="fa-solid fa-file-pdf"></i></div>
+            <div class="summary-text">
+              <h4>Calya</h4>
+              <p>PDF - Spesifikasi & Promo</p>
+            </div>
+          </a>
+
+          <a href="#" class="summary-item" onclick="alert('Buka brosur: Toyota Raize (Demo)');return false;" style="cursor:pointer;">
+            <div class="icon-box bg-blue"><i class="fa-solid fa-file-pdf"></i></div>
+            <div class="summary-text">
+              <h4>Raize</h4>
+              <p>PDF - Spesifikasi & Promo</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

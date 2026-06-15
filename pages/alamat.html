@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales App - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css"> </head>
+<body>
+
+<div class="mobile-app" style="padding-bottom: 30px; position: relative;">
+    <div class="login-bg"></div>
+    <header class="header-login"></header>
+    <div class="container" style="margin-top: 10px;">
+        <div class="login-card">
+            <div style="display: flex; justify-content: center; margin-bottom: -50px; margin-top: -30px;">
+                <img src="../image/download-removebg-preview.png" style="width: 200px; height: 200px; object-fit: contain;"> </div>
+
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" class="input-modern" id="loginUsername" placeholder="Masukkan username" autocomplete="off" />
+                <i class="fa-solid fa-user input-icon"></i>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" class="input-modern" id="loginPassword" placeholder="Masukkan password" />
+                <i class="fa-solid fa-lock input-icon"></i>
+                <i class="fa-regular fa-eye-slash toggle-password" id="togglePassword" onclick="togglePass()"></i>
+            </div>
+
+            <div style="text-align: right; margin-bottom: 20px;">
+                <a href="#" style="font-size: 11px; font-weight: 700; color: var(--primary-red);">Lupa Password?</a>
+            </div>
+
+            <button id="loginBtn" class="btn-login" onclick="doLogin()">
+                <span>Masuk Sekarang</span>
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+            <div id="loginInlineMsg" class="msg-box"></div>
+        </div>
+
+        <div class="card" style="padding: 15px; margin-top: 20px; border: 1px solid var(--border-color); box-shadow: none;">
+            <div style="display:flex; gap:12px; align-items:center;">
+                <div style="width:38px; height:38px; border-radius:10px; background:#ebf5fb; color:var(--primary-blue); display:flex; justify-content:center; align-items:center; flex-shrink:0; font-size:16px;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h4 style="font-size:12px; font-weight:800; color: var(--text-dark); margin-bottom:2px;">Akses Terlindungi</h4>
+                    <p style="font-size:10px; color: var(--text-muted); line-height:1.4;">Data Anda dienkripsi secara aman. Hanya untuk penggunaan internal Tunas Toyota.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../script.js"></script> <script>
+    function togglePass() {
+        const passInput = document.getElementById('loginPassword');
+        const eyeIcon = document.getElementById('togglePassword');
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+            passInput.type = 'password';
+            eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+    }
+
+    async function doLogin() {
+        const username = document.getElementById('loginUsername')?.value?.trim();
+        const password = document.getElementById('loginPassword')?.value;
+        const btn = document.getElementById('loginBtn');
+        const inlineMsg = document.getElementById('loginInlineMsg');
+
+        const showMsg = (text, type = 'error') => {
+            if (!inlineMsg) return;
+            inlineMsg.style.display = 'block';
+            inlineMsg.textContent = text;
+            inlineMsg.className = type === 'error' ? 'msg-box msg-error' : 'msg-box msg-info';
+        };
+
+        if (!username || !password) return showMsg('Username dan password wajib diisi!', 'error');
+
+        try {
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Memproses...</span>';
+            }
+            showMsg('Menghubungkan ke server...', 'info');
+
+            // Perhatikan perubahan path menjadi api/api_login.php
+            const res = await fetch('http://localhost/sales_pov/api/api_login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+
+            if (!data.ok) {
+                showMsg(data.message || 'Login gagal, periksa kembali data Anda.', 'error');
+                return;
+            }
+
+            showMsg('Login berhasil! Mengarahkan...', 'info');
+            if (btn) {
+                btn.style.background = '#27ae60';
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Berhasil</span>';
+            }
+
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('salesId', String(data.sales.id));
+            localStorage.setItem('namaSales', data.sales.name || '');
+            localStorage.setItem('fotoSales', data.sales.foto || '');
+            localStorage.setItem('peranSales', 'Sales Consultant');
+            localStorage.setItem('cabangSales', 'Tunas Toyota Kiara Condong');
+
+            setTimeout(() => { window.location.href = 'index.html'; }, 800);
+
+        } catch (e) {
+            showMsg('Gagal koneksi ke database. Pastikan XAMPP menyala.', 'error');
+            console.error(e);
+        } finally {
+            if (btn && inlineMsg.className.includes('msg-error')) {
+                btn.disabled = false;
+                btn.innerHTML = '<span>Masuk Sekarang</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+            }
+        }
+    }
+
+    document.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') doLogin();
+    });
+</script>
+</body>
+</html>

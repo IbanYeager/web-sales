@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Dokumen</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Dokumen</h2>
+      <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top:18px;">
+      <div class="card" style="padding:18px;">
+        <h3 class="section-title" style="margin-bottom:6px;">Checklist Dokumen (Demo)</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Daftar dokumen yang biasanya dibutuhkan untuk proses SPK/approval.</p>
+
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px;">
+          <div class="summary-item" style="align-items:flex-start;">
+            <div class="icon-box bg-blue"><i class="fa-solid fa-file"></i></div>
+            <div class="summary-text">
+              <h4 style="margin-bottom:4px;">KTP Customer</h4>
+              <p>Foto/scan KTP, status: <b style="color:var(--primary-blue);">Tersimpan</b></p>
+            </div>
+          </div>
+
+          <div class="summary-item" style="align-items:flex-start;">
+            <div class="icon-box bg-red"><i class="fa-solid fa-file"></i></div>
+            <div class="summary-text">
+              <h4 style="margin-bottom:4px;">NPWP (Opsional)</h4>
+              <p>Status: <b style="color:var(--primary-red);">Belum</b></p>
+            </div>
+          </div>
+
+          <div class="summary-item" style="align-items:flex-start;">
+            <div class="icon-box bg-blue"><i class="fa-solid fa-file"></i></div>
+            <div class="summary-text">
+              <h4 style="margin-bottom:4px;">Slip Gaji</h4>
+              <p>Status: <b style="color:var(--primary-blue);">Tersimpan</b></p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-main" style="margin-top:14px;" onclick="alert('Upload dokumen (Demo)')">
+          <i class="fa-solid fa-upload" style="margin-right:10px;"></i>
+          Upload Dokumen
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

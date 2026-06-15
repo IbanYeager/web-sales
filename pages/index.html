@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales App - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="mobile-app">
+    <header class="header-home">
+        <div class="user-info">
+            <div class="profile-wrap">
+                <div class="avatar-container" style="cursor:pointer;" onclick="window.location.href='profil.html'">
+                    <img src="https://ui-avatars.com/api/?name=Sales&background=f4f7f6&color=c8102e" alt="Profile" class="avatar" id="dashAvatar">
+                    <div class="status-dot"></div>
+                </div>
+                <div class="greeting">
+                    <p id="dashGreeting">Selamat Pagi,</p>
+                    <h2 id="dashNama">Memuat data...</h2>
+                    <span class="role" id="dashRole">Memuat data...</span>
+                    <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="dashCabang">Memuat data...</span></span>
+                </div>
+            </div>
+            <div class="bell-icon">
+                <a href="notifikasi.html" style="color: inherit;">
+                    <i class="fa-regular fa-bell" style="font-size: 22px;"></i>
+                </a>
+                <div class="badge" style="background: var(--primary-red);">3</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <a href="target.html" style="display:block;">
+        <div class="card target-card">
+            <div class="target-header">
+                <span>Target DO Bulan Ini</span>
+                <span class="target-period">Periode Juni 2026</span>
+            </div>
+            <div class="target-body">
+                <div class="progress-circle">
+                    <span>75%</span>
+                </div>
+                <div class="target-text">
+                    <h3>15 <span class="target-total">/ 20 Unit</span></h3>
+                    <p>Sisa 5 Unit lagi untuk mencapai target</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="input.html" class="btn-input-aktivitas">
+            <div class="btn-input-left">
+                <div class="btn-icon-wrapper">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+                <div class="btn-input-text">
+                    <h4>Input Aktivitas Hari Ini</h4>
+                    <p>Laporkan kegiatan Anda sekarang</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+
+       <!-- ================= KATEGORI FITUR UTAMA (4 Item Saja) ================= -->
+        <div class="section-header-row">
+            <h3 class="section-title">Fitur Utama</h3>
+            <a href="#" class="link-lihat-semua" onclick="openFeatureModal(event)">Lihat semua</a>
+        </div>
+
+        <div class="card category-card">
+            <div class="category-grid">
+                <!-- Hanya tampil 4 fitur utama -->
+                <a href="lokasi.html" class="category-item">
+                    <div class="category-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <span class="category-text">Porleg</span>
+                </a>
+                <a href="brosur.html" class="category-item">
+                    <div class="category-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <span class="category-text">Brosur</span>
+                </a>
+                <a href="kalkulator.html" class="category-item">
+                    <div class="category-icon"><i class="fa-solid fa-calculator"></i></div>
+                    <span class="category-text">Kalkulator</span>
+                </a>
+                <a href="merchandise.html" class="category-item">
+                    <div class="category-icon"><i class="fa-solid fa-shirt"></i></div>
+                    <span class="category-text">Merchandise</span>
+                </a>
+            </div>
+        </div>
+        <!-- ================= END KATEGORI FITUR UTAMA ================= -->
+
+        <h3 class="section-title">Ringkasan Hari Ini</h3>
+        <div class="grid-2">
+
+            <div class="summary-card">
+                <div class="icon-circle bg-light-green"><i class="fa-solid fa-phone" style="color: #2ecc71;"></i></div>
+                <div class="summary-info">
+                    <p class="summary-label">Follow Up</p>
+                    <h4>12</h4>
+                    <span class="summary-sub">Aktivitas</span>
+                </div>
+            </div>
+                <div class="summary-card">
+
+                    <div class="icon-circle bg-light-blue"><i class="fa-solid fa-car-side" style="color: #3498db;"></i></div>
+                    <div class="summary-info">
+                        <p class="summary-label">Test Drive</p>
+                        <h4>2</h4>
+                        <span class="summary-sub">Aktivitas</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="summary-card">
+                <div class="icon-circle bg-light-yellow"><i class="fa-solid fa-file-signature" style="color: #f39c12;"></i></div>
+                <div class="summary-info">
+                    <p class="summary-label">SPK</p>
+                    <h4>1</h4>
+                    <span class="summary-sub">Aktivitas</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="icon-circle bg-light-purple"><i class="fa-solid fa-camera" style="color: #9b59b6;"></i></div>
+                <div class="summary-info">
+                    <p class="summary-label">Foto Aktivitas</p>
+                    <h4>4</h4>
+                    <span class="summary-sub">Aktivitas</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section-header-row">
+            <h3 class="section-title">Jadwal Hari Ini</h3>
+            <a href="#" class="link-lihat-semua" onclick="openModal('jadwalModal', event)">Lihat Semua</a>
+        </div>
+        <div class="card timeline-card">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">09:00</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">
+                            <h4>Follow Up Customer</h4>
+                            <span class="badge-status status-selesai">Selesai</span>
+                        </div>
+                        <p>Bapak Andi - Innova</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">13:00</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">
+                            <h4>Test Drive Avanza</h4>
+                            <span class="badge-status status-terjadwal">Terjadwal</span>
+                        </div>
+                        <p>Ibu Sinta</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">15:00</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">
+                            <h4>Serah Terima Unit</h4>
+                            <span class="badge-status status-terjadwal">Terjadwal</span>
+                        </div>
+                        <p>Bapak Rudi - Rush</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header-row">
+            <h3 class="section-title">Aktivitas Terakhir</h3>
+            <a href="#" class="link-lihat-semua" onclick="openModal('aktivitasModal', event)">Lihat Semua</a>
+        </div>
+        <div class="card activity-card">
+            <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Activity" class="activity-img">
+            <div class="activity-details">
+                <div class="activity-header">
+                    <div class="activity-type">
+                        <div class="dot-green"></div> Visit Customer
+                    </div>
+                </div>
+                <p class="activity-desc">Bapak Ahmad - Toyota Rush</p>
+                <div class="activity-footer">
+                    <span class="activity-time"><i class="fa-regular fa-clock"></i> 09.30 WIB</span>
+                    <span class="badge-status status-disetujui">Disetujui</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i></a>
+        <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
+        <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
+                <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ================= MODAL POP-UP SEMUA FITUR ================= -->
+    <div class="modal-overlay" id="featureModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Semua Fitur</h3>
+                <button class="btn-close-modal" onclick="closeFeatureModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="category-grid">
+                <a href="lokasi.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-location-dot"></i></div><span class="category-text">Lokasi</span></a>
+                <a href="brosur.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-book-open"></i></div><span class="category-text">Brosur</span></a>
+                <a href="kalkulator.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-calculator"></i></div><span class="category-text">Kalkulator</span></a>
+                <a href="spk.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-file-signature"></i></div><span class="category-text">Form SPK</span></a>
+                <a href="customer.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-users"></i></div><span class="category-text">Customer</span></a>
+                <a href="dokumen.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-receipt"></i></div><span class="category-text">Dokumen</span></a>
+                <a href="approval.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-check-to-slot"></i></div><span class="category-text">Approval</span></a>
+<a href="merchandise.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-shirt"></i></div><span class="category-text">Merchandise</span></a>
+            </div>
+        </div>
+    </div>
+    <!-- ================= END MODAL ================= -->
+
+    <div class="modal-overlay" id="jadwalModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Semua Jadwal</h3>
+                <button class="btn-close-modal" onclick="closeModal('jadwalModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="timeline" style="margin-top: 15px;">
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">09:00</div><div class="timeline-content"><h4>Follow Up Andi</h4><p>Selesai</p></div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">13:00</div><div class="timeline-content"><h4>Test Drive Avanza</h4><p>Terjadwal</p></div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">15:00</div><div class="timeline-content"><h4>Serah Terima Rush</h4><p>Terjadwal</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="aktivitasModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Aktivitas Terakhir</h3>
+                <button class="btn-close-modal" onclick="closeModal('aktivitasModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="activity-list" style="margin-top: 15px;">
+                <div class="card activity-card">
+                    <div class="activity-details"><h4>Bapak Ahmad - Toyota Rush</h4><p>09.30 WIB</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../script.js"></script>
+</body>
+</html>
+
+<!-- Script untuk load data profil di Home -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Cek apakah user sudah login
+      const loggedIn = localStorage.getItem('loggedIn') === 'true';
+      if (!loggedIn) {
+          window.location.href = 'login.html';
+          return;
+      }
+
+      // 2. Ambil data dari localStorage
+      const namaSales = localStorage.getItem('namaSales') || 'Sales';
+      const peranSales = localStorage.getItem('peranSales') || 'Sales Consultant';
+      const cabangSales = localStorage.getItem('cabangSales') || 'Tunas Toyota Kiara Condong';
+      const fotoSales = localStorage.getItem('fotoSales');
+
+      // 3. Masukkan teks ke elemen HTML
+      document.getElementById('dashNama').textContent = namaSales;
+      document.getElementById('dashRole').textContent = peranSales;
+      document.getElementById('dashCabang').textContent = cabangSales;
+
+      // 4. Ubah foto profil
+      const avatarEl = document.getElementById('dashAvatar');
+      // Jika di DB ada link foto, tampilkan. Jika kosong, pakai inisial nama.
+      if (fotoSales && fotoSales.trim() !== '') {
+          avatarEl.src = fotoSales;
+      } else {
+          avatarEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaSales)}&background=f4f7f6&color=c8102e`;
+      }
+
+      // 5. Ubah sapaan berdasarkan jam saat ini
+      const hour = new Date().getHours();
+      let greeting = 'Selamat Pagi,';
+      if (hour >= 11 && hour < 15) greeting = 'Selamat Siang,';
+      else if (hour >= 15 && hour < 18) greeting = 'Selamat Sore,';
+      else if (hour >= 18 || hour < 4) greeting = 'Selamat Malam,';
+      
+      document.getElementById('dashGreeting').textContent = greeting;
+  });
+</script>

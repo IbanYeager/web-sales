@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Lokasi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Lokasi</h2>
+      <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+    </header>
+
+    <div class="container" style="margin-top: 18px;">
+      <div class="card" style="padding:18px;">
+        <h3 class="section-title" style="margin-bottom:6px;">Ambil Lokasi Customer (Demo)</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+          Ini halaman demo untuk menampilkan titik kunjungan. Nantinya bisa terhubung ke GPS & map.
+        </p>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+          <button class="btn-outline-blue" style="width:auto;padding:10px 14px;" onclick="getLocation()">
+            <i class="fa-solid fa-location-crosshairs"></i> Ambil GPS
+          </button>
+          <button class="btn-outline-blue" style="width:auto;padding:10px 14px;" onclick="alert('Pilih lokasi terdekat (Demo)')">
+            <i class="fa-solid fa-route"></i> Lokasi Terdekat
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
+          <div class="section-title" style="margin:0;font-size:14px;">Daftar Kunjungan</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Demo data</div>
+        </div>
+
+        <div style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;">
+          <div class="summary-item" style="border-radius:12px;">
+            <div class="icon-box bg-blue"><i class="fa-solid fa-user"></i></div>
+            <div class="summary-text">
+              <h4 style="margin-bottom:4px;">Bapak Andi</h4>
+              <p>Jl. Kiara - 2.1 km</p>
+            </div>
+          </div>
+
+          <div class="summary-item" style="border-radius:12px;">
+            <div class="icon-box bg-red"><i class="fa-solid fa-user"></i></div>
+            <div class="summary-text">
+              <h4 style="margin-bottom:4px;">Ibu Sinta</h4>
+              <p>Jl. Dalem Kaum - 3.6 km</p>
+            </div>
+          </div>
+
+          <div class="summary-item" style="border-radius:12px;">
+            <div class="icon-box bg-blue"><i class="fa-solid fa-user"></i></div>
+            <div class="summary-text">
+              <h4 style="margin-bottom:4px;">Bapak Rudi</h4>
+              <p>Jl. Buah Batu - 5.0 km</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>
+
