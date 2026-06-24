@@ -1,166 +1,326 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales App - Test Drive</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales App - Test Drive</title>
+    <meta name="description" content="Pilih unit test drive dan buat jadwal aktivitas">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        /* Unit card */
+        .unit-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 14px;
+            transition: var(--transition-spring);
+            animation: float-up 0.4s var(--ease-out) both;
+        }
+
+        .unit-card:nth-child(2) { animation-delay: 0.06s; }
+        .unit-card:nth-child(3) { animation-delay: 0.12s; }
+        .unit-card:nth-child(4) { animation-delay: 0.18s; }
+
+        .unit-card.selected {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.15), var(--shadow-sm);
+        }
+
+        .unit-card:active { transform: scale(0.99); }
+
+        .unit-card-header {
+            padding: 16px 16px 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .unit-icon-wrap {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #fdf2f2, #fee2e2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            color: var(--primary-red);
+            flex-shrink: 0;
+        }
+
+        .unit-info { flex: 1; }
+
+        .unit-model {
+            font-size: 15px; font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+            letter-spacing: -0.3px;
+        }
+
+        .unit-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 5px;
+        }
+
+        .meta-chip {
+            font-size: 10px; font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .unit-badge {
+            font-size: 10px; font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 999px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge-avail    { background: #dcfce7; color: #065f46; border: 1px solid #bbf7d0; }
+        .badge-limited  { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+        .unit-divider { height: 1px; background: var(--border-color); margin: 0 16px; }
+
+        .unit-actions {
+            padding: 12px 16px 14px 16px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-select-unit {
+            flex: 1;
+            padding: 11px;
+            background: white;
+            border: 1.5px solid var(--primary-blue);
+            color: var(--primary-blue);
+            border-radius: 12px;
+            font-size: 12px; font-weight: 800;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            transition: var(--transition-spring);
+        }
+
+        .btn-select-unit.selected-btn {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: var(--shadow-blue);
+        }
+
+        .btn-select-unit:active { transform: scale(0.95); }
+
+        .btn-schedule {
+            flex: 1;
+            padding: 11px;
+            background: white;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 12px;
+            font-size: 12px; font-weight: 800;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            transition: var(--transition-spring);
+        }
+
+        .btn-schedule:active { background: #f8fafc; transform: scale(0.95); }
+
+        /* Selected banner */
+        .selected-banner {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            display: none;
+            animation: float-up 0.4s var(--ease-out);
+        }
+
+        .selected-banner.show { display: flex; }
+
+        .selected-banner-icon {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .selected-banner-text { flex: 1; }
+
+        .selected-banner-text p {
+            font-size: 11px; font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            margin: 0 0 2px 0;
+        }
+
+        .selected-banner-text h4 {
+            font-size: 14px; font-weight: 800;
+            color: white; margin: 0;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="mobile-app" style="padding-bottom: 110px;">
+<div class="mobile-app" style="padding-bottom: 110px;">
     <header class="header-page">
-      <h2>Test Drive</h2>
-      <i class="fa-solid fa-car-side-side" aria-hidden="true"></i>
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h2>Test Drive</h2>
+        <span class="header-icon-right"><i class="fa-solid fa-car-side"></i></span>
     </header>
 
-    <div class="container" style="margin-top:18px;">
-      <div class="card" style="padding:18px; margin-bottom:18px;">
-        <h3 class="section-title" style="margin-bottom:6px;">Unit tersedia (Demo)</h3>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
-          Pilih unit test drive untuk membuat aktivitas. Pilihan akan disimpan sementara di perangkat.
-        </p>
-      </div>
+    <div class="container" style="margin-top: 0;">
 
-      <div class="card" style="padding:0;">
-        <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
-          <div class="section-title" style="margin:0;font-size:14px;">Daftar Unit</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Tampilan demo</div>
+        <!-- Selected unit banner -->
+        <div class="selected-banner" id="selectedBanner">
+            <div class="selected-banner-icon"><i class="fa-solid fa-check-circle"></i></div>
+            <div class="selected-banner-text">
+                <p>Unit dipilih</p>
+                <h4 id="selectedUnitName">—</h4>
+            </div>
+            <button onclick="goToInput()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.2);color:white;padding:8px 14px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;">
+                Input <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </div>
 
-        <div id="unitList" style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;"></div>
-      </div>
+        <div class="section-header-row">
+            <h3 class="section-title" style="margin:0;">Unit Tersedia</h3>
+            <span class="chip chip-blue">4 Unit</span>
+        </div>
 
-      <div class="card" style="padding:18px; margin-top:18px;">
-        <h3 class="section-title" style="margin-bottom:8px;font-size:14px;">Catatan</h3>
-        <ul style="padding-left:16px;color:var(--text-muted);font-size:12px;line-height:1.7;">
-          <li>Data unit ini bersifat demo.</li>
-          <li>Setelah memilih unit, buka <b>Input Aktivitas</b> untuk melengkapi keterangan.</li>
-        </ul>
+        <!-- Unit cards rendered here -->
+        <div id="unitList"></div>
 
-        <button class="btn-main" style="justify-content:center;margin-top:10px;background:var(--primary-blue)" onclick="goToInputForSelected()">
-          <i class="fa-solid fa-pen-to-square" style="margin-right:10px;"></i>
-          Buat Aktivitas Test Drive
-        </button>
-      </div>
+        <!-- Bottom CTA -->
+        <div class="card" style="padding:18px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+                <div style="width:38px;height:38px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#92400e;flex-shrink:0;">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <div>
+                    <h4 style="font-size:13px;font-weight:800;color:var(--text-dark);margin-bottom:4px;">Cara Pakai</h4>
+                    <p style="font-size:12px;color:var(--text-muted);line-height:1.6;margin:0;">Pilih unit test drive, lalu tekan tombol <b>Input</b> untuk membuat laporan aktivitas test drive.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <nav class="bottom-nav">
-      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
-      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
-      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
-      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+        <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+        <a href="testdrive.html" class="nav-item active"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+        <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
     </nav>
-  </div>
+</div>
 
-  <script>
-    const units = [
-      {
-        id: 'TD-AVZ-001',
-        model: 'Avanza 1.5 G',
-        tipe: 'AT',
-        ketersediaan: 'tersedia',
-        lokasi: 'Tunas Toyota Kiara Condong',
-        warna: 'Silver'
-      },
-      {
-        id: 'TD-RAZ-002',
-        model: 'Raize 1.2 R',
-        tipe: 'MT',
-        ketersediaan: 'terbatas',
-        lokasi: 'Tunas Toyota Kiara Condong',
-        warna: 'Putih'
-      },
-      {
-        id: 'TD-RSH-003',
-        model: 'Rush 1.5 G',
-        tipe: 'AT',
-        ketersediaan: 'tersedia',
-        lokasi: 'Tunas Toyota Kiara Condong',
-        warna: 'Merah'
-      },
-      {
-        id: 'TD-CLY-004',
-        model: 'Calya 1.2',
-        tipe: 'MT',
-        ketersediaan: 'terbatas',
-        lokasi: 'Tunas Toyota Kiara Condong',
-        warna: 'Hitam'
-      }
-    ];
+<script>
+    let units = [];
 
-    function badgeHtml(status){
-      if(status === 'tersedia'){
-        return '<span style="font-size:10px;font-weight:800;background:#eafaf1;color:#27ae60;padding:6px 10px;border-radius:999px;border:1px solid #d6f5e0;white-space:nowrap;">Tersedia</span>';
-      }
-      return '<span style="font-size:10px;font-weight:800;background:#ebf5fb;color:#2980b9;padding:6px 10px;border-radius:999px;border:1px solid #dbe6ff;white-space:nowrap;">Terbatas</span>';
+    let selectedId = localStorage.getItem('selectedTestDriveUnitId') || null;
+
+    function renderUnits() {
+        const el = document.getElementById('unitList');
+        if (!el) return;
+        el.innerHTML = '';
+
+        units.forEach((u, idx) => {
+            const isSelected = u.id === selectedId;
+            const card = document.createElement('div');
+            card.className = 'unit-card' + (isSelected ? ' selected' : '');
+            card.id = 'card-' + u.id;
+            card.style.animationDelay = (idx * 0.06) + 's';
+
+            const badgeClass = u.ketersediaan === 'tersedia' ? 'badge-avail' : 'badge-limited';
+            const badgeText  = u.ketersediaan === 'tersedia' ? 'Tersedia' : 'Terbatas';
+
+            card.innerHTML = `
+                <div class="unit-card-header">
+                    <div class="unit-icon-wrap"><i class="fa-solid fa-car-side"></i></div>
+                    <div class="unit-info">
+                        <div class="unit-model">${u.model}</div>
+                        <div class="unit-meta">
+                            <span class="meta-chip"><i class="fa-solid fa-gear"></i> ${u.type}</span>
+                            <span class="meta-chip"><i class="fa-solid fa-palette"></i> ${u.warna}</span>
+                            <span class="meta-chip"><i class="fa-regular fa-calendar"></i> ${u.tahun}</span>
+                        </div>
+                    </div>
+                    <span class="unit-badge ${badgeClass}">${badgeText}</span>
+                </div>
+                <div class="unit-divider"></div>
+                <div class="unit-actions">
+                    <button class="btn-select-unit ${isSelected ? 'selected-btn' : ''}" onclick="pickUnit('${u.id}')">
+                        ${isSelected
+                            ? '<i class="fa-solid fa-check-circle"></i> Dipilih'
+                            : '<i class="fa-solid fa-circle-dot"></i> Pilih Unit'}
+                    </button>
+                    <button class="btn-schedule" onclick="alert('Jadwal test drive untuk ${u.model} (Demo)')">
+                        <i class="fa-regular fa-calendar"></i> Jadwal
+                    </button>
+                </div>
+            `;
+
+            el.appendChild(card);
+        });
+
+        updateBanner();
     }
 
-    function renderUnits(){
-      const el = document.getElementById('unitList');
-      if(!el) return;
-      el.innerHTML = '';
-
-      units.forEach(u => {
-        const node = document.createElement('div');
-        node.className = 'summary-card';
-        node.style.padding = '14px';
-        node.style.flexDirection = 'column';
-        node.style.alignItems = 'stretch';
-        node.style.gap = '10px';
-
-        node.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-            <div>
-              <div style="font-weight:900;color:var(--text-dark);font-size:13px;">${u.model}</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Tipe: ${u.tipe} • Warna: ${u.warna}</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">ID: ${u.id}</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Lokasi: ${u.lokasi}</div>
-            </div>
-            <div>${badgeHtml(u.ketersediaan)}</div>
-          </div>
-
-          <div style="display:flex;gap:10px;">
-            <button class="btn-outline-blue" style="flex:1;" onclick="pickUnit('${u.id}')">
-              <i class="fa-solid fa-check" style="margin-right:8px;"></i>
-              Pilih Unit
-            </button>
-            <button class="btn-outline" style="flex:1;border-color:var(--primary-red);color:var(--primary-red);" onclick="alert('Info jadwal test drive untuk ${u.model} (Demo)')">
-              <i class="fa-solid fa-calendar" style="margin-right:8px;"></i>
-              Jadwal
-            </button>
-          </div>
-        `;
-
-        el.appendChild(node);
-      });
+    function fetchUnits() {
+        fetch('../api/api_testdrive.php')
+            .then(r => r.json())
+            .then(res => {
+                if (res.status === 'success') {
+                    units = res.data;
+                    renderUnits();
+                }
+            })
+            .catch(err => console.error("Error fetching test drive units:", err));
     }
 
-    function pickUnit(unitId){
-      const u = units.find(x => x.id === unitId);
-      if(!u) return;
+    function pickUnit(id) {
+        selectedId = id;
+        const u = units.find(x => x.id === id);
+        if (!u) return;
 
-      localStorage.setItem('selectedTestDriveUnitId', u.id);
-      localStorage.setItem('selectedTestDriveUnitModel', u.model);
-      localStorage.setItem('selectedTestDriveUnitTipe', u.tipe);
+        localStorage.setItem('selectedTestDriveUnitId',    u.id);
+        localStorage.setItem('selectedTestDriveUnitModel', u.model);
+        localStorage.setItem('selectedTestDriveUnitType',  u.type);
 
-      alert(`Unit dipilih: ${u.model} (${u.tipe}) (Demo)`);
+        renderUnits();
     }
 
-    function goToInputForSelected(){
-      const id = localStorage.getItem('selectedTestDriveUnitId');
-      if(!id){
-        alert('Pilih dulu unit Test Drive yang tersedia.');
-        return;
-      }
-      window.location.href = 'input.html';
+    function updateBanner() {
+        const banner = document.getElementById('selectedBanner');
+        const nameEl = document.getElementById('selectedUnitName');
+        if (selectedId && units.length > 0) {
+            const u = units.find(x => x.id === selectedId);
+            if (u) {
+                nameEl.textContent = `${u.model} (${u.type}) — ${u.warna}`;
+                banner.classList.add('show');
+            }
+        } else {
+            if (banner) banner.classList.remove('show');
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderUnits();
-    });
-  </script>
+    function goToInput() {
+        if (!selectedId) {
+            alert('Pilih dulu unit Test Drive!');
+            return;
+        }
+        window.location.href = 'input.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchUnits);
+</script>
 </body>
 </html>
-

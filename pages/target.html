@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,97 +8,69 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css" />
 </head>
+
 <body>
   <div class="mobile-app">
     <header class="header-page">
       <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h2>Target DO</h2>
-      <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
     </header>
 
     <div class="container" style="margin-top:18px;">
+
+      <!-- ================= CARD UTAMA ================= -->
       <div class="card target-card" style="padding:18px; margin-bottom:18px;">
         <div class="target-header" style="margin-bottom:10px;">
           <span>Target DO Bulan Ini</span>
-          <span class="target-period" style="font-size:11px;">Periode Juni 2026</span>
+          <span class="target-period" id="detailPeriode" style="font-size:11px;">Memuat...</span>
         </div>
 
         <div class="target-body">
-          <div class="progress-circle">
-            <span>75%</span>
+          <div class="progress-circle" id="circleProgress">
+            <span id="detailPersentase">0%</span>
           </div>
           <div class="target-text">
-            <h3 style="margin-bottom:6px;">15 <span class="target-total">/ 20 Unit</span></h3>
-            <p>Sisa 5 Unit lagi untuk mencapai target</p>
+            <h3 style="margin-bottom:6px;"><span id="detailRealisasi">0</span> <span class="target-total">/ <span
+                  id="detailTarget">0</span> Unit</span></h3>
+            <p id="detailSisaPesan">Memuat data target...</p>
           </div>
         </div>
 
         <div style="margin-top:12px;">
-          <div style="font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:8px;">Rincian (Demo)</div>
+          <div style="font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:8px;">Rincian</div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
               <span style="font-size:12px;color:var(--text-dark);font-weight:700;">DO Terkumpul</span>
-              <span style="font-size:12px;color:var(--primary-blue);font-weight:800;">15 unit</span>
+              <span style="font-size:12px;color:var(--primary-blue);font-weight:800;" id="txtRealisasi">0 unit</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
               <span style="font-size:12px;color:var(--text-dark);font-weight:700;">Target</span>
-              <span style="font-size:12px;color:var(--text-dark);font-weight:800;">20 unit</span>
+              <span style="font-size:12px;color:var(--text-dark);font-weight:800;" id="txtTarget">0 unit</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
               <span style="font-size:12px;color:var(--text-dark);font-weight:700;">Sisa</span>
-              <span style="font-size:12px;color:var(--primary-red);font-weight:800;">5 unit</span>
+              <span style="font-size:12px;color:var(--primary-red);font-weight:800;" id="txtSisa">0 unit</span>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- ================= CARD PROGRESS MINGGUAN ================= -->
       <div class="card" style="padding:0;">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
           <div class="section-title" style="margin:0;font-size:14px;">Progress per Minggu</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Demo data</div>
         </div>
 
-        <div style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;">
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-blue" style="width:38px;height:38px;"><i class="fa-solid fa-calendar-week"></i></div>
-            <div class="summary-text" style="flex:1;">
-              <h4 style="font-size:13px;margin-bottom:2px;">Minggu 1</h4>
-              <p style="font-size:10px;">Target 4 unit • Realisasi 3 unit</p>
-            </div>
-            <div style="font-weight:800;color:var(--primary-blue);font-size:14px;">3</div>
-          </div>
-
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-blue" style="width:38px;height:38px;"><i class="fa-solid fa-calendar-week"></i></div>
-            <div class="summary-text" style="flex:1;">
-              <h4 style="font-size:13px;margin-bottom:2px;">Minggu 2</h4>
-              <p style="font-size:10px;">Target 5 unit • Realisasi 4 unit</p>
-            </div>
-            <div style="font-weight:800;color:var(--primary-blue);font-size:14px;">4</div>
-          </div>
-
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-red" style="width:38px;height:38px;"><i class="fa-solid fa-calendar-week"></i></div>
-            <div class="summary-text" style="flex:1;">
-              <h4 style="font-size:13px;margin-bottom:2px;">Minggu 3</h4>
-              <p style="font-size:10px;">Target 6 unit • Realisasi 5 unit</p>
-            </div>
-            <div style="font-weight:800;color:var(--primary-red);font-size:14px;">5</div>
-          </div>
-
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-blue" style="width:38px;height:38px;"><i class="fa-solid fa-calendar-week"></i></div>
-            <div class="summary-text" style="flex:1;">
-              <h4 style="font-size:13px;margin-bottom:2px;">Minggu 4</h4>
-              <p style="font-size:10px;">Target 5 unit • Realisasi 3 unit</p>
-            </div>
-            <div style="font-weight:800;color:var(--primary-blue);font-size:14px;">3</div>
-          </div>
+        <!-- Wadah untuk menampung elemen mingguan yang digenerate dari JS -->
+        <div style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;" id="mingguanContainer">
+          <p style="font-size:12px; text-align:center; color:var(--text-muted);">Memuat rincian mingguan dari
+            database...</p>
         </div>
       </div>
 
+      <!-- ================= CARD SARAN AKSI ================= -->
       <div class="card" style="padding:18px;">
-        <h3 class="section-title" style="margin-bottom:8px;font-size:14px;">Saran Aksi (Demo)</h3>
+        <h3 class="section-title" style="margin-bottom:8px;font-size:14px;">Saran Aksi</h3>
         <ul style="padding-left:16px;color:var(--text-muted);font-size:12px;line-height:1.7;">
           <li>Prioritaskan follow up customer yang statusnya mendekati deal.</li>
           <li>Aktifkan reminder dokumen & estimasi jadwal serah terima.</li>
@@ -107,13 +80,73 @@
     </div>
 
     <nav class="bottom-nav">
-      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
-      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
-      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
-      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
     </nav>
   </div>
-</body>
-</html>
 
+  <script src="../script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ambil ID dari localStorage (Atau gunakan default 1 untuk demo)
+      const idSales = localStorage.getItem('idSales') || 1;
+
+      fetch(`api_target.php?id_sales=${idSales}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // 1. Update Data Bagian Atas
+            document.getElementById('detailPeriode').textContent = data.periode;
+            document.getElementById('detailPersentase').textContent = data.persentase + '%';
+            document.getElementById('detailRealisasi').textContent = data.realisasi_total;
+            document.getElementById('detailTarget').textContent = data.target_total;
+            document.getElementById('detailSisaPesan').textContent = `Sisa ${data.sisa} Unit lagi untuk mencapai target`;
+
+            // 2. Update Data Rincian Angka
+            document.getElementById('txtRealisasi').textContent = data.realisasi_total + ' unit';
+            document.getElementById('txtTarget').textContent = data.target_total + ' unit';
+            document.getElementById('txtSisa').textContent = data.sisa + ' unit';
+
+            // 3. Efek Progress Bar Bulat
+            document.getElementById('circleProgress').style.background = `conic-gradient(var(--primary-red) ${data.persentase}%, #ffe6e6 0)`;
+
+            // 4. Looping & Render Data Mingguan
+            const container = document.getElementById('mingguanContainer');
+            container.innerHTML = ''; // Hapus teks "Memuat..."
+
+            if (data.mingguan.length > 0) {
+              data.mingguan.forEach(minggu => {
+                // Logika warna: Jika realisasi capai target -> biru, Jika belum -> merah
+                const targetTercapai = (minggu.realisasi_unit >= minggu.target_unit);
+                const bgClass = targetTercapai ? 'bg-blue' : 'bg-red';
+                const textColor = targetTercapai ? 'var(--primary-blue)' : 'var(--primary-red)';
+
+                const htmlCard = `
+                            <div class="summary-item" style="align-items:flex-start;">
+                              <div class="icon-box ${bgClass}" style="width:38px;height:38px;"><i class="fa-solid fa-calendar-week"></i></div>
+                              <div class="summary-text" style="flex:1;">
+                                <h4 style="font-size:13px;margin-bottom:2px;">Minggu ${minggu.minggu_ke}</h4>
+                                <p style="font-size:10px;">Target ${minggu.target_unit} unit • Realisasi ${minggu.realisasi_unit} unit</p>
+                              </div>
+                              <div style="font-weight:800;color:${textColor};font-size:14px;">${minggu.realisasi_unit}</div>
+                            </div>
+                          `;
+                container.innerHTML += htmlCard;
+              });
+            } else {
+              container.innerHTML = '<p style="font-size:12px; text-align:center; color:var(--text-muted);">Belum ada rincian minggu yang diatur.</p>';
+            }
+
+          } else {
+            document.getElementById('detailSisaPesan').textContent = data.message;
+          }
+        })
+        .catch(error => console.error('Error fetching data target:', error));
+    });
+  </script>
+</body>
+
+</html>

@@ -1,101 +1,434 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales App - OLX Kendaraan</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales App - OLX Trade In</title>
+    <meta name="description" content="Upload kendaraan trade-in ke platform OLX">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        .mobile-app {
+            padding-bottom: 40px;
+        }
+
+        /* Custom form-group spacing */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Photo upload area */
+        .photo-upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            background: #f8fafc;
+            padding: 28px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .photo-upload-area:active,
+        .photo-upload-area.dragover {
+            border-color: var(--accent-blue);
+            background: #eff6ff;
+        }
+
+        .photo-upload-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--accent-blue);
+        }
+
+        .photo-upload-area h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .photo-upload-area p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .photo-grid-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .photo-grid-preview.show {
+            display: grid;
+        }
+
+        .preview-thumb {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .preview-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-thumb .del-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 22px;
+            height: 22px;
+            background: rgba(200, 16, 46, 0.9);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Info strip */
+        .info-strip {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde68a;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 22px;
+        }
+
+        .info-strip-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #d97706, var(--accent-gold));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .info-strip-text p {
+            font-size: 12px;
+            color: #92400e;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .price-input-wrap {
+            position: relative;
+        }
+
+        .price-prefix {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .price-input-wrap .form-control {
+            padding-left: 44px;
+        }
+
+        /* Submit button area */
+        .submit-area {
+            padding: 20px 0 0 0;
+        }
+
+        /* Steps indicator */
+        .steps-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-color);
+            transition: var(--transition);
+        }
+
+        .step-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--primary-red);
+        }
+    </style>
 </head>
+
 <body>
-  <div class="mobile-app" style="padding-bottom: 110px;">
-    <header class="header-page">
-      <h2>OLX (Upload Kendaraan)</h2>
-      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-    </header>
+    <div class="mobile-app">
+        <header class="header-page">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>Upload Trade-In</h2>
+        </header>
 
-    <div class="container" style="margin-top: 18px;">
-      <h3 class="section-title" style="margin-bottom: 5px;">Upload kendaraan yang ingin dijual</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">
-        (Demo) Data akan disimpan lokal dan tidak benar-benar terunggah.
-      </p>
+        <div class="container" style="margin-top: 0;">
 
-      <form id="formOlx">
-        <div class="form-group">
-          <label>Nama kendaraan / Model <span style="color: var(--primary-red);">*</span></label>
-          <input class="form-control" type="text" placeholder="Contoh: Avanza 1.5 G" required />
+            <!-- Info strip -->
+            <div class="info-strip">
+                <div class="info-strip-icon"><i class="fa-solid fa-circle-info"></i></div>
+                <div class="info-strip-text">
+                    <p>Data kendaraan akan digunakan untuk proses trade-in dan estimasi harga pasar.</p>
+                </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="steps-row">
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+            </div>
+
+            <form id="formOlx">
+
+                <div class="form-group">
+                    <label>Nama / Model Kendaraan <span style="color:var(--primary-red)">*</span></label>
+                    <div style="position:relative;">
+                        <input class="form-control" type="text" id="olxNama"
+                            placeholder="Contoh: Toyota Avanza 1.5 G 2022" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis / Type Mobil <span style="color:var(--primary-red)">*</span></label>
+                    <select class="form-control" id="olxType" required>
+                        <option value="" disabled selected>Pilih kategori...</option>
+                        <option value="MPV">MPV (Avanza / Calya)</option>
+                        <option value="SUV">SUV (HR-V / Raize / Rush)</option>
+                        <option value="LSUV">Low SUV (Raize / Yaris Cross)</option>
+                        <option value="Sedan">Sedan (Civic / Accord)</option>
+                        <option value="LowMPV">Low MPV (Xenia / Sigra)</option>
+                        <option value="Hatchback">Hatchback (Jazz / Yaris)</option>
+                        <option value="Commercial">LWB / Commercial</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tahun & Warna</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <input class="form-control" type="number" id="olxTahun" placeholder="Tahun (2020)" min="2000"
+                            max="2026" />
+                        <input class="form-control" type="text" id="olxWarna" placeholder="Warna" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Harga Estimasi (Rp) <span style="color:var(--primary-red)">*</span></label>
+                    <div class="price-input-wrap">
+                        <span class="price-prefix">Rp</span>
+                        <input class="form-control" type="number" id="olxHarga" placeholder="150,000,000" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Lokasi Kecamatan <span style="color:var(--primary-red)">*</span></label>
+                    <select class="form-control" id="olxLokasi" required>
+                        <option value="" disabled selected>Pilih kecamatan...</option>
+                        <option>Coblong</option>
+                        <option>Antapani</option>
+                        <option>Bojongloa Kaler</option>
+                        <option>Lengkong</option>
+                        <option>Kiara Condong</option>
+                        <option>Bandung Wetan</option>
+                        <option>Sumur Bandung</option>
+                        <option>Cicendo</option>
+                        <option>Andir</option>
+                        <option>Regol</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Deskripsi Kondisi <span style="color:var(--primary-red)">*</span></label>
+                    <textarea class="form-control" id="olxDeskripsi" rows="3"
+                        placeholder="Tulis kondisi kendaraan: tahun pakai, kilometer, kelengkapan dokumen..."
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>Foto Kendaraan</span>
+                        <span style="font-size:10px;color:var(--text-muted);font-weight:600;" id="photoCountOlx">0/6
+                            Foto</span>
+                    </label>
+
+                    <div class="photo-upload-area" onclick="document.getElementById('inputFotoOlx').click()"
+                        id="uploadAreaOlx">
+                        <div class="photo-upload-icon"><i class="fa-solid fa-camera"></i></div>
+                        <h4>Tambah Foto Kendaraan</h4>
+                        <p>Foto tampak depan, belakang, samping & interior</p>
+                    </div>
+
+                    <div class="photo-grid-preview" id="photoGridOlx"></div>
+
+                    <input type="file" id="inputFotoOlx" accept="image/*" multiple hidden
+                        onchange="handleOlxPhoto(event)">
+                </div>
+
+                <div class="submit-area">
+                    <button type="button" class="btn-main" onclick="simpanOlx()" id="btnSimpanOlx">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Submit Listing</span>
+                    </button>
+                    <p
+                        style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:12px;font-weight:500;">
+                        <i class="fa-solid fa-lock" style="color:var(--green-success);margin-right:4px;"></i>
+                        Data disimpan secara lokal (demo mode)
+                    </p>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-          <label>Jenis tipe mobil <span style="color: var(--primary-red);">*</span></label>
-          <select class="form-control" required>
-            <option value="" disabled selected>Pilih tipe...</option>
-            <option>MPV (Avanza/Calya)</option>
-            <option>SUV (HR-V/Raize)</option>
-            <option>Sedan (Civic/Accord)</option>
-            <option>Low MPV (Xenia)</option>
-            <option>Hatchback (Jazz)</option>
-            <option>LWB/Commercial</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Harga (Rp) <span style="color: var(--primary-red);">*</span></label>
-          <input class="form-control" type="number" placeholder="Contoh: 150000000" required />
-        </div>
-
-        <div class="form-group">
-          <label>Lokasi (Kecamatan) <span style="color: var(--primary-red);">*</span></label>
-          <select class="form-control" required>
-            <option value="" disabled selected>Pilih kecamatan...</option>
-            <option>Coblong</option>
-            <option>Antapani</option>
-            <option>Bojongloa Kaler</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Deskripsi <span style="color: var(--primary-red);">*</span></label>
-          <textarea class="form-control" placeholder="Tulis detail kondisi kendaraan..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Foto kendaraan</label>
-          <div class="photo-preview">
-            <i class="fa-regular fa-image" style="font-size: 40px; opacity: 0.5;"></i>
-          </div>
-          <div class="btn-upload" style="margin-top: 10px;" onclick="alert('Demo upload foto')">
-            <i class="fa-solid fa-camera"></i> Tambah Foto
-          </div>
-        </div>
-
-        <button type="button" class="btn-main" onclick="simpanOlx()" style="justify-content: center; margin-top: 10px;">
-          <i class="fa-solid fa-upload" style="margin-right: 10px;"></i> Simpan Listing
-        </button>
-      </form>
     </div>
 
-    <!-- Bottom Nav -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
-        <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
-        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-        <a href="testdrive.html" class="nav-item active"><i class="fa-solid fa-car-side"></i></a>
-                <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
-    </nav>
-  </div>
+    <script>
+        let olxPhotos = [];
+        const MAX_PHOTOS = 6;
 
-  <script>
-    function simpanOlx() {
-      const form = document.getElementById('formOlx');
-      if (form && form.checkValidity()) {
-        alert('Listing berhasil disimpan (demo)!');
-        window.location.href = 'index.html';
-      } else {
-        alert('Mohon lengkapi semua field wajib (*)');
-      }
-    }
-  </script>
+        function handleOlxPhoto(event) {
+            const files = Array.from(event.target.files);
+            if (olxPhotos.length + files.length > MAX_PHOTOS) {
+                alert(`Maksimal ${MAX_PHOTOS} foto.`);
+                return;
+            }
+
+            files.forEach(file => {
+                olxPhotos.push(file);
+            });
+            renderOlxPhotos();
+            event.target.value = '';
+        }
+
+        function renderOlxPhotos() {
+            const grid = document.getElementById('photoGridOlx');
+            const area = document.getElementById('uploadAreaOlx');
+            const count = document.getElementById('photoCountOlx');
+
+            count.textContent = `${olxPhotos.length}/${MAX_PHOTOS} Foto`;
+            grid.innerHTML = '';
+
+            olxPhotos.forEach((file, i) => {
+                const src = URL.createObjectURL(file);
+                const div = document.createElement('div');
+                div.className = 'preview-thumb';
+                div.innerHTML = `
+                <img src="${src}" alt="Foto ${i + 1}">
+                <button type="button" class="del-btn" onclick="hapusOlxPhoto(${i})">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>`;
+                grid.appendChild(div);
+            });
+
+            if (olxPhotos.length < MAX_PHOTOS) {
+                const add = document.createElement('div');
+                add.className = 'preview-thumb';
+                add.style.cssText = 'border:2px dashed #cbd5e1;background:#f8fafc;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:12px;aspect-ratio:1;';
+                add.innerHTML = '<i class="fa-solid fa-plus" style="color:var(--text-muted);font-size:20px;"></i>';
+                add.onclick = () => document.getElementById('inputFotoOlx').click();
+                grid.appendChild(add);
+            }
+
+            if (olxPhotos.length > 0) {
+                grid.classList.add('show');
+                area.style.display = 'none';
+            } else {
+                grid.classList.remove('show');
+                area.style.display = '';
+            }
+        }
+
+        function hapusOlxPhoto(i) {
+            olxPhotos.splice(i, 1);
+            renderOlxPhotos();
+        }
+
+        function simpanOlx() {
+            const form = document.getElementById('formOlx');
+            const btn = document.getElementById('btnSimpanOlx');
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Menyimpan...</span>';
+
+            const sales_account_id = localStorage.getItem('idSales') || 1;
+            const formData = new FormData();
+            formData.append('sales_account_id', sales_account_id);
+            formData.append('nama_kendaraan', document.getElementById('olxNama').value);
+            formData.append('jenis_type', document.getElementById('olxType').value);
+            formData.append('tahun', document.getElementById('olxTahun').value);
+            formData.append('warna', document.getElementById('olxWarna').value);
+            formData.append('harga_estimasi', document.getElementById('olxHarga').value);
+            formData.append('lokasi_kecamatan', document.getElementById('olxLokasi').value);
+            formData.append('deskripsi_kondisi', document.getElementById('olxDeskripsi').value);
+
+            olxPhotos.forEach((file, index) => {
+                formData.append('foto[]', file);
+            });
+
+            fetch('../api/api_olx.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Berhasil!</span>';
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1200);
+                    } else {
+                        alert('Gagal menyimpan listing: ' + res.message);
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-upload"></i> <span>Submit Listing</span>';
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Gagal terhubung ke server.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-upload"></i> <span>Submit Listing</span>';
+                });
+        }
+    </script>
 </body>
-</html>
 
+</html>

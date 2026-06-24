@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,12 +8,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css" />
 </head>
+
 <body>
   <div class="mobile-app" style="padding-bottom: 110px;">
     <header class="header-page">
       <a href="index.html" style="color:white;"><i class="fa-solid fa-arrow-left"></i></a>
       <h2>Notifikasi</h2>
-      <i class="fa-solid fa-bell" aria-hidden="true"></i>
     </header>
 
     <div class="container" style="margin-top:18px;">
@@ -20,12 +21,14 @@
         <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
           <div>
             <div style="font-size:12px; color:var(--text-muted); font-weight:700;">Belum dibaca</div>
-            <div id="badgeBelumDibaca" style="font-size:20px; font-weight:800; color:var(--primary-red); margin-top:2px;">0</div>
+            <div id="badgeBelumDibaca"
+              style="font-size:20px; font-weight:800; color:var(--primary-red); margin-top:2px;">0</div>
             <div style="font-size:10px; color:var(--text-muted); font-weight:700; margin-top:2px;">notif</div>
 
 
           </div>
-          <button class="btn-outline-blue" style="width:auto; padding:10px 14px; border-radius:12px;" onclick="markAllRead()">
+          <button class="btn-outline-blue" style="width:auto; padding:10px 14px; border-radius:12px;"
+            onclick="markAllRead()">
             <i class="fa-solid fa-check" style="font-size:14px;"></i>
             Tandai sudah dibaca
           </button>
@@ -33,12 +36,14 @@
       </div>
 
       <div class="card" style="padding:0;">
-        <div class="notif-header" style="padding:14px 18px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+        <div class="notif-header"
+          style="padding:14px 18px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
           <div>
             <div class="section-title" style="margin:0; font-size:14px;">Daftar Notifikasi</div>
             <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">Demo data</div>
           </div>
-          <div id="notifKosong" style="display:none; font-size:12px; color:var(--text-muted); font-weight:700;">Tidak ada notifikasi</div>
+          <div id="notifKosong" style="display:none; font-size:12px; color:var(--text-muted); font-weight:700;">Tidak
+            ada notifikasi</div>
         </div>
 
         <div id="notifList" style="padding:10px 18px; display:flex; flex-direction:column; gap:12px;">
@@ -47,29 +52,38 @@
     </div>
 
     <nav class="bottom-nav">
-      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
-      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
-      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
-      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+      <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+      <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+      <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
     </nav>
 
   </div>
 
   <script>
-    const notifData = [
-      { id: 1, title: 'Approval Aktivitas', body: 'Aktivitas Follow Up customer Anda sudah masuk ke Supervisor.', time: 'Baru saja', unread: true, statusIcon: 'check-to-slot' },
-      { id: 2, title: 'Jadwal Test Drive', body: 'Reminder: Jadwal Test Drive dengan Ibu Sinta pukul 13.00.', time: 'Hari ini', unread: true, statusIcon: 'calendar-days' },
-      { id: 3, title: 'Target Hampir Tercapai', body: 'Sisa 5 unit lagi menuju target DO bulan ini.', time: 'Kemarin', unread: true, statusIcon: 'bullseye' }
-    ];
+    let notifData = [];
+    const sales_account_id = localStorage.getItem('idSales') || 1;
 
     function escapeHtml(str) {
       return String(str)
         .replaceAll('&', '&amp;')
-        .replaceAll('<', '<')
-        .replaceAll('>', '>')
-        .replaceAll('"', '"')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
         .replaceAll("'", '&#039;');
+    }
+
+    function fetchNotifications() {
+      fetch(`../api/api_notifikasi.php?sales_account_id=${sales_account_id}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.status === 'success' && res.data) {
+            notifData = res.data;
+            render();
+          }
+        })
+        .catch(err => console.error("Error fetching notifications:", err));
     }
 
     function render() {
@@ -111,12 +125,12 @@
 
         row.innerHTML = `
           <div style="width:42px; height:42px; border-radius:12px; background: #fdf2f2; color: var(--primary-red); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-            <i class="fa-solid fa-${escapeHtml(n.statusIcon)}" style="font-size:18px;"></i>
+            <i class="fa-solid fa-${escapeHtml(n.status_icon || 'bell')}" style="font-size:18px;"></i>
           </div>
           <div style="flex:1;">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
               <div style="font-weight:900; color:var(--text-dark); font-size:13px; line-height:1.3;">${escapeHtml(n.title)}</div>
-              <div style="font-size:10px; color:var(--text-muted); font-weight:800; white-space:nowrap;">${escapeHtml(n.time)}</div>
+              <div style="font-size:10px; color:var(--text-muted); font-weight:800; white-space:nowrap;">${escapeHtml(n.time_label || 'Baru saja')}</div>
             </div>
             <div style="font-size:11px; color:var(--text-muted); margin-top:6px; line-height:1.5;">${escapeHtml(n.body)}</div>
             <div style="margin-top:10px; display:flex; justify-content:flex-start;">${unreadPill}</div>
@@ -124,8 +138,9 @@
         `;
 
         row.onclick = () => {
-          n.unread = false;
-          render();
+          if (n.unread) {
+            markSingleRead(n.id);
+          }
         };
 
         listEl.appendChild(row);
@@ -133,13 +148,45 @@
     }
 
     function markAllRead() {
-      notifData.forEach(n => n.unread = false);
-      render();
-      alert('Semua notifikasi sudah ditandai sebagai sudah dibaca (demo).');
+      fetch('../api/api_notifikasi.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'read_all',
+          sales_account_id
+        })
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.status === 'success') {
+          fetchNotifications();
+          alert('Semua notifikasi sudah ditandai sebagai sudah dibaca.');
+        }
+      })
+      .catch(err => console.error("Error marking all read:", err));
     }
 
-    document.addEventListener('DOMContentLoaded', render);
+    function markSingleRead(id) {
+      fetch('../api/api_notifikasi.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'read_single',
+          id: id,
+          sales_account_id
+        })
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.status === 'success') {
+          fetchNotifications();
+        }
+      })
+      .catch(err => console.error("Error marking single read:", err));
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchNotifications);
   </script>
 </body>
-</html>
 
+</html>

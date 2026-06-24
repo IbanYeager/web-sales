@@ -1,62 +1,439 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales App - Approval</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales App - Approval Pengajuan</title>
+    <meta name="description" content="Halaman approval SPK dan dokumen sales">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        .mobile-app {
+            padding-bottom: 40px;
+        }
+
+        .approval-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 14px;
+            transition: var(--transition);
+            animation: float-up 0.4s var(--ease-out) both;
+        }
+
+        .approval-card:nth-child(2) {
+            animation-delay: 0.06s;
+        }
+
+        .approval-card:nth-child(3) {
+            animation-delay: 0.12s;
+        }
+
+        .approval-card:active {
+            transform: scale(0.99);
+        }
+
+        .approval-card-header {
+            padding: 16px 18px 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .approval-info {
+            flex: 1;
+        }
+
+        .approval-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+            letter-spacing: -0.3px;
+        }
+
+        .approval-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .approval-meta span {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 999px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .status-waiting {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .status-approved {
+            background: #dcfce7;
+            color: #065f46;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .approval-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 0 18px;
+        }
+
+        .approval-detail {
+            padding: 12px 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .detail-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .approval-actions {
+            padding: 14px 18px 16px 18px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-approve {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition-spring);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-approve:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+        .btn-reject {
+            flex: 1;
+            padding: 12px;
+            background: white;
+            color: var(--primary-red);
+            border: 1.5px solid var(--primary-red);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition-spring);
+        }
+
+        .btn-reject:active {
+            background: var(--red-light);
+            transform: scale(0.95);
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-tab {
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1.5px solid var(--border-color);
+            background: white;
+            color: var(--text-muted);
+        }
+
+        .filter-tab.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-blue);
+        }
+
+        /* Stats row */
+        .approval-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .stat-chip {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px 12px;
+            text-align: center;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .stat-chip .num {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 3px;
+        }
+
+        .stat-chip .lbl {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="mobile-app">
-    <header class="header-page">
-      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-      <h2>Approval</h2>
-      <i class="fa-solid fa-check-to-slot" aria-hidden="true"></i>
-    </header>
+    <div class="mobile-app">
+        <header class="header-page">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>Approval</h2>
+        </header>
 
-    <div class="container" style="margin-top:18px;">
-      <div class="card" style="padding:18px;">
-        <h3 class="section-title" style="margin-bottom:6px;">Daftar Pengajuan (Demo)</h3>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Halaman demo untuk approval SPK/dokumen.</p>
+        <div class="container" style="margin-top: 0;">
 
-        <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
-          <div class="summary-card" style="padding:14px;flex-direction:column;align-items:stretch;gap:10px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-weight:800;color:var(--text-dark);font-size:13px;">SPK - Bapak Rudi</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Model: Rush</div>
-              </div>
-              <div style="font-size:10px;font-weight:800;background:#ebf5fb;color:#2980b9;padding:6px 10px;border-radius:999px;border:1px solid #dbe6ff;white-space:nowrap;">Menunggu</div>
+            <!-- Stats -->
+            <div class="approval-stats">
+                <div class="stat-chip">
+                    <div class="num" style="color:var(--accent-gold);" id="countPending">0</div>
+                    <div class="lbl">Pending</div>
+                </div>
+                <div class="stat-chip">
+                    <div class="num" style="color:var(--green-success);" id="countDisetujui">0</div>
+                    <div class="lbl">Disetujui</div>
+                </div>
+                <div class="stat-chip">
+                    <div class="num" style="color:var(--primary-red);" id="countDitolak">0</div>
+                    <div class="lbl">Ditolak</div>
+                </div>
             </div>
-            <div style="display:flex;gap:10px;">
-              <button class="btn-outline-blue" onclick="approveItem('Bapak Rudi')" style="flex:1;">Setujui</button>
-              <button class="btn-outline" onclick="rejectItem('Bapak Rudi')" style="flex:1; border-color:var(--primary-red); color:var(--primary-red);">Tolak</button>
-            </div>
-          </div>
 
-          <div class="summary-card" style="padding:14px;flex-direction:column;align-items:stretch;gap:10px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-weight:800;color:var(--text-dark);font-size:13px;">SPK - Ibu Sinta</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Model: Raize</div>
-              </div>
-              <div style="font-size:10px;font-weight:800;background:#eafaf1;color:#27ae60;padding:6px 10px;border-radius:999px;border:1px solid #d6f5e0;white-space:nowrap;">Disetujui</div>
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <div class="filter-tab active" onclick="filterList(this, 'all')">Semua</div>
+                <div class="filter-tab" onclick="filterList(this, 'Menunggu')">Menunggu</div>
+                <div class="filter-tab" onclick="filterList(this, 'Disetujui')">Disetujui</div>
+                <div class="filter-tab" onclick="filterList(this, 'Ditolak')">Ditolak</div>
             </div>
-          </div>
+
+            <!-- Container List Approval -->
+            <div id="approvalList">
+                <p style="font-size:12px; text-align:center; color:var(--text-muted); padding:20px;">Memuat data
+                    pengajuan...</p>
+            </div>
+
         </div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    function approveItem(nama) {
-      alert(`Setujui pengajuan untuk ${nama} (Demo)`);
-    }
-    function rejectItem(nama) {
-      alert(`Tolak pengajuan untuk ${nama} (Demo)`);
-    }
-  </script>
+    <script>
+        let spkData = [];
+        let currentFilter = 'all';
+
+        function fetchApprovalList() {
+            fetch('../api/api_spk.php?all=true')
+                .then(r => r.json())
+                .then(res => {
+                    if (res.status === 'success' && res.data) {
+                        spkData = res.data;
+                        updateStats();
+                        renderList();
+                    }
+                })
+                .catch(err => console.error("Error loading approval list:", err));
+        }
+
+        function updateStats() {
+            const pending = spkData.filter(s => s.status === 'Menunggu').length;
+            const approved = spkData.filter(s => s.status === 'Disetujui').length;
+            const rejected = spkData.filter(s => s.status === 'Ditolak').length;
+
+            document.getElementById('countPending').textContent = pending;
+            document.getElementById('countDisetujui').textContent = approved;
+            document.getElementById('countDitolak').textContent = rejected;
+        }
+
+        function renderList() {
+            const listEl = document.getElementById('approvalList');
+            if (!listEl) return;
+
+            const filtered = spkData.filter(s => currentFilter === 'all' || s.status === currentFilter);
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = '<p style="font-size:12px; text-align:center; color:var(--text-muted); padding:20px;">Tidak ada pengajuan untuk kategori ini.</p>';
+                return;
+            }
+
+            listEl.innerHTML = filtered.map((s, idx) => {
+                let badgeClass = 'status-waiting';
+                let statusText = 'Menunggu';
+                if (s.status === 'Disetujui') {
+                    badgeClass = 'status-approved';
+                    statusText = 'Disetujui';
+                } else if (s.status === 'Ditolak') {
+                    badgeClass = 'status-rejected';
+                    statusText = 'Ditolak';
+                }
+
+                let actionsHtml = '';
+                if (s.status === 'Menunggu') {
+                    actionsHtml = `
+                        <div class="approval-divider"></div>
+                        <div class="approval-actions">
+                            <button class="btn-approve" onclick="updateSpkStatus(${s.id}, 'Disetujui', this)">
+                                <i class="fa-solid fa-check"></i> Setujui
+                            </button>
+                            <button class="btn-reject" onclick="updateSpkStatus(${s.id}, 'Ditolak', this)">
+                                <i class="fa-solid fa-xmark"></i> Tolak
+                            </button>
+                        </div>
+                    `;
+                }
+
+                // Format date/time
+                const date = new Date(s.created_at.replace(/-/g, '/'));
+                const timeStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+                return `
+                    <div class="approval-card" data-status="${s.status}" style="animation-delay: ${idx * 0.05}s">
+                        <div class="approval-card-header">
+                            <div class="approval-info">
+                                <div class="approval-name">SPK — ${s.nama_customer}</div>
+                                <div class="approval-meta">
+                                    <span><i class="fa-solid fa-car"></i> ${s.model}</span>
+                                    <span><i class="fa-regular fa-calendar"></i> ${timeStr}</span>
+                                    <span><i class="fa-solid fa-user"></i> ${s.nama_sales || 'Sales'}</span>
+                                </div>
+                            </div>
+                            <span class="status-badge ${badgeClass}">${statusText}</span>
+                        </div>
+                        <div class="approval-divider"></div>
+                        <div class="approval-detail">
+                            <div class="detail-item">
+                                <span class="detail-label">Nominal</span>
+                                <span class="detail-value">Rp ${s.nominal_jt} Jt</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Tipe Pembelian</span>
+                                <span class="detail-value">${s.tipe_pembelian}</span>
+                            </div>
+                        </div>
+                        ${actionsHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterList(el, status) {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentFilter = status;
+            renderList();
+        }
+
+        function updateSpkStatus(id, newStatus, btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+            fetch('../api/api_spk.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'update_status',
+                    spk_id: id,
+                    status: newStatus
+                })
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        const item = spkData.find(s => s.id === id);
+                        if (item) {
+                            item.status = newStatus;
+                        }
+                        updateStats();
+                        renderList();
+                    } else {
+                        alert('Gagal memperbarui status: ' + res.message);
+                        btn.disabled = false;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Gagal terhubung ke server.');
+                    btn.disabled = false;
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchApprovalList);
+    </script>
 </body>
-</html>
 
+</html>

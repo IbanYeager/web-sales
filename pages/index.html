@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,298 +8,696 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
 </head>
+
 <body>
 
-<div class="mobile-app">
-    <header class="header-home">
-        <div class="user-info">
-            <div class="profile-wrap">
-                <div class="avatar-container" style="cursor:pointer;" onclick="window.location.href='profil.html'">
-                    <img src="https://ui-avatars.com/api/?name=Sales&background=f4f7f6&color=c8102e" alt="Profile" class="avatar" id="dashAvatar">
-                    <div class="status-dot"></div>
+    <div class="mobile-app">
+        <header class="header-home">
+            <div class="user-info">
+                <div class="profile-wrap">
+                    <div class="avatar-container" style="cursor:pointer;" onclick="window.location.href='profil.html'">
+                        <img src="https://ui-avatars.com/api/?name=Sales&background=f4f7f6&color=c8102e" alt="Profile"
+                            class="avatar" id="dashAvatar">
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="greeting">
+                        <p id="dashGreeting">Selamat Pagi,</p>
+                        <h2 id="dashNama">Memuat data...</h2>
+                        <span class="role" id="dashRole">Memuat data...</span>
+                        <span class="spv-label" id="dashSPV"
+                            style="display:block;font-size:11px;font-weight:500;opacity:0.9;margin-bottom:4px;">SPV:
+                            Memuat...</span>
+                        <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="dashCabang">Memuat
+                                data...</span></span>
+                    </div>
                 </div>
-                <div class="greeting">
-                    <p id="dashGreeting">Selamat Pagi,</p>
-                    <h2 id="dashNama">Memuat data...</h2>
-                    <span class="role" id="dashRole">Memuat data...</span>
-                    <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="dashCabang">Memuat data...</span></span>
+                <div class="bell-icon">
+                    <a href="notifikasi.html" style="color: inherit;">
+                        <i class="fa-regular fa-bell" style="font-size: 22px;"></i>
+                    </a>
+                    <div class="badge" style="background: var(--primary-red); display: none;" id="bellBadge">0</div>
                 </div>
             </div>
-            <div class="bell-icon">
-                <a href="notifikasi.html" style="color: inherit;">
-                    <i class="fa-regular fa-bell" style="font-size: 22px;"></i>
-                </a>
-                <div class="badge" style="background: var(--primary-red);">3</div>
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="container">
-        
-        <a href="target.html" style="display:block;">
-        <div class="card target-card">
-            <div class="target-header">
-                <span>Target DO Bulan Ini</span>
-                <span class="target-period">Periode Juni 2026</span>
-            </div>
-            <div class="target-body">
-                <div class="progress-circle">
-                    <span>75%</span>
+        <div class="container">
+
+            <!-- ================= CARD TARGET DO DINAMIS ================= -->
+            <a href="target.html" style="display:block;">
+                <div class="card target-card">
+                    <div class="target-header">
+                        <span>Target DO Bulan Ini</span>
+                        <span class="target-period" id="dashPeriode">Memuat...</span>
+                    </div>
+                    <div class="target-body">
+                        <div class="progress-circle" id="dashCircle">
+                            <span id="dashPersentase">0%</span>
+                        </div>
+                        <div class="target-text">
+                            <h3><span id="dashRealisasi">0</span> <span class="target-total">/ <span
+                                        id="dashTarget">0</span> Unit</span></h3>
+                            <p id="dashSisaPesan">Memuat data target...</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="target-text">
-                    <h3>15 <span class="target-total">/ 20 Unit</span></h3>
-                    <p>Sisa 5 Unit lagi untuk mencapai target</p>
+            </a>
+
+            <a href="input.html" class="btn-input-aktivitas">
+                <div class="btn-input-left">
+                    <div class="btn-icon-wrapper">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <div class="btn-input-text">
+                        <h4>Input Aktivitas Hari Ini</h4>
+                        <p>Laporkan kegiatan Anda sekarang</p>
+                    </div>
                 </div>
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+
+            <!-- ================= KATEGORI FITUR UTAMA ================= -->
+            <div class="section-header-row">
+                <h3 class="section-title">Fitur Utama</h3>
+                <a href="#" class="link-lihat-semua" onclick="openFeatureModal(event)">Lihat semua</a>
             </div>
-        </div>
 
-        <a href="input.html" class="btn-input-aktivitas">
-            <div class="btn-input-left">
-                <div class="btn-icon-wrapper">
-                    <i class="fa-solid fa-camera"></i>
-                </div>
-                <div class="btn-input-text">
-                    <h4>Input Aktivitas Hari Ini</h4>
-                    <p>Laporkan kegiatan Anda sekarang</p>
-                </div>
-            </div>
-            <i class="fa-solid fa-chevron-right"></i>
-        </a>
-
-       <!-- ================= KATEGORI FITUR UTAMA (4 Item Saja) ================= -->
-        <div class="section-header-row">
-            <h3 class="section-title">Fitur Utama</h3>
-            <a href="#" class="link-lihat-semua" onclick="openFeatureModal(event)">Lihat semua</a>
-        </div>
-
-        <div class="card category-card">
-            <div class="category-grid">
-                <!-- Hanya tampil 4 fitur utama -->
-                <a href="lokasi.html" class="category-item">
-                    <div class="category-icon"><i class="fa-solid fa-location-dot"></i></div>
-                    <span class="category-text">Porleg</span>
-                </a>
-                <a href="brosur.html" class="category-item">
-                    <div class="category-icon"><i class="fa-solid fa-book-open"></i></div>
-                    <span class="category-text">Brosur</span>
-                </a>
-                <a href="kalkulator.html" class="category-item">
-                    <div class="category-icon"><i class="fa-solid fa-calculator"></i></div>
-                    <span class="category-text">Kalkulator</span>
-                </a>
-                <a href="merchandise.html" class="category-item">
-                    <div class="category-icon"><i class="fa-solid fa-shirt"></i></div>
-                    <span class="category-text">Merchandise</span>
-                </a>
-            </div>
-        </div>
-        <!-- ================= END KATEGORI FITUR UTAMA ================= -->
-
-        <h3 class="section-title">Ringkasan Hari Ini</h3>
-        <div class="grid-2">
-
-            <div class="summary-card">
-                <div class="icon-circle bg-light-green"><i class="fa-solid fa-phone" style="color: #2ecc71;"></i></div>
-                <div class="summary-info">
-                    <p class="summary-label">Follow Up</p>
-                    <h4>12</h4>
-                    <span class="summary-sub">Aktivitas</span>
+            <div class="card category-card">
+                <div class="category-grid">
+                    <a href="polreg.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <span class="category-text">Porleg</span>
+                    </a>
+                    <a href="brosur.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <span class="category-text">Brosur</span>
+                    </a>
+                    <a href="kalkulator.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-calculator"></i></div>
+                        <span class="category-text">Kalkulator</span>
+                    </a>
+                    <a href="merchandise.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-shirt"></i></div>
+                        <span class="category-text">Merchandise</span>
+                    </a>
                 </div>
             </div>
+
+            <h3 class="section-title">Ringkasan Hari Ini</h3>
+            <div class="grid-2">
                 <div class="summary-card">
-
-                    <div class="icon-circle bg-light-blue"><i class="fa-solid fa-car-side" style="color: #3498db;"></i></div>
+                    <div class="icon-circle bg-light-green"><i class="fa-solid fa-phone" style="color: #2ecc71;"></i>
+                    </div>
+                    <div class="summary-info">
+                        <p class="summary-label">Follow Up</p>
+                        <h4>12</h4>
+                        <span class="summary-sub">Aktivitas</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="icon-circle bg-light-blue"><i class="fa-solid fa-car-side" style="color: #3498db;"></i>
+                    </div>
                     <div class="summary-info">
                         <p class="summary-label">Test Drive</p>
                         <h4>2</h4>
                         <span class="summary-sub">Aktivitas</span>
                     </div>
                 </div>
-            </a>
-
-            <div class="summary-card">
-                <div class="icon-circle bg-light-yellow"><i class="fa-solid fa-file-signature" style="color: #f39c12;"></i></div>
-                <div class="summary-info">
-                    <p class="summary-label">SPK</p>
-                    <h4>1</h4>
-                    <span class="summary-sub">Aktivitas</span>
+                <div class="summary-card">
+                    <div class="icon-circle bg-light-yellow"><i class="fa-solid fa-file-signature"
+                            style="color: #f39c12;"></i></div>
+                    <div class="summary-info">
+                        <p class="summary-label">SPK</p>
+                        <h4>1</h4>
+                        <span class="summary-sub">Aktivitas</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="icon-circle bg-light-purple"><i class="fa-solid fa-camera" style="color: #9b59b6;"></i>
+                    </div>
+                    <div class="summary-info">
+                        <p class="summary-label">Foto Aktivitas</p>
+                        <h4>4</h4>
+                        <span class="summary-sub">Aktivitas</span>
+                    </div>
                 </div>
             </div>
-            <div class="summary-card">
-                <div class="icon-circle bg-light-purple"><i class="fa-solid fa-camera" style="color: #9b59b6;"></i></div>
-                <div class="summary-info">
-                    <p class="summary-label">Foto Aktivitas</p>
-                    <h4>4</h4>
-                    <span class="summary-sub">Aktivitas</span>
+
+            <div class="card timeline-card">
+                <div class="timeline-card-header">
+                    <div class="tch-icon"><i class="fa-solid fa-calendar-day"></i></div>
+                    <div class="tch-text">
+                        <h4>Jadwal Hari Ini</h4>
+                        <p id="jadwalTanggalPanel">Memuat tanggal...</p>
+                    </div>
+                    <div class="tch-actions">
+                        <a href="jadwal_input.html" class="tch-btn-add"><i class="fa-solid fa-plus"></i></a>
+                        <a href="#" class="tch-btn-all" onclick="openModal('jadwalModal', event)"><i
+                                class="fa-solid fa-list"></i></a>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-
-        <div class="section-header-row">
-            <h3 class="section-title">Jadwal Hari Ini</h3>
-            <a href="#" class="link-lihat-semua" onclick="openModal('jadwalModal', event)">Lihat Semua</a>
-        </div>
-        <div class="card timeline-card">
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-time">09:00</div>
-                    <div class="timeline-content">
-                        <div class="timeline-title">
-                            <h4>Follow Up Customer</h4>
-                            <span class="badge-status status-selesai">Selesai</span>
+                <div class="timeline" id="jadwalTimeline">
+                    <div class="timeline-item done">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">
+                                <h4>Follow Up Customer</h4>
+                                <span class="badge-status status-selesai">Selesai</span>
+                            </div>
+                            <p>Bapak Andi - Innova</p>
                         </div>
-                        <p>Bapak Andi - Innova</p>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-time">13:00</div>
-                    <div class="timeline-content">
-                        <div class="timeline-title">
-                            <h4>Test Drive Avanza</h4>
-                            <span class="badge-status status-terjadwal">Terjadwal</span>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">13:00</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">
+                                <h4>Test Drive Avanza</h4>
+                                <span class="badge-status status-terjadwal">Terjadwal</span>
+                            </div>
+                            <p>Ibu Sinta</p>
                         </div>
-                        <p>Ibu Sinta</p>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-time">15:00</div>
-                    <div class="timeline-content">
-                        <div class="timeline-title">
-                            <h4>Serah Terima Unit</h4>
-                            <span class="badge-status status-terjadwal">Terjadwal</span>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">
+                                <h4>Serah Terima Unit</h4>
+                                <span class="badge-status status-terjadwal">Terjadwal</span>
+                            </div>
+                            <p>Bapak Rudi - Rush</p>
                         </div>
-                        <p>Bapak Rudi - Rush</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section-header-row">
+                <h3 class="section-title">Aktivitas Terakhir</h3>
+                <a href="#" class="link-lihat-semua" onclick="openModal('aktivitasModal', event)">Lihat Semua</a>
+            </div>
+            <div id="latestActivityContainer">
+                <!-- Akan dimuat secara dinamis dari database -->
+                <div class="card activity-card" style="opacity: 0.7;">
+                    <div class="activity-details">
+                        <p class="activity-desc" style="margin: 0;"><i class="fa-solid fa-spinner fa-spin"
+                                style="margin-right: 6px;"></i> Memuat aktivitas terbaru...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i></a>
+            <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+            <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
+            <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
+            <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+        </nav>
+
+        <!-- ================= MODAL ================= -->
+        <div class="modal-overlay" id="featureModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Semua Fitur</h3>
+                    <button class="btn-close-modal" onclick="closeFeatureModal()"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="category-grid">
+                    <a href="polreg.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-map-location-dot"></i></div><span
+                            class="category-text">Polreg</span>
+                    </a>
+                    <a href="brosur.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-book-open"></i></div><span
+                            class="category-text">Brosur</span>
+                    </a>
+                    <a href="kalkulator.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-calculator"></i></div><span
+                            class="category-text">Kalkulator</span>
+                    </a>
+                    <a href="spk.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-file-signature"></i></div><span
+                            class="category-text">Form SPK</span>
+                    </a>
+                    <a href="customer.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-users"></i></div><span
+                            class="category-text">Customer</span>
+                    </a>
+                    <a href="dokumen.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-receipt"></i></div><span
+                            class="category-text">Dokumen</span>
+                    </a>
+                    <a href="approval.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-check-to-slot"></i></div><span
+                            class="category-text">Approval</span>
+                    </a>
+                    <a href="merchandise.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-shirt"></i></div><span
+                            class="category-text">Merchandise</span>
+                    </a>
+                    <a href="olx.html" class="category-item">
+                        <div class="category-icon"><i class="fa-solid fa-exchange-alt"></i></div><span
+                            class="category-text">Trade In</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="jadwalModal">
+            <div class="modal-content jm-content">
+                <!-- Drag Handle -->
+                <div class="jm-drag-handle"></div>
+
+                <!-- Header Strip Gradient -->
+                <div class="jadwal-modal-header-strip">
+                    <div class="jmhs-icon"><i class="fa-solid fa-calendar-day"></i></div>
+                    <div class="jmhs-text">
+                        <h3>Jadwal Hari Ini</h3>
+                        <p id="jadwalTanggalModal">Memuat tanggal...</p>
+                    </div>
+                    <button class="btn-close-modal-white" onclick="closeModal('jadwalModal')"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Stats Summary Bar -->
+                <div class="jm-stats-bar">
+                    <div class="jm-stat-item">
+                        <span class="jm-stat-num" id="jmStatTotal">0</span>
+                        <span class="jm-stat-label">Total</span>
+                    </div>
+                    <div class="jm-stat-divider"></div>
+                    <div class="jm-stat-item">
+                        <span class="jm-stat-num jm-stat-green" id="jmStatSelesai">0</span>
+                        <span class="jm-stat-label">Selesai</span>
+                    </div>
+                    <div class="jm-stat-divider"></div>
+                    <div class="jm-stat-item">
+                        <span class="jm-stat-num jm-stat-blue" id="jmStatTerjadwal">0</span>
+                        <span class="jm-stat-label">Terjadwal</span>
+                    </div>
+                    <div class="jm-stat-divider"></div>
+                    <div class="jm-stat-item">
+                        <span class="jm-stat-num jm-stat-yellow" id="jmStatProses">0</span>
+                        <span class="jm-stat-label">Proses</span>
+                    </div>
+                </div>
+
+                <!-- Section Label -->
+                <div class="jm-section-label">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Daftar Kegiatan</span>
+                </div>
+
+                <!-- Timeline List -->
+                <div class="jm-timeline-body">
+                    <div class="timeline" id="jadwalModalTimeline">
+                        <div class="jm-empty-state" id="jmEmptyState">
+                            <i class="fa-regular fa-calendar-xmark"></i>
+                            <p>Belum ada jadwal untuk hari ini</p>
+                            <a href="jadwal_input.html" class="jm-add-btn"><i class="fa-solid fa-plus"></i> Tambah
+                                Jadwal</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="section-header-row">
-            <h3 class="section-title">Aktivitas Terakhir</h3>
-            <a href="#" class="link-lihat-semua" onclick="openModal('aktivitasModal', event)">Lihat Semua</a>
-        </div>
-        <div class="card activity-card">
-            <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Activity" class="activity-img">
-            <div class="activity-details">
-                <div class="activity-header">
-                    <div class="activity-type">
-                        <div class="dot-green"></div> Visit Customer
+
+        <div class="modal-overlay" id="aktivitasModal">
+            <div class="modal-content jm-content"
+                style="padding: 0; overflow: hidden; display: flex; flex-direction: column; max-height: 88vh;">
+                <!-- Drag Handle -->
+                <div class="jm-drag-handle"></div>
+
+                <!-- Header Strip Gradient -->
+                <div class="jadwal-modal-header-strip"
+                    style="background: linear-gradient(135deg, var(--primary-red) 0%, #a00d25 100%);">
+                    <div class="jmhs-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="jmhs-text">
+                        <h3>Aktivitas Terakhir</h3>
+                        <p>Daftar aktivitas sales yang telah terekam</p>
+                    </div>
+                    <button class="btn-close-modal-white" onclick="closeModal('aktivitasModal')"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Scrollable Timeline Body -->
+                <div class="jm-timeline-body" style="padding: 20px;">
+                    <div class="activity-list" id="modalActivityList">
+                        <!-- Akan dimuat secara dinamis dari database -->
+                        <div class="card activity-card" style="opacity: 0.7;">
+                            <div class="activity-details">
+                                <p class="activity-desc" style="margin: 0;"><i class="fa-solid fa-spinner fa-spin"
+                                        style="margin-right: 6px;"></i> Memuat data aktivitas...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p class="activity-desc">Bapak Ahmad - Toyota Rush</p>
-                <div class="activity-footer">
-                    <span class="activity-time"><i class="fa-regular fa-clock"></i> 09.30 WIB</span>
-                    <span class="badge-status status-disetujui">Disetujui</span>
-                </div>
             </div>
         </div>
 
-    </div>
-
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i></a>
-        <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
-        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-        <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
-                <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
-    </nav>
-
-    <!-- ================= MODAL POP-UP SEMUA FITUR ================= -->
-    <div class="modal-overlay" id="featureModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Semua Fitur</h3>
-                <button class="btn-close-modal" onclick="closeFeatureModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="category-grid">
-                <a href="lokasi.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-location-dot"></i></div><span class="category-text">Lokasi</span></a>
-                <a href="brosur.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-book-open"></i></div><span class="category-text">Brosur</span></a>
-                <a href="kalkulator.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-calculator"></i></div><span class="category-text">Kalkulator</span></a>
-                <a href="spk.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-file-signature"></i></div><span class="category-text">Form SPK</span></a>
-                <a href="customer.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-users"></i></div><span class="category-text">Customer</span></a>
-                <a href="dokumen.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-receipt"></i></div><span class="category-text">Dokumen</span></a>
-                <a href="approval.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-check-to-slot"></i></div><span class="category-text">Approval</span></a>
-<a href="merchandise.html" class="category-item"><div class="category-icon"><i class="fa-solid fa-shirt"></i></div><span class="category-text">Merchandise</span></a>
-            </div>
-        </div>
-    </div>
-    <!-- ================= END MODAL ================= -->
-
-    <div class="modal-overlay" id="jadwalModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Semua Jadwal</h3>
-                <button class="btn-close-modal" onclick="closeModal('jadwalModal')"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="timeline" style="margin-top: 15px;">
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">09:00</div><div class="timeline-content"><h4>Follow Up Andi</h4><p>Selesai</p></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">13:00</div><div class="timeline-content"><h4>Test Drive Avanza</h4><p>Terjadwal</p></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">15:00</div><div class="timeline-content"><h4>Serah Terima Rush</h4><p>Terjadwal</p></div></div>
+        <!-- Modal Viewer Foto -->
+        <div class="modal-overlay" id="photoViewerModal" style="z-index: 10000; background: rgba(0,0,0,0.95);">
+            <div class="modal-content"
+                style="background: transparent; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; max-height: 100vh; padding: 0;">
+                <button class="btn-close-modal-white" onclick="closeModal('photoViewerModal')"
+                    style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.25); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); width: 40px; height: 40px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer;"><i
+                        class="fa-solid fa-xmark"></i></button>
+                <img id="photoViewerImg" src="" alt="Detail Foto"
+                    style="max-width: 90%; max-height: 75vh; border-radius: 16px; object-fit: contain; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="aktivitasModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Aktivitas Terakhir</h3>
-                <button class="btn-close-modal" onclick="closeModal('aktivitasModal')"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="activity-list" style="margin-top: 15px;">
-                <div class="card activity-card">
-                    <div class="activity-details"><h4>Bapak Ahmad - Toyota Rush</h4><p>09.30 WIB</p></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Cek apakah user sudah login
+            const loggedIn = localStorage.getItem('loggedIn') === 'true';
+            if (!loggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
 
-<script src="../script.js"></script>
+            const idSales = localStorage.getItem('idSales') || 1;
+            const timelineEl = document.getElementById('jadwalTimeline');
+            const modalTimelineEl = document.getElementById('jadwalModalTimeline');
+
+            // Isi tanggal di header panel & modal
+            const now = new Date();
+            const opsiTanggal = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const strTanggal = now.toLocaleDateString('id-ID', opsiTanggal);
+            const elPanelTgl = document.getElementById('jadwalTanggalPanel');
+            const elModalTgl = document.getElementById('jadwalTanggalModal');
+            if (elPanelTgl) elPanelTgl.textContent = strTanggal;
+            if (elModalTgl) elModalTgl.textContent = strTanggal;
+
+            const getStatusBadge = (status) => {
+                if (status === 'Selesai') return '<span class="badge-status status-selesai">Selesai</span>';
+                if (status === 'Proses') return '<span class="badge-status status-proses">Proses</span>';
+                return '<span class="badge-status status-terjadwal">Terjadwal</span>';
+            };
+            const getItemClass = (status) => {
+                if (status === 'Selesai') return 'timeline-item done';
+                if (status === 'Proses') return 'timeline-item ongoing';
+                return 'timeline-item';
+            };
+
+            function loadJadwal() {
+                fetch(`../api/api_jadwal.php?sales_account_id=${idSales}`)
+                    .then(r => r.json())
+                    .then(res => {
+                        if (res.status === 'success' && res.data) {
+                            const jadwalItems = res.data;
+                            
+                            // Hitung & isi stats bar modal
+                            const total = jadwalItems.length;
+                            const selesai = jadwalItems.filter(i => i.status === 'Selesai').length;
+                            const proses = jadwalItems.filter(i => i.status === 'Proses').length;
+                            const terjadwal = total - selesai - proses;
+                            const s = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+                            s('jmStatTotal', total);
+                            s('jmStatSelesai', selesai);
+                            s('jmStatTerjadwal', terjadwal < 0 ? 0 : terjadwal);
+                            s('jmStatProses', proses);
+
+                            const renderTimeline = (el, isModal = false) => {
+                                if (!el) return;
+                                const emptyEl = document.getElementById('jmEmptyState');
+                                if (jadwalItems.length === 0) {
+                                    if (isModal && emptyEl) emptyEl.style.display = 'flex';
+                                    el.innerHTML = `<p style="font-size:12px; text-align:center; color:var(--text-muted); padding:20px; font-weight: 600;">Belum ada jadwal hari ini.</p>`;
+                                    return;
+                                }
+                                if (emptyEl) emptyEl.style.display = 'none';
+                                el.innerHTML = jadwalItems.map(item => `
+                                    <div class="${getItemClass(item.status)}">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-time">${item.waktu || ''}</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">
+                                                <h4>${item.judul || ''}</h4>
+                                                ${getStatusBadge(item.status)}
+                                            </div>
+                                            <p>${item.deskripsi || ''}</p>
+                                        </div>
+                                    </div>
+                                `).join('');
+                            };
+
+                            renderTimeline(timelineEl);
+                            renderTimeline(modalTimelineEl, true);
+                        }
+                    })
+                    .catch(err => console.error("Error loading jadwal:", err));
+            }
+            loadJadwal();
+
+            function loadNotifikasiBadge() {
+                fetch(`../api/api_notifikasi.php?sales_account_id=${idSales}`)
+                    .then(r => r.json())
+                    .then(res => {
+                        if (res.status === 'success' && res.data) {
+                            const unreadCount = res.data.filter(n => n.unread).length;
+                            const badge = document.getElementById('bellBadge');
+                            if (badge) {
+                                if (unreadCount > 0) {
+                                    badge.textContent = unreadCount;
+                                    badge.style.display = 'flex';
+                                } else {
+                                    badge.style.display = 'none';
+                                }
+                            }
+                        }
+                    })
+                    .catch(err => console.error("Error loading notifications badge:", err));
+            }
+            loadNotifikasiBadge();
+
+            // 2. Load Profile Data dari localStorage
+            const namaSales = localStorage.getItem('namaSales') || 'Sales';
+            const peranSales = localStorage.getItem('peranSales') || 'Sales Consultant';
+            const cabangSales = localStorage.getItem('cabangSales') || 'Tunas Toyota Kiara Condong';
+            const spvSales = localStorage.getItem('spvSales') || '';
+            const fotoSales = localStorage.getItem('fotoSales');
+
+            // Update Text Content
+            document.getElementById('dashNama').textContent = namaSales;
+            document.getElementById('dashRole').textContent = peranSales;
+            document.getElementById('dashCabang').textContent = cabangSales;
+
+            // Tampilkan nama SPV
+            const spvEl = document.getElementById('dashSPV');
+            if (spvEl) {
+                if (spvSales && spvSales.trim() !== '') {
+                    spvEl.textContent = 'SPV: ' + spvSales;
+                    spvEl.style.display = 'block';
+                } else {
+                    spvEl.style.display = 'none';
+                }
+            }
+
+            // Setup Avatar
+            const avatarEl = document.getElementById('dashAvatar');
+            if (fotoSales && fotoSales.trim() !== '') {
+                avatarEl.src = fotoSales;
+            } else {
+                avatarEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaSales)}&background=f4f7f6&color=c8102e`;
+            }
+
+            // Sapaan Berdasarkan Waktu (Real-time)
+            const hour = new Date().getHours();
+            let greeting = 'Selamat Pagi,';
+            if (hour >= 11 && hour < 15) greeting = 'Selamat Siang,';
+            else if (hour >= 15 && hour < 18) greeting = 'Selamat Sore,';
+            else if (hour >= 18 || hour < 4) greeting = 'Selamat Malam,';
+            document.getElementById('dashGreeting').textContent = greeting;
+
+            // 3. Tarik Data Target DO dari Database
+            // PERBAIKAN 1: Menyesuaikan path API agar sama strukturnya dengan file promo
+            fetch(`../api/api_target.php?id_sales=${idSales}`)
+                .then(response => {
+                    // PERBAIKAN 2: Mencegah error crash jika koneksi ke file PHP gagal
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('dashPeriode').textContent = data.periode || 'Bulan Ini';
+                        document.getElementById('dashPersentase').textContent = (data.persentase || 0) + '%';
+                        document.getElementById('dashRealisasi').textContent = data.realisasi_total || 0;
+                        document.getElementById('dashTarget').textContent = data.target_total || 0;
+                        document.getElementById('dashSisaPesan').textContent = `Sisa ${data.sisa || 0} Unit lagi untuk mencapai target`;
+
+                        // PERBAIKAN 3: Memastikan warna sinkron dengan root variabel CSS yang dipakai
+                        const circle = document.getElementById('dashCircle');
+                        circle.style.background = `conic-gradient(var(--green-success) ${data.persentase || 0}%, #f1f5f9 0)`;
+                    } else {
+                        document.getElementById('dashSisaPesan').textContent = "Belum ada target yang di-set untuk bulan ini.";
+                        document.getElementById('dashPeriode').textContent = "-";
+                        document.getElementById('dashPersentase').textContent = "0%";
+                    }
+                })
+                .catch(error => {
+                    // PERBAIKAN 4: Menangani error gagal load agar UI tidak terus-terusan menampilkan tulisan "Memuat..."
+                    console.error('Error fetching target:', error);
+                    document.getElementById('dashSisaPesan').textContent = "Gagal memuat target. Silakan muat ulang.";
+                    document.getElementById('dashPeriode').textContent = "Error";
+                    document.getElementById('dashPersentase').textContent = "0%";
+                });
+
+            // 4. Tarik Data Aktivitas Terakhir dari Database
+            window.openPhotoViewer = function (imgSrc) {
+                const modal = document.getElementById('photoViewerModal');
+                const img = document.getElementById('photoViewerImg');
+                if (modal && img) {
+                    img.src = imgSrc;
+                    modal.classList.add('show');
+                }
+            };
+
+            function loadAktivitas() {
+                const latestContainer = document.getElementById('latestActivityContainer');
+                const modalList = document.getElementById('modalActivityList');
+
+                fetch('../api/api_aktivitas.php?limit=10')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(res => {
+                        if (res.status === 'success' && res.data && res.data.length > 0) {
+                            const items = res.data;
+
+                            // Helper format waktu
+                            const formatTime = (ts) => {
+                                if (!ts) return '';
+                                const date = new Date(ts.replace(/-/g, '/'));
+                                const today = new Date();
+                                const hours = String(date.getHours()).padStart(2, '0');
+                                const minutes = String(date.getMinutes()).padStart(2, '0');
+                                const timeStr = `${hours}.${minutes} WIB`;
+
+                                if (date.toDateString() === today.toDateString()) {
+                                    return timeStr;
+                                } else {
+                                    const opsi = { day: 'numeric', month: 'short' };
+                                    return `${date.toLocaleDateString('id-ID', opsi)}, ${timeStr}`;
+                                }
+                            };
+
+                            // Render satu yang terbaru di dashboard
+                            const latest = items[0];
+                            const latestFotoList = latest.foto ? latest.foto.split(',') : [];
+                            const latestFirstFoto = latestFotoList.length > 0 ? `../uploads/lokasi/${latestFotoList[0]}` : 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80';
+
+                            let latestImageHtml = `<img src="${latestFirstFoto}" alt="${latest.tipe_aktivitas}" class="activity-img" onclick="openPhotoViewer('${latestFirstFoto}')" style="cursor: pointer;">`;
+                            if (latestFotoList.length > 1) {
+                                latestImageHtml = `
+                                <div style="position: relative; width: 60px; height: 60px; flex-shrink: 0; cursor: pointer;" onclick="openPhotoViewer('${latestFirstFoto}')">
+                                    <img src="${latestFirstFoto}" alt="${latest.tipe_aktivitas}" class="activity-img" style="width: 100%; height: 100%;">
+                                    <span style="position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.65); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 4px;">+${latestFotoList.length - 1}</span>
+                                </div>
+                            `;
+                            }
+
+                            latestContainer.innerHTML = `
+                            <div class="card activity-card">
+                                ${latestImageHtml}
+                                <div class="activity-details">
+                                    <div class="activity-header">
+                                        <div class="activity-type">
+                                            <div class="dot-green"></div> ${latest.tipe_aktivitas}
+                                        </div>
+                                    </div>
+                                    <p class="activity-desc">${latest.keterangan}</p>
+                                    <div class="activity-footer">
+                                        <span class="activity-time"><i class="fa-regular fa-clock"></i> ${formatTime(latest.created_at)}</span>
+                                        <span class="activity-location" style="font-size: 10px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${latest.lokasi}">
+                                            <i class="fa-solid fa-location-dot" style="color: var(--primary-blue); margin-right: 2px;"></i> ${latest.lokasi.split(',')[0] || latest.lokasi}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                            // Render semua (maks 10) di modal list
+                            modalList.innerHTML = items.map(item => {
+                                const fotoList = item.foto ? item.foto.split(',') : [];
+                                const firstFoto = fotoList.length > 0 ? `../uploads/lokasi/${fotoList[0]}` : 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80';
+
+                                let imageHtml = `<img src="${firstFoto}" alt="${item.tipe_aktivitas}" class="activity-img" onclick="openPhotoViewer('${firstFoto}')" style="cursor: pointer;">`;
+                                if (fotoList.length > 1) {
+                                    imageHtml = `
+                                    <div style="position: relative; width: 60px; height: 60px; flex-shrink: 0; cursor: pointer;" onclick="openPhotoViewer('${firstFoto}')">
+                                        <img src="${firstFoto}" alt="${item.tipe_aktivitas}" class="activity-img" style="width: 100%; height: 100%;">
+                                        <span style="position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.65); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 4px;">+${fotoList.length - 1}</span>
+                                    </div>
+                                `;
+                                }
+
+                                return `
+                                <div class="card activity-card">
+                                    ${imageHtml}
+                                    <div class="activity-details">
+                                        <div class="activity-header">
+                                            <div class="activity-type">
+                                                <div class="dot-green"></div> ${item.tipe_aktivitas}
+                                            </div>
+                                        </div>
+                                        <p class="activity-desc">${item.keterangan}</p>
+                                        <div class="activity-footer">
+                                            <span class="activity-time"><i class="fa-regular fa-clock"></i> ${formatTime(item.created_at)}</span>
+                                            <span class="activity-location" style="font-size: 10px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.lokasi}">
+                                                <i class="fa-solid fa-location-dot" style="color: var(--primary-blue); margin-right: 2px;"></i> ${item.lokasi.split(',')[0] || item.lokasi}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            }).join('');
+
+                        } else {
+                            // Empty State
+                            const emptyHtml = `
+                            <div class="card activity-card" style="justify-content: center; padding: 20px;">
+                                <div style="text-align: center; color: var(--text-muted);">
+                                    <i class="fa-regular fa-folder-open" style="font-size: 24px; opacity: 0.5; margin-bottom: 6px;"></i>
+                                    <p style="font-size: 12px; font-weight: 600; margin: 0;">Belum ada aktivitas terekam hari ini</p>
+                                </div>
+                            </div>
+                        `;
+                            latestContainer.innerHTML = emptyHtml;
+                            modalList.innerHTML = emptyHtml;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching activities:', error);
+                        const errorHtml = `
+                        <div class="card activity-card" style="justify-content: center; padding: 20px;">
+                            <div style="text-align: center; color: var(--primary-red);">
+                                <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; margin-bottom: 6px;"></i>
+                                <p style="font-size: 12px; font-weight: 600; margin: 0;">Gagal memuat data aktivitas</p>
+                            </div>
+                        </div>
+                    `;
+                        latestContainer.innerHTML = errorHtml;
+                        modalList.innerHTML = errorHtml;
+                    });
+            }
+
+            loadAktivitas();
+        });
+    </script>
 </body>
+
+
 </html>
-
-<!-- Script untuk load data profil di Home -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. Cek apakah user sudah login
-      const loggedIn = localStorage.getItem('loggedIn') === 'true';
-      if (!loggedIn) {
-          window.location.href = 'login.html';
-          return;
-      }
-
-      // 2. Ambil data dari localStorage
-      const namaSales = localStorage.getItem('namaSales') || 'Sales';
-      const peranSales = localStorage.getItem('peranSales') || 'Sales Consultant';
-      const cabangSales = localStorage.getItem('cabangSales') || 'Tunas Toyota Kiara Condong';
-      const fotoSales = localStorage.getItem('fotoSales');
-
-      // 3. Masukkan teks ke elemen HTML
-      document.getElementById('dashNama').textContent = namaSales;
-      document.getElementById('dashRole').textContent = peranSales;
-      document.getElementById('dashCabang').textContent = cabangSales;
-
-      // 4. Ubah foto profil
-      const avatarEl = document.getElementById('dashAvatar');
-      // Jika di DB ada link foto, tampilkan. Jika kosong, pakai inisial nama.
-      if (fotoSales && fotoSales.trim() !== '') {
-          avatarEl.src = fotoSales;
-      } else {
-          avatarEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaSales)}&background=f4f7f6&color=c8102e`;
-      }
-
-      // 5. Ubah sapaan berdasarkan jam saat ini
-      const hour = new Date().getHours();
-      let greeting = 'Selamat Pagi,';
-      if (hour >= 11 && hour < 15) greeting = 'Selamat Siang,';
-      else if (hour >= 15 && hour < 18) greeting = 'Selamat Sore,';
-      else if (hour >= 18 || hour < 4) greeting = 'Selamat Malam,';
-      
-      document.getElementById('dashGreeting').textContent = greeting;
-  });
-</script>

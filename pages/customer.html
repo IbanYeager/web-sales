@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,18 +8,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css" />
 </head>
+
 <body>
   <div class="mobile-app">
     <header class="header-page">
       <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h2>Customer</h2>
-      <i class="fa-solid fa-users" aria-hidden="true"></i>
     </header>
 
     <div class="container" style="margin-top:18px;">
       <div class="card" style="padding:18px;">
         <h3 class="section-title" style="margin-bottom:6px;">Data Customer (Demo)</h3>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Cari dan pilih customer untuk membuat aktivitas atau SPK.</p>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Cari dan pilih customer untuk membuat
+          aktivitas atau SPK.</p>
 
         <div class="form-group" style="margin-top:14px;">
           <label>Cari Customer</label>
@@ -35,27 +37,40 @@
         <div id="customerList" style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;"></div>
       </div>
     </div>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+            <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+            <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+            <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+            <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
+        </nav>
   </div>
 
   <script>
-    const customers = [
-      { nama: 'Bapak Andi', alamat: 'Bandung - Coblong', status: 'Follow Up' },
-      { nama: 'Ibu Sinta', alamat: 'Bandung - Antapani', status: 'Terjadwal' },
-      { nama: 'Bapak Rudi', alamat: 'Bandung - Bojongloa Kaler', status: 'SPK' },
-      { nama: 'Bapak Ahmad', alamat: 'Bandung - Antapani', status: 'Test Drive' },
-    ];
+    let customers = [];
+    const sales_account_id = localStorage.getItem('idSales') || 1;
 
     function render(list) {
       const el = document.getElementById('customerList');
-      if(!el) return;
+      if (!el) return;
       el.innerHTML = '';
+      if (list.length === 0) {
+        el.innerHTML = '<p style="font-size:12px; text-align:center; color:var(--text-muted); padding:20px;">Customer tidak ditemukan.</p>';
+        return;
+      }
       list.forEach(c => {
         const node = document.createElement('a');
         node.href = '#';
         node.className = 'summary-item';
         node.style.cursor = 'pointer';
+        
+        let bgClass = 'bg-blue';
+        if (c.status === 'SPK') bgClass = 'bg-red';
+        else if (c.status === 'Test Drive') bgClass = 'bg-green';
+        
         node.innerHTML = `
-          <div class="icon-box ${c.status === 'SPK' ? 'bg-red' : 'bg-blue'}"><i class="fa-solid fa-user"></i></div>
+          <div class="icon-box ${bgClass}"><i class="fa-solid fa-user"></i></div>
           <div class="summary-text">
             <h4 style="margin-bottom:4px;">${c.nama}</h4>
             <p>${c.alamat}</p>
@@ -64,24 +79,37 @@
         `;
         node.onclick = (e) => {
           e.preventDefault();
-          alert(`Menu customer: ${c.nama} (Demo)`);
+          localStorage.setItem('selectedCustomerId', c.id);
+          localStorage.setItem('selectedCustomerNama', c.nama);
+          alert(`Customer terpilih: ${c.nama}. Dokumen checklist untuk customer ini sekarang bisa diakses di menu Dokumen.`);
         };
         el.appendChild(node);
       });
     }
 
+    function fetchCustomers(search = '') {
+      fetch(`../api/api_customer.php?sales_account_id=${sales_account_id}&search=${encodeURIComponent(search)}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.status === 'success') {
+            customers = res.data;
+            render(customers);
+          }
+        })
+        .catch(err => console.error("Error fetching customers:", err));
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      render(customers);
+      fetchCustomers();
 
       const input = document.getElementById('searchCustomer');
-      if(!input) return;
+      if (!input) return;
       input.addEventListener('input', () => {
-        const q = input.value.trim().toLowerCase();
-        const filtered = customers.filter(c => c.nama.toLowerCase().includes(q));
-        render(filtered);
+        const q = input.value.trim();
+        fetchCustomers(q);
       });
     });
   </script>
 </body>
-</html>
 
+</html>

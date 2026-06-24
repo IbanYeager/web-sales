@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales App - Lokasi Polreg</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .polreg-card {
+      background: var(--card-bg, #ffffff);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-color, #eaeaea);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .polreg-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .kecamatan-icon {
+      width: 38px;
+      height: 38px;
+      background: #fff5f5;
+      color: var(--primary-red, #eb0a1e);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .kecamatan-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-dark, #333);
+    }
+
+    .btn-detail {
+      background: var(--primary-blue, #0056b3);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .year-dropdown-container {
+      margin-bottom: 16px;
+    }
+
+    .year-dropdown-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .year-dropdown-wrapper i.dropdown-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--primary-red, #eb0a1e);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .year-dropdown-wrapper i.chevron-icon {
+      position: absolute;
+      right: 14px;
+      color: var(--text-muted, #777);
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .year-dropdown {
+      width: 100%;
+      padding: 12px 36px 12px 40px;
+      border-radius: 12px;
+      border: 1.5px solid #ddd;
+      font-size: 14px;
+      font-weight: 800;
+      background: #fff;
+      color: var(--text-dark, #333);
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .year-dropdown:focus {
+      outline: none;
+      border-color: var(--primary-red, #eb0a1e);
+      box-shadow: 0 0 0 3px rgba(235, 10, 30, 0.1);
+    }
+
+    .search-container {
+      margin-bottom: 16px;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      color: var(--text-muted, #777);
+      font-size: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 11px 11px 40px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 13px;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-blue, #0056b3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-app">
+    <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2>Polreg Wilayah Kota Bandung</h2>
+    </header>
+
+    <div class="container" style="margin-top: 18px; padding-bottom: 30px;">
+
+      <!-- Dropdown Pilih Tahun -->
+      <div class="year-dropdown-container">
+        <div class="year-dropdown-wrapper">
+          <i class="fa-solid fa-calendar-days dropdown-icon"></i>
+          <select id="yearSelect" class="year-dropdown" onchange="setYear(this.value)">
+            <option value="2026" selected>Data Tahun 2026</option>
+            <option value="2025">Data Tahun 2025</option>
+            <option value="2024">Data Tahun 2024</option>
+            <option value="2023">Data Tahun 2023</option>
+          </select>
+          <i class="fa-solid fa-chevron-down chevron-icon"></i>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchKecamatan" class="search-input" placeholder="Cari nama kecamatan...">
+        </div>
+      </div>
+
+      <div class="section-header-row" style="margin-bottom: 12px;">
+        <h3 class="section-title" style="margin-bottom:0;" id="listTitle">Daftar Kecamatan</h3>
+        <span style="font-size: 11px; color: var(--text-muted);" id="countKecamatan">Mengambil data...</span>
+      </div>
+
+      <div id="polregList"></div>
+    </div>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+            <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+            <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+            <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+            <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
+        </nav>
+  </div>
+
+  <script src="../script.js"></script>
+  <script>
+    let currentKeyword = '';
+    let dbDataPolreg = [];
+    let activeYear = '2026';
+
+
+
+    async function fetchDataDariDatabase() {
+      const container = document.getElementById('polregList');
+      container.innerHTML = '<div style="text-align:center; padding: 40px; color:#777;"><i class="fa-solid fa-spinner fa-spin"></i> Sedang mengambil data...</div>';
+
+      try {
+        const response = await fetch(`../api/api_polreg_summary.php?tahun=${activeYear}`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+        // Debug opsional (bisa dihapus kalau sudah stabil)
+        // console.log('api_polreg_summary result:', result);
+
+
+        if (result.ok) {
+          dbDataPolreg = result.data;
+          renderKecamatan();
+        } else {
+          container.innerHTML = `<div style="text-align:center; padding: 30px; color:red;">Error: ${result.message}</div>`;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        container.innerHTML = '<div style="text-align:center; padding: 30px; color:red;">Koneksi ke server terputus. Pastikan file PHP berada di folder yang sama.</div>';
+      }
+    }
+
+    function renderKecamatan() {
+      const container = document.getElementById('polregList');
+
+      const filteredData = dbDataPolreg.filter(item => item.kecamatan.toLowerCase().includes(currentKeyword));
+
+      document.getElementById('listTitle').textContent = `Daftar Kecamatan ${activeYear}`;
+      document.getElementById('countKecamatan').textContent = `${filteredData.length} Wilayah`;
+      container.innerHTML = '';
+
+      if (filteredData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding: 30px; color:var(--text-muted); font-size: 13px;">Kecamatan tidak ditemukan.</div>';
+        return;
+      }
+
+      filteredData.forEach((item, index) => {
+        let badgeTop = '';
+        if (index === 0) badgeTop = '<i class="fa-solid fa-medal" style="color:#ffdf00; margin-right:4px;"></i>';
+        if (index === 1) badgeTop = '<i class="fa-solid fa-medal" style="color:#c0c0c0; margin-right:4px;"></i>';
+        if (index === 2) badgeTop = '<i class="fa-solid fa-medal" style="color:#cd7f32; margin-right:4px;"></i>';
+
+        const urlDetail = `polreg_detail.html?kecamatan=${encodeURIComponent(item.kecamatan)}&tahun=${activeYear}`;
+        const totalUnitFormatted = new Intl.NumberFormat('id-ID').format(item.total_unit);
+
+        const cardHTML = `
+          <div class="polreg-card">
+            <div class="polreg-header">
+              <div class="kecamatan-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+              <div style="flex: 1;">
+                <div class="kecamatan-name">${badgeTop}${item.kecamatan}</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Total: <b style="color:var(--primary-red);">${totalUnitFormatted}</b> Unit Terdaftar</div>
+              </div>
+              <a href="${urlDetail}" class="btn-detail">Detail <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cardHTML;
+      });
+    }
+
+
+
+    document.getElementById('searchKecamatan').addEventListener('input', function (e) {
+      currentKeyword = e.target.value.toLowerCase().trim();
+      renderKecamatan();
+    });
+
+    function setYear(year) {
+      activeYear = year;
+      fetchDataDariDatabase();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      fetchDataDariDatabase();
+    });
+  </script>
+</body>
+
+</html>

@@ -13,7 +13,7 @@ if (!empty($data->username) && !empty($data->password)) {
     $username = $conn->real_escape_string($data->username);
     $password = $conn->real_escape_string($data->password);
 
-    $query = "SELECT id, username, nama_lengkap, foto FROM sales_accounts WHERE username = '$username' AND password = '$password'";
+    $query = "SELECT id, username, nama_lengkap, foto, nama_spv FROM sales_accounts WHERE username = '$username' AND password = '$password'";
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
@@ -24,7 +24,8 @@ if (!empty($data->username) && !empty($data->password)) {
             "sales" => [
                 "id" => $user['id'],
                 "name" => $user['nama_lengkap'],
-                "foto" => $user['foto']
+                "foto" => $user['foto'],
+                "spv" => $user['nama_spv']
             ]
         ]);
     } else {

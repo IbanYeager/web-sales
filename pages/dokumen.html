@@ -1,58 +1,392 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales App - Dokumen</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales App - Dokumen</title>
+    <meta name="description" content="Manajemen dokumen SPK dan kelengkapan berkas customer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        .mobile-app {
+            padding-bottom: 40px;
+        }
+
+        /* Document card */
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 16px;
+            background: white;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-xs);
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: var(--transition-spring);
+            animation: float-up 0.4s var(--ease-out) both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doc-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 4px 0 0 4px;
+            background: var(--item-color, var(--primary-blue));
+        }
+
+        .doc-item:active {
+            transform: scale(0.98);
+        }
+
+        .doc-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .doc-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .doc-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+            letter-spacing: -0.2px;
+        }
+
+        .doc-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .doc-status-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 11px;
+            border-radius: 999px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .doc-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        /* Progress bar */
+        .progress-header {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 22px;
+        }
+
+        .progress-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-label-row span:first-child {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .progress-label-row span:last-child {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--green-success);
+        }
+
+        .progress-bar-wrap {
+            background: #f1f5f9;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #059669, var(--green-success));
+            width: 0%;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            transition: width 1s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .progress-stats-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .progress-stat {
+            flex: 1;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 8px 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-stat .ps-num {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .progress-stat .ps-lbl {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* Upload button */
+        .upload-section {
+            margin-top: 22px;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="mobile-app">
-    <header class="header-page">
-      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-      <h2>Dokumen</h2>
-      <i class="fa-solid fa-receipt" aria-hidden="true"></i>
-    </header>
+    <div class="mobile-app">
+        <header class="header-page">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>Dokumen</h2>
+        </header>
 
-    <div class="container" style="margin-top:18px;">
-      <div class="card" style="padding:18px;">
-        <h3 class="section-title" style="margin-bottom:6px;">Checklist Dokumen (Demo)</h3>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Daftar dokumen yang biasanya dibutuhkan untuk proses SPK/approval.</p>
+        <div class="container" style="margin-top: 0;">
 
-        <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px;">
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-blue"><i class="fa-solid fa-file"></i></div>
-            <div class="summary-text">
-              <h4 style="margin-bottom:4px;">KTP Customer</h4>
-              <p>Foto/scan KTP, status: <b style="color:var(--primary-blue);">Tersimpan</b></p>
+            <div
+                style="margin: 14px 0; padding: 10px 14px; background:#ebf5fb; border-radius:12px; border:1px solid #ddecfa; display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:12px; font-weight:800; color:#2980b9;">
+                    <i class="fa-solid fa-user-tag" style="margin-right:6px;"></i> Customer: <span
+                        id="labelCustomerNama">Bapak Andi</span>
+                </div>
+                <a href="customer.html"
+                    style="font-size:11px; font-weight:800; color:var(--primary-blue); text-decoration:none;">Ubah</a>
             </div>
-          </div>
 
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-red"><i class="fa-solid fa-file"></i></div>
-            <div class="summary-text">
-              <h4 style="margin-bottom:4px;">NPWP (Opsional)</h4>
-              <p>Status: <b style="color:var(--primary-red);">Belum</b></p>
+            <!-- Progress card -->
+            <div class="progress-header">
+                <div class="progress-label-row">
+                    <span>Kelengkapan Dokumen</span>
+                    <span id="docProgressText">0 / 0</span>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" id="docProgressBar"></div>
+                </div>
+                <div class="progress-stats-row">
+                    <div class="progress-stat">
+                        <span class="ps-num" style="color:var(--green-success);" id="countSaved">0</span>
+                        <span class="ps-lbl">Tersimpan</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="ps-num" style="color:var(--accent-gold);" id="countOptional">0</span>
+                        <span class="ps-lbl">Opsional</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="ps-num" style="color:var(--primary-red);" id="countMissing">0</span>
+                        <span class="ps-lbl">Belum Ada</span>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="summary-item" style="align-items:flex-start;">
-            <div class="icon-box bg-blue"><i class="fa-solid fa-file"></i></div>
-            <div class="summary-text">
-              <h4 style="margin-bottom:4px;">Slip Gaji</h4>
-              <p>Status: <b style="color:var(--primary-blue);">Tersimpan</b></p>
+            <!-- Doc list -->
+            <h3 class="section-title">Daftar Dokumen</h3>
+
+            <div id="docList">
+                <p style="font-size:12px; text-align:center; color:var(--text-muted); padding:20px;">Memuat dokumen...
+                </p>
             </div>
-          </div>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="hiddenFileInput" accept="image/*,application/pdf" style="display:none;"
+                onchange="handleFileChange(event)">
         </div>
-
-        <button class="btn-main" style="margin-top:14px;" onclick="alert('Upload dokumen (Demo)')">
-          <i class="fa-solid fa-upload" style="margin-right:10px;"></i>
-          Upload Dokumen
-        </button>
-      </div>
     </div>
-  </div>
-</body>
-</html>
 
+    <script>
+        const customerId = localStorage.getItem('selectedCustomerId') || 1;
+        const customerNama = localStorage.getItem('selectedCustomerNama') || 'Bapak Andi';
+
+        let checklistData = [];
+        let activeDocName = '';
+
+        function initCustomerLabel() {
+            const el = document.getElementById('labelCustomerNama');
+            if (el) el.textContent = customerNama;
+        }
+
+        function fetchDocuments() {
+            fetch(`../api/api_dokumen.php?customer_id=${customerId}`)
+                .then(r => r.json())
+                .then(res => {
+                    if (res.status === 'success' && res.data) {
+                        checklistData = res.data;
+                        renderList();
+                        updateProgress();
+                    }
+                })
+                .catch(err => console.error("Error loading checklist:", err));
+        }
+
+        function renderList() {
+            const el = document.getElementById('docList');
+            if (!el) return;
+
+            const docConfigs = {
+                'KTP Customer': { icon: 'fa-id-card', color: 'var(--accent-blue)', bg: '#dbeafe', fg: '#1e40af', desc: 'Foto / scan KTP asli' },
+                'NPWP': { icon: 'fa-file-invoice', color: 'var(--primary-red)', bg: '#fee2e2', fg: '#991b1b', desc: 'Nomor Pokok Wajib Pajak (opsional)' },
+                'Slip Gaji': { icon: 'fa-money-check', color: 'var(--green-success)', bg: '#dcfce7', fg: '#065f46', desc: '3 bulan terakhir' },
+                'Rekening Koran': { icon: 'fa-landmark', color: 'var(--accent-gold)', bg: '#fef3c7', fg: '#92400e', desc: '3 bulan terakhir (opsional)' },
+                'Surat Keterangan Kerja': { icon: 'fa-file-signature', color: 'var(--purple-accent)', bg: '#ede9fe', fg: '#5b21b6', desc: 'Dari perusahaan / instansi' }
+            };
+
+            el.innerHTML = checklistData.map((d, idx) => {
+                const conf = docConfigs[d.nama_dokumen] || { icon: 'fa-file', color: 'var(--text-muted)', bg: '#f1f5f9', fg: '#475569', desc: '' };
+
+                let badgeClass = 'chip-yellow';
+                if (d.status === 'Tersimpan') badgeClass = 'chip-green';
+                else if (d.status === 'Belum Ada') badgeClass = 'chip-red';
+
+                let actionHtml = `<div class="doc-action"><i class="fa-solid fa-chevron-right"></i></div>`;
+                if (d.status === 'Belum Ada') {
+                    actionHtml = `
+                        <div class="doc-action" style="background:#fee2e2;color:#991b1b;">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="doc-item" style="--item-color: ${conf.color}; animation-delay: ${idx * 0.05}s;" onclick="triggerUpload('${d.nama_dokumen}')">
+                        <div class="doc-icon" style="background:linear-gradient(135deg, ${conf.bg}, #ffffff); color:${conf.fg};">
+                            <i class="fa-solid ${conf.icon}"></i>
+                        </div>
+                        <div class="doc-body">
+                            <div class="doc-name">${d.nama_dokumen}</div>
+                            <div class="doc-sub">${conf.desc}</div>
+                        </div>
+                        <span class="doc-status-badge ${badgeClass}">${d.status}</span>
+                        ${actionHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateProgress() {
+            const mandatoryDocs = ['KTP Customer', 'Slip Gaji', 'NPWP'];
+
+            const savedCount = checklistData.filter(d => d.status === 'Tersimpan').length;
+            const optionalCount = checklistData.filter(d => d.status === 'Opsional').length;
+            const missingCount = checklistData.filter(d => d.status === 'Belum Ada').length;
+
+            document.getElementById('countSaved').textContent = savedCount;
+            document.getElementById('countOptional').textContent = optionalCount;
+            document.getElementById('countMissing').textContent = missingCount;
+
+            // Hitung persentase kelengkapan berdasarkan dokumen wajib yang tersimpan
+            const mandatoryList = checklistData.filter(d => mandatoryDocs.includes(d.nama_dokumen));
+            const mandatoryTotal = mandatoryList.length || 1;
+            const mandatorySaved = mandatoryList.filter(d => d.status === 'Tersimpan').length;
+
+            document.getElementById('docProgressText').textContent = `${mandatorySaved} / ${mandatoryTotal}`;
+
+            const percent = Math.round((mandatorySaved / mandatoryTotal) * 100);
+            const bar = document.getElementById('docProgressBar');
+            if (bar) bar.style.width = percent + '%';
+        }
+
+        function triggerUpload(name) {
+            activeDocName = name;
+            document.getElementById('hiddenFileInput').click();
+        }
+
+        function handleFileChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('customer_id', customerId);
+            formData.append('nama_dokumen', activeDocName);
+            formData.append('dokumen_file', file);
+
+            // Tampilkan visual loading
+            const container = document.getElementById('docList');
+            container.style.opacity = '0.5';
+
+            fetch('../api/api_dokumen.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(r => r.json())
+                .then(res => {
+                    container.style.opacity = '1';
+                    if (res.status === 'success') {
+                        alert(`Dokumen ${activeDocName} berhasil diupload!`);
+                        fetchDocuments();
+                    } else {
+                        alert('Gagal mengupload dokumen: ' + res.message);
+                    }
+                })
+                .catch(err => {
+                    container.style.opacity = '1';
+                    console.error(err);
+                    alert('Gagal terhubung ke server.');
+                });
+
+            // Reset input file
+            event.target.value = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initCustomerLabel();
+            fetchDocuments();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,173 +1,627 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sales App - PriceList OTR</title>
+  <meta name="description" content="Daftar harga OTR Toyota Jawa Barat terlengkap per model dan tipe">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* ===== OTR BANNER ===== */
+    .otr-banner {
+      background: linear-gradient(135deg, #b5091f 0%, var(--primary-red) 60%, #d42036 100%);
+      border-radius: 20px;
+      padding: 18px 20px;
+      color: white;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-red);
+      position: relative;
+      overflow: hidden;
+    }
+    .otr-banner::before {
+      content: '';
+      position: absolute; top: -40px; right: -30px;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+    }
+    .otr-banner h3 { color: white; margin: 0 0 4px; font-size: 15px; font-weight: 800; letter-spacing: -0.3px; }
+    .otr-banner p  { font-size: 11px; opacity: 0.85; margin: 0; font-weight: 500; line-height: 1.4; }
+    .otr-banner-row { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    .otr-banner-icon {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 13px; border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+
+    /* ===== SEARCH & FILTER ===== */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted); font-size: 13px;
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 13px 14px 13px 40px;
+      border-radius: 14px; border: 1.5px solid var(--border-color);
+      font-size: 13px; font-weight: 500;
+      background: white; outline: none;
+      transition: var(--transition);
+      color: var(--text-dark);
+    }
+    .search-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 4px rgba(37,99,235,0.08); }
+
+    /* Paket filter tabs (scroll horizontal) */
+    .paket-tabs {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .paket-tabs::-webkit-scrollbar { display: none; }
+    .paket-tab {
+      flex-shrink: 0;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-spring);
+      border: 1.5px solid var(--border-color);
+      background: white;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .paket-tab.active {
+      background: var(--primary-blue);
+      color: white;
+      border-color: var(--primary-blue);
+      box-shadow: var(--shadow-blue);
+    }
+    .paket-tab:active { transform: scale(0.95); }
+
+    /* ===== KATEGORI SECTION HEADER ===== */
+    .kat-section {
+      margin-bottom: 20px;
+    }
+    .kat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 4px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--primary-red);
+    }
+    .kat-header-icon {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--primary-red), var(--secondary-red));
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: white;
+      flex-shrink: 0;
+    }
+    .kat-header-title {
+      font-size: 14px; font-weight: 900;
+      color: var(--primary-red);
+      letter-spacing: -0.2px;
+      flex: 1;
+    }
+    .kat-header-count {
+      font-size: 11px; font-weight: 700;
+      background: rgba(232,25,44,0.08);
+      color: var(--primary-red);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    /* ===== MODEL ACCORDION CARD ===== */
+    .model-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+      transition: var(--transition);
+      animation: float-up 0.4s var(--ease-out) both;
+    }
+
+    /* Model header — clickable to expand */
+    .model-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .model-header:active { background: #f8fafc; }
+
+    .model-thumb {
+      width: 72px; height: 54px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+      flex-shrink: 0;
+      padding: 4px;
+    }
+
+    .model-info { flex: 1; min-width: 0; }
+
+    .model-name {
+      font-size: 15px; font-weight: 900;
+      color: var(--text-dark);
+      letter-spacing: -0.3px;
+      margin-bottom: 3px;
+    }
+
+    .model-meta {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .model-price-start {
+      font-size: 12px; font-weight: 800;
+      color: var(--primary-red);
+    }
+
+    .model-varian-count {
+      font-size: 10px; font-weight: 700;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .model-chevron {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: transform 0.3s var(--ease);
+      flex-shrink: 0;
+    }
+    .model-card.expanded .model-chevron { transform: rotate(180deg); }
+    .model-card.expanded .model-header { background: #f8fafc; }
+
+    /* ===== VARIANT LIST (paket/tipe) ===== */
+    .varian-list {
+      display: none;
+      border-top: 1px solid var(--border-color);
+      padding: 0 14px 12px 14px;
+    }
+    .model-card.expanded .varian-list { display: block; }
+
+    .varian-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 4px;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+    .varian-item:last-child { border-bottom: none; }
+    .varian-item:active { background: #f8fafc; }
+
+    .varian-left { flex: 1; min-width: 0; }
+
+    .varian-paket-name {
+      font-size: 13px; font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    .varian-badges {
+      display: flex; gap: 5px; flex-wrap: wrap;
+    }
+
+    .varian-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .badge-mt { background: #dbeafe; color: #1e40af; }
+    .badge-at { background: #dcfce7; color: #065f46; }
+    .badge-tipe { background: #fef3c7; color: #92400e; }
+
+    .varian-price-wrap { text-align: right; flex-shrink: 0; }
+
+    .varian-price-label {
+      font-size: 9px; font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .varian-price-mt {
+      font-size: 12px; font-weight: 800;
+      color: var(--text-dark);
+      display: block;
+    }
+
+    .varian-price-at {
+      font-size: 11px; font-weight: 700;
+      color: var(--green-success);
+      display: block;
+    }
+
+    .varian-price-single {
+      font-size: 14px; font-weight: 900;
+      color: var(--primary-red);
+    }
+
+    /* Divider between MT and AT */
+    .price-row-label {
+      font-size: 9px; font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* ===== EMPTY & ERROR STATES ===== */
+    .empty-state {
+      text-align: center;
+      padding: 36px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state i { font-size: 40px; opacity: 0.3; margin-bottom: 12px; display: block; }
+    .empty-state p { font-size: 13px; font-weight: 600; margin: 0; }
+
+    /* ===== TOTALBADGE ===== */
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px; font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* ===== SKELETON loader ===== */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
-  <div class="mobile-app">
+  <div class="mobile-app" style="padding-bottom: 110px;">
+
     <header class="header-page">
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h2>PriceList OTR</h2>
-      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      <span class="header-icon-right"><i class="fa-solid fa-clipboard-list"></i></span>
     </header>
 
-    <div class="container" style="margin-top: 18px;">
-      <h3 class="section-title" style="margin-bottom: 5px;">OTR Jawa Barat</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">
-        Pilih kota/kecamatan untuk melihat estimasi jumlah tipe mobil di POl-REG (demo data).
-      </p>
+    <div class="container" style="margin-top: 0;">
 
-      <div class="card" style="padding: 16px; margin-bottom: 16px;">
-        <div class="form-group" style="margin-bottom: 12px;">
-          <label>Provinsi</label>
-          <select class="form-control" disabled>
-            <option>Jawa Barat</option>
-          </select>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 0;">
-          <label>Kota</label>
-          <select class="form-control" id="kota" onchange="updateKecamatan()">
-            <option value="bandung">Bandung</option>
-          </select>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 0; margin-top: 12px;">
-          <label>Kecamatan</label>
-          <select class="form-control" id="kecamatan" onchange="renderTipeMobil()">
-            <!-- diisi lewat JS -->
-          </select>
-        </div>
-      </div>
-
-      <div class="card" style="padding: 16px;">
-        <div class="promo-section-header" style="margin-bottom: 12px;">
-          <h3 class="section-title" style="margin-bottom: 0;">Jenis Tipe Mobil & Jumlah</h3>
-          <a href="#" style="pointer-events:none;">Demo</a>
-        </div>
-
-        <div class="grid-2">
-
-          <div class="summary-item" style="flex-direction: column; align-items:flex-start; gap: 8px;">
-            <div class="icon-box bg-blue" style="width: 38px; height: 38px;"><i class="fa-solid fa-car-side"></i></div>
-            <div class="summary-text">
-              <h4 style="margin-bottom: 4px;" id="statRingkas">-</h4>
-              <p>Ringkasan tipe teratas</p>
-            </div>
+      <!-- Banner -->
+      <div class="otr-banner">
+        <div class="otr-banner-row">
+          <div>
+            <h3>OTR Jawa Barat</h3>
+            <p>Harga update terbaru — semua varian & paket</p>
           </div>
-
-          <div class="summary-item" style="flex-direction: column; align-items:flex-start; gap: 8px;">
-            <div class="icon-box bg-red" style="width: 38px; height: 38px;"><i class="fa-solid fa-map-location-dot"></i></div>
-            <div class="summary-text">
-              <h4 style="margin-bottom: 4px;" id="statLokasi">-</h4>
-              <p>Lokasi polreg (kecamatan)</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="background: transparent; padding: 0; margin-top: 14px; box-shadow: none; border-radius: 0;">
-          <div class="grid-2" id="listTipeMobil">
-            <!-- items -->
+          <div class="otr-banner-icon">
+            <i class="fa-solid fa-map-location-dot"></i>
           </div>
         </div>
       </div>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Cari nama mobil... (Agya, Veloz, Innova)">
+      </div>
+
+      <!-- Paket/Kategori filter tabs -->
+      <div class="paket-tabs" id="paketTabs">
+        <div class="paket-tab active" data-val="semua" onclick="setTab(this)">
+          <i class="fa-solid fa-layer-group" style="margin-right:4px;"></i> Semua
+        </div>
+        <div class="paket-tab" data-val="reguler" onclick="setTab(this)">Reguler</div>
+        <div class="paket-tab" data-val="lux"     onclick="setTab(this)">Lux</div>
+        <div class="paket-tab" data-val="prime"   onclick="setTab(this)">Prime</div>
+        <div class="paket-tab" data-val="ntco"    onclick="setTab(this)">NTCO</div>
+      </div>
+
+      <!-- Info bar -->
+      <div class="section-header-row" style="margin-bottom:14px;">
+        <h3 class="section-title" style="margin:0;">Daftar Unit</h3>
+        <span class="result-badge" id="resultBadge">
+          <i class="fa-solid fa-spinner fa-spin"></i> Memuat...
+        </span>
+      </div>
+
+      <!-- List container -->
+      <div id="pricelistContainer"></div>
+
     </div>
 
-    <!-- Bottom Nav -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
-        <a href="pricelist.html" class="nav-item active"><i class="fa-solid fa-clipboard-list"></i></a>
-        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-        <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
-                <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i></a>
+      <a href="index.html"     class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+      <a href="pricelist.html" class="nav-item active"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+      <a href="promo.html"     class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+      <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+      <a href="profil.html"    class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
     </nav>
-
   </div>
 
   <script>
-    // Demo data polreg perkecamatan di Kota Bandung
-    // format: kecamatan -> array tipe mobil { tipe, jumlah }
-    const dataPolreg = {
-      "Coblong": [
-        { tipe: "MPV (Avanza/Calya)", jumlah: 128 },
-        { tipe: "SUV (HR-V/Raize)", jumlah: 76 },
-        { tipe: "Sedan (Civic/Accord)", jumlah: 22 },
-        { tipe: "Low MPV (Xenia)", jumlah: 44 }
-      ],
-      "Antapani": [
-        { tipe: "MPV (Avanza/Calya)", jumlah: 98 },
-        { tipe: "SUV (HR-V/Raize)", jumlah: 61 },
-        { tipe: "LWB/Commercial", jumlah: 27 },
-        { tipe: "Sedan (Civic/Accord)", jumlah: 18 }
-      ],
-      "Bojongloa Kaler": [
-        { tipe: "MPV (Avanza/Calya)", jumlah: 142 },
-        { tipe: "SUV (HR-V/Raize)", jumlah: 54 },
-        { tipe: "Hatchback (Jazz)", jumlah: 39 },
-        { tipe: "Sedan (Civic/Accord)", jumlah: 25 }
-      ]
+    // ======================================================
+    // DATA & STATE
+    // ======================================================
+    let allData = [];          // raw dari API
+    let activeTab = 'semua';   // filter paket
+    let searchVal = '';        // kata pencarian
+
+    const formatRp = (n) => {
+      if (!n || n === 0) return '—';
+      return 'Rp ' + Number(n).toLocaleString('id-ID');
     };
 
-    const kecamatanSelect = () => document.getElementById('kecamatan');
-    const listTipeMobil = () => document.getElementById('listTipeMobil');
+    const formatRpShort = (n) => {
+      if (!n || n === 0) return '—';
+      const juta = n / 1_000_000;
+      return 'Rp ' + juta.toFixed(1).replace('.0', '') + ' Jt';
+    };
 
-    function updateKecamatan() {
-      const kota = document.getElementById('kota').value; // demo tetap Bandung
-      const kecamatan = Object.keys(dataPolreg);
+    // ======================================================
+    // RENDER ENGINE
+    // ======================================================
+    function render() {
+      const container = document.getElementById('pricelistContainer');
+      const badge     = document.getElementById('resultBadge');
 
-      const sel = kecamatanSelect();
-      sel.innerHTML = '';
-      kecamatan.forEach((k) => {
-        const opt = document.createElement('option');
-        opt.value = k;
-        opt.textContent = k;
-        sel.appendChild(opt);
+      // Filter by paket tab
+      let filtered = allData.filter(item => {
+        const kat = (item.kategori_order || 'lainnya').toLowerCase();
+        if (activeTab !== 'semua' && !kat.includes(activeTab)) return false;
+        return true;
       });
 
-      renderTipeMobil();
-    }
+      // Filter by search
+      if (searchVal) {
+        filtered = filtered.filter(item =>
+          item.model.toLowerCase().includes(searchVal) ||
+          item.nama.toLowerCase().includes(searchVal) ||
+          (item.tipe_paket || '').toLowerCase().includes(searchVal)
+        );
+      }
 
-    function renderTipeMobil() {
-      const kec = kecamatanSelect().value;
-      const items = dataPolreg[kec] || [];
+      // Update badge
+      const modelSet = new Set(filtered.map(i => i.model));
+      badge.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green-success);"></i> ${modelSet.size} Model, ${filtered.length} Varian`;
 
-      // ringkasan
-      const top = [...items].sort((a,b)=>b.jumlah-a.jumlah)[0];
-      document.getElementById('statRingkas').textContent = top ? `${top.tipe} • ${top.jumlah} unit` : '-';
-      document.getElementById('statLokasi').textContent = kec ? `${kec} • Bandung` : '-';
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-car-burst"></i>
+            <p>Tidak ada model yang cocok.<br><small style="font-weight:500;font-size:11px;">Coba kata kunci lain atau ubah filter.</small></p>
+          </div>`;
+        return;
+      }
 
-      // list
-      const grid = listTipeMobil();
-      grid.innerHTML = '';
-      items.forEach((it) => {
-        const el = document.createElement('div');
-        el.className = 'summary-item';
-        el.style.flexDirection = 'column';
-        el.style.alignItems = 'flex-start';
-        el.style.gap = '6px';
-
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="icon-box bg-blue" style="width:38px;height:38px;"><i class="fa-solid fa-car-side-side"></i></div>
-            <div class="summary-text">
-              <h4 style="margin-bottom:2px; font-size:14px;">${it.tipe}</h4>
-              <p style="font-size:10px;">Jumlah unit</p>
-            </div>
-          </div>
-          <div style="font-weight:700;color:var(--primary-blue);font-size:16px;">${it.jumlah}</div>
-        `;
-
-        grid.appendChild(el);
+      // Group by kategori_order → then by model
+      const byKategori = {};
+      filtered.forEach(item => {
+        const kat = item.kategori_order || 'Lainnya';
+        if (!byKategori[kat]) byKategori[kat] = {};
+        if (!byKategori[kat][item.model]) byKategori[kat][item.model] = [];
+        byKategori[kat][item.model].push(item);
       });
+
+      // Kategori icon map
+      const katIcon = {
+        reguler: 'fa-car',
+        lux:     'fa-star',
+        prime:   'fa-crown',
+        ntco:    'fa-bolt',
+      };
+
+      let html = '';
+      let delay = 0;
+
+      for (const kat in byKategori) {
+        const modelMap = byKategori[kat];
+        const modelCount = Object.keys(modelMap).length;
+        const varianCount = filtered.filter(i => (i.kategori_order || 'Lainnya') === kat).length;
+        const katKey = kat.toLowerCase();
+        const icon = katIcon[katKey] || 'fa-tag';
+
+        html += `
+          <div class="kat-section">
+            <div class="kat-header">
+              <div class="kat-header-icon"><i class="fa-solid ${icon}"></i></div>
+              <span class="kat-header-title">${kat.charAt(0).toUpperCase() + kat.slice(1)}</span>
+              <span class="kat-header-count">${modelCount} Model</span>
+            </div>`;
+
+        let modelDelay = 0;
+        for (const modelName in modelMap) {
+          const varians = modelMap[modelName];
+          // Sort varians by harga asc
+          varians.sort((a, b) => (a.harga || 0) - (b.harga || 0));
+
+          const minHarga = varians.find(v => v.harga > 0)?.harga || 0;
+          const imgSrc   = varians[0]?.img || '';
+          const cardId   = `card-${kat}-${modelName}`.replace(/\s+/g, '-');
+
+          html += `
+            <div class="model-card" id="${cardId}" style="animation-delay:${modelDelay * 0.05}s;" onclick="toggleCard('${cardId}')">
+              <div class="model-header">
+                <img class="model-thumb" src="${imgSrc}" alt="${modelName}"
+                  onerror="this.src='https://placehold.co/160x100/f8fafc/c8102e?text=${encodeURIComponent(modelName)}'">
+                <div class="model-info">
+                  <div class="model-name">${modelName}</div>
+                  <div class="model-meta">
+                    <span class="model-price-start">
+                      ${minHarga > 0 ? 'Mulai ' + formatRpShort(minHarga) : 'Lihat paket'}
+                    </span>
+                    <span class="model-varian-count">${varians.length} Paket</span>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-down model-chevron"></i>
+              </div>
+
+              <div class="varian-list">`;
+
+          varians.forEach(v => {
+            const paket = v.tipe_paket || v.nama || '—';
+            const hasMT = v.harga_mt && v.harga_mt > 0;
+            const hasAT = v.harga_at && v.harga_at > 0;
+
+            // Parse transmission from tipe_paket name
+            const isMtOnly = paket.toUpperCase().includes(' MT') && !paket.toUpperCase().includes(' AT');
+            const isAtOnly = paket.toUpperCase().includes(' AT') && !paket.toUpperCase().includes(' MT');
+
+            html += `
+                <div class="varian-item">
+                  <div class="varian-left">
+                    <div class="varian-paket-name">${paket}</div>
+                    <div class="varian-badges">`;
+
+            if (hasMT) html += `<span class="varian-badge badge-mt"><i class="fa-solid fa-gear" style="font-size:9px;margin-right:3px;"></i>MT</span>`;
+            if (hasAT) html += `<span class="varian-badge badge-at"><i class="fa-solid fa-rotate" style="font-size:9px;margin-right:3px;"></i>AT</span>`;
+
+            html += `    </div>
+                  </div>
+                  <div class="varian-price-wrap">`;
+
+            if (hasMT && hasAT) {
+              // Tampilkan keduanya
+              html += `
+                    <span class="varian-price-label">MT / AT</span>
+                    <span class="varian-price-mt">${formatRpShort(v.harga_mt)}</span>
+                    <span class="varian-price-at">${formatRpShort(v.harga_at)}</span>`;
+            } else if (hasMT) {
+              html += `
+                    <span class="varian-price-label">Harga OTR</span>
+                    <span class="varian-price-single">${formatRpShort(v.harga_mt)}</span>`;
+            } else if (hasAT) {
+              html += `
+                    <span class="varian-price-label">Harga OTR</span>
+                    <span class="varian-price-single">${formatRpShort(v.harga_at)}</span>`;
+            } else {
+              html += `<span class="varian-price-single" style="color:var(--text-muted);font-size:11px;">Hubungi dealer</span>`;
+            }
+
+            html += `
+                  </div>
+                </div>`;
+          });
+
+          html += `
+              </div>
+            </div>`;
+
+          modelDelay++;
+        }
+
+        html += `</div>`;
+        delay++;
+      }
+
+      container.innerHTML = html;
     }
 
+    // ======================================================
+    // TOGGLE ACCORDION
+    // ======================================================
+    function toggleCard(id) {
+      const card = document.getElementById(id);
+      if (!card) return;
+      const isExpanded = card.classList.contains('expanded');
+
+      // Close all others in same section (optional: comment out to allow multiple open)
+      // card.closest('.kat-section').querySelectorAll('.model-card.expanded').forEach(c => {
+      //   if (c !== card) c.classList.remove('expanded');
+      // });
+
+      card.classList.toggle('expanded', !isExpanded);
+    }
+
+    // ======================================================
+    // TAB FILTER
+    // ======================================================
+    function setTab(el) {
+      document.querySelectorAll('.paket-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      activeTab = el.dataset.val;
+      render();
+    }
+
+    // ======================================================
+    // LOAD FROM API
+    // ======================================================
+    async function loadPricelist() {
+      const badge = document.getElementById('resultBadge');
+      const container = document.getElementById('pricelistContainer');
+
+      // Skeleton loading
+      container.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          ${[1,2,3,4].map(() => `
+            <div class="model-card" style="padding:14px;display:flex;gap:14px;align-items:center;">
+              <div class="skeleton" style="width:72px;height:54px;border-radius:10px;flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div class="skeleton" style="height:16px;width:50%;margin-bottom:8px;"></div>
+                <div class="skeleton" style="height:12px;width:70%;"></div>
+              </div>
+            </div>`).join('')}
+        </div>`;
+
+      try {
+        const res  = await fetch('../api/api_pricelist.php');
+        const json = await res.json();
+
+        if (json.ok && Array.isArray(json.data)) {
+          allData = json.data;
+          render();
+        } else {
+          badge.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:var(--primary-red);"></i> Gagal`;
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <p>${json.message || 'Gagal memuat data pricelist.'}</p>
+            </div>`;
+        }
+      } catch (e) {
+        badge.innerHTML = `<i class="fa-solid fa-wifi" style="color:var(--primary-red);"></i> Offline`;
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-server"></i>
+            <p>Tidak bisa terhubung ke server.<br><small style="font-size:11px;font-weight:500;">Pastikan XAMPP & MySQL berjalan.</small></p>
+          </div>`;
+        console.error('Fetch error:', e);
+      }
+    }
+
+    // ======================================================
+    // INIT
+    // ======================================================
     document.addEventListener('DOMContentLoaded', () => {
-      updateKecamatan();
+      loadPricelist();
+
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        searchVal = e.target.value.toLowerCase().trim();
+        render();
+      });
     });
   </script>
 </body>
 </html>
-

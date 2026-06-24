@@ -1,148 +1,487 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sales App - Promo & Paket</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* ===========================================================
+       PROMO & PAKET — SCROLL HORIZONTAL
+       =========================================================== */
+    .promo-toolbar {
+      margin-bottom: 16px;
+    }
+
+    .promo-search-wrap {
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .promo-search-wrap i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9aa0a6;
+      font-size: 13px;
+    }
+
+    .promo-search-input {
+      width: 100%;
+      padding: 12px 14px 12px 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color, #dee2e6);
+      font-size: 13px;
+      background: #fff;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .promo-search-input:focus {
+      border-color: var(--primary-blue, #0f3057);
+    }
+
+    /* Filter Container (Hanya Paket) */
+    .promo-filter-container {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .promo-filter-select {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color, #dee2e6);
+      font-size: 9px;
+      background: #fff;
+      outline: none;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .promo-reset-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #fadbdc;
+      background: #fff;
+      color: var(--primary-red, #d32f2f);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #promo-container {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 20px !important;
+      width: 100%;
+    }
+
+    .car-section {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100%;
+    }
+
+    .car-title-header {
+      display: block !important;
+      width: 100%;
+      font-size: 15px;
+      font-weight: 800;
+      color: #212529;
+      border-bottom: 2px solid var(--primary-red, #d32f2f);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    /* Scroll Horizontal Card Paket */
+    .promo-paket-grid {
+      display: flex !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory;
+      gap: 12px;
+      width: 100%;
+      padding-bottom: 10px;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+      align-items: stretch !important;
+      /* MEMAKSA SEMUA KARTU DALAM 1 BARIS PUNYA TINGGI YANG SAMA */
+    }
+
+    .promo-paket-grid::-webkit-scrollbar {
+      height: 3px;
+    }
+
+    .promo-paket-grid::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+
+    .promo-card {
+      flex: 0 0 85%;
+      scroll-snap-align: start;
+      border: 1px solid #eef2f6;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-sizing: border-box;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .promo-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark, #212529);
+      margin: 0;
+    }
+
+    .promo-total {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted, #6c757d);
+    }
+
+    .promo-loading,
+    .promo-empty {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-muted, #6c757d);
+      font-size: 12px;
+      width: 100%;
+    }
+
+    .main-tenor-preview {
+      background: #fff;
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px dashed #eef2f6;
+      flex: 1;
+      /* MENDORONG TOMBOL AGAR SELALU KE BAWAH */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .main-tenor-title {
+      font-size: 10px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .main-tenor-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--green-success, #2ecc71);
+      margin: 4px 0;
+    }
+
+    .main-tenor-sub {
+      font-size: 11px;
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .btn-detail-promo {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: var(--primary-blue, #0f3057);
+      color: #fff;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      outline: none;
+      transition: 0.2s;
+      margin-top: auto;
+      /* MENGUNCI TOMBOL DI DASAR KARTU */
+    }
+
+    .btn-detail-promo:active {
+      background: #0a223f;
+    }
+
+    .btn-detail-promo * {
+      pointer-events: none;
+    }
+
+    /* ===========================================================
+       BOTTOM NAV — Samakan dengan halaman lain (hilangkan gradasi promo)
+       =========================================================== */
+    .promo-page .bottom-nav {
+      background: rgba(15, 48, 87, 0.85) !important;
+    }
+
+    .promo-page .nav-item.active {
+      color: var(--primary-red, #c8102e) !important;
+      background: white !important;
+    }
+
+    /* ===========================================================
+       POP-UP MODAL TENGAH (DENGAN SISTEM PAKSA !IMPORTANT)
+       =========================================================== */
+
+    .promo-modal-overlay {
+
+      display: none !important;
+      position: fixed !important;
+      z-index: 9999999 !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background-color: rgba(0, 0, 0, 0.65) !important;
+      backdrop-filter: blur(4px) !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+      box-sizing: border-box !important;
+    }
+
+
+    .promo-modal-overlay.show-modal {
+      display: flex !important;
+    }
+
+    .modal-center-box {
+      background-color: #fff !important;
+      width: 100% !important;
+      max-width: 400px !important;
+      max-height: 85vh !important;
+      border-radius: 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      animation: popZoom 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      box-sizing: border-box !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .promo-modal-skema {
+      background: #f0f4f8;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promo-modal-skema span {
+      color: #4b5563;
+      font-weight: 700;
+    }
+
+    .promo-modal-skema strong {
+      color: var(--primary-blue, #0f3057);
+      background: #e2e8f0;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 60%;
+    }
+
+    .promo-modal-simulasi-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 10px;
+    }
+
+
+    @keyframes popZoom {
+      0% {
+        transform: scale(0.85);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid #eef2f6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #212529;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 26px;
+      color: #9aa0a6;
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 14px 16px;
+      overflow-y: auto;
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    .modal-promo-img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      object-fit: cover;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      background: #f8f9fa;
+      display: block;
+      max-height: 150px;
+    }
+
+    .modal-tenor-card {
+      background: #f8f9fa;
+      border: 1px solid #eef2f6;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .modal-tenor-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .modal-tenor-row .t-bulan {
+      font-weight: 700;
+      color: var(--primary-blue, #0f3057);
+      font-size: 13px;
+    }
+
+    .modal-tenor-row .t-cicilan {
+      font-weight: 800;
+      color: #2ecc71;
+      font-size: 14px;
+    }
+
+    .modal-grid-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      font-size: 11px;
+      border-top: 1px dashed #dee2e6;
+      padding-top: 8px;
+      margin-top: 6px;
+    }
+
+    .modal-grid-info span {
+      color: #777;
+      display: block;
+      font-size: 10px;
+      margin-bottom: 2px;
+    }
+
+    .modal-grid-info strong {
+      color: #212529;
+      font-size: 12px;
+    }
+
+    .modal-footer {
+      padding: 12px 16px 16px 16px;
+      border-top: 1px solid #eef2f6;
+      background: #fff;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+
+    .btn-modal-wa {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #2ecc71;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-sizing: border-box;
+      outline: none;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="mobile-app">
+  <div class="mobile-app promo-page">
+
     <header class="header-page">
       <h2>Promo & Paket</h2>
-      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
     </header>
 
     <div class="container" style="margin-top: 18px;">
-      <div class="promo-section" style="margin-top: 0; margin-bottom: 20px;">
-        <div class="promo-section-header">
-          <h3 class="section-title" style="margin-bottom: 0;">Rekomendasi Promo</h3>
-          <a href="#" style="pointer-events:none;">Demo</a>
+      <div class="promo-toolbar">
+        <div class="promo-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="search-mobil" class="promo-search-input"
+            placeholder="Cari tipe mobil (misal: Veloz)...">
         </div>
 
-        <div class="promo-scroll">
-          <div class="promo-card">
-            <div class="promo-card-header red-gradient">
-              <span><i class="fa-solid fa-fire"></i> Paket DP Ringan</span>
-            </div>
-            <div class="promo-card-body">
-              <div class="promo-car-name">Toyota Avanza 1.5 G CVT</div>
-              <div class="promo-info-grid">
-                <div class="promo-info-item">
-                  <span>Tenor</span>
-                  <strong>60 Bulan</strong>
-                </div>
-                <div class="promo-info-item">
-                  <span>Angsuran per Bulan</span>
-                  <strong>Rp 5.350.000</strong>
-                </div>
-                <div class="promo-info-item full-width">
-                  <span>Total Bayar Pertama (TDP)</span>
-                  <strong class="text-red highlight-price">Rp 15.500.000</strong>
-                </div>
-              </div>
-              <button class="btn-outline-blue" onclick="sharePromo('Avanza 1.5 G CVT', 'Paket DP Ringan', 'Rp 15.500.000')">
-                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
-              </button>
-            </div>
-          </div>
-
-          <div class="promo-card">
-            <div class="promo-card-header blue-gradient">
-              <span><i class="fa-solid fa-star"></i> Paket Bunga 0%</span>
-            </div>
-            <div class="promo-card-body">
-              <div class="promo-car-name">Innova Zenix 2.0 V CVT</div>
-              <div class="promo-info-grid">
-                <div class="promo-info-item">
-                  <span>Tenor</span>
-                  <strong>12 Bulan</strong>
-                </div>
-                <div class="promo-info-item">
-                  <span>Angsuran per Bulan</span>
-                  <strong>Rp 12.500.000</strong>
-                </div>
-                <div class="promo-info-item full-width">
-                  <span>Total Bayar Pertama (TDP)</span>
-                  <strong class="text-red highlight-price">Rp 150.000.000</strong>
-                </div>
-              </div>
-              <button class="btn-outline-blue" onclick="sharePromo('Innova Zenix 2.0 V CVT', 'Paket Bunga 0%', 'Rp 150.000.000')">
-                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
-              </button>
-            </div>
-          </div>
+        <div class="promo-filter-container">
+          <select id="filter-paket" class="promo-filter-select">
+            <option value="">Semua Paket</option>
+          </select>
         </div>
       </div>
 
-      <div class="card">
-        <div class="section-title" style="margin-bottom: 10px;">Paket Lainnya (Dummy)</div>
-        <div class="promo-scroll" style="padding-bottom: 0;">
-          <div class="promo-card">
-            <div class="promo-card-header red-gradient">
-              <span><i class="fa-solid fa-gift"></i> Paket Gratis Admin</span>
-            </div>
-            <div class="promo-card-body">
-              <div class="promo-car-name">Yaris 1.5</div>
-              <div class="promo-info-grid">
-                <div class="promo-info-item">
-                  <span>Tenor</span>
-                  <strong>36 Bulan</strong>
-                </div>
-                <div class="promo-info-item">
-                  <span>Angsuran per Bulan</span>
-                  <strong>Rp 4.750.000</strong>
-                </div>
-                <div class="promo-info-item full-width">
-                  <span>Total Bayar Pertama (TDP)</span>
-                  <strong class="text-red highlight-price">Rp 9.900.000</strong>
-                </div>
-              </div>
-              <button class="btn-outline-blue" onclick="sharePromo('Yaris 1.5', 'Paket Gratis Admin', 'Rp 9.900.000')">
-                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
-              </button>
-            </div>
-          </div>
+      <div class="promo-section-header">
+        <h3 class="section-title">Daftar Harga & Cicilan</h3>
+        <span id="total-data" class="promo-total">- mobil ditemukan</span>
+      </div>
 
-          <div class="promo-card">
-            <div class="promo-card-header blue-gradient">
-              <span><i class="fa-solid fa-coins"></i> Paket DP Rendah</span>
-            </div>
-            <div class="promo-card-body">
-              <div class="promo-car-name">Brio Satya</div>
-              <div class="promo-info-grid">
-                <div class="promo-info-item">
-                  <span>Tenor</span>
-                  <strong>24 Bulan</strong>
-                </div>
-                <div class="promo-info-item">
-                  <span>Angsuran per Bulan</span>
-                  <strong>Rp 3.850.000</strong>
-                </div>
-                <div class="promo-info-item full-width">
-                  <span>Total Bayar Pertama (TDP)</span>
-                  <strong class="text-red highlight-price">Rp 6.500.000</strong>
-                </div>
-              </div>
-              <button class="btn-outline-blue" onclick="sharePromo('Brio Satya', 'Paket DP Rendah', 'Rp 6.500.000')">
-                <i class="fa-solid fa-share-nodes"></i> Bagikan Info
-              </button>
-            </div>
-          </div>
+      <div class="promo-scroll" id="promo-container">
+        <div class="promo-loading">
+          <i class="fa-solid fa-spinner fa-spin"></i> Memuat data promo...
         </div>
       </div>
-
-      <div class="card">
-        <div class="section-title" style="margin-bottom: 10px;">Cara kerja</div>
-        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
-          (Demo) Pada aplikasi asli, promo ini diambil dari backend dan bisa langsung dibagikan ke calon customer.
-        </p>
-      </div>
-
     </div>
 
-    <!-- Bottom Nav -->
     <nav class="bottom-nav">
       <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
       <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
@@ -152,7 +491,249 @@
     </nav>
   </div>
 
-  <script src="../script.js"></script>
-</body>
-</html>
+  <div id="customPromoModal" class="promo-modal-overlay" onclick="tutupModal()">
+    <div class="modal-center-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalCarTitle">Detail Penawaran</h4>
+        <button type="button" class="modal-close" onclick="tutupModal()" aria-label="Tutup">&times;</button>
+      </div>
 
+      <div class="modal-body">
+        <img id="modalPromoImg" src="" alt="Foto Promo Mobil" class="modal-promo-img" />
+
+        <div class="promo-modal-skema">
+          <span>Skema Pembiayaan:</span>
+          <strong id="modalSkemaBadge"></strong>
+        </div>
+
+        <div class="promo-modal-simulasi-title">Simulasi Kredit Lengkap:</div>
+        <div id="modalTenorContainer"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="modalWaBtn" class="btn-modal-wa">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true" style="font-size: 18px;"></i> Hubungi Sales
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allPromoData = [];
+    window.promoStoreData = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchPromoData();
+
+      document.getElementById('search-mobil').addEventListener('input', applyFilter);
+      document.getElementById('filter-paket').addEventListener('change', applyFilter);
+
+    });
+
+    async function fetchPromoData() {
+      try {
+        const response = await fetch('../api/api_promo.php');
+        const data = await response.json();
+        if (data.error) { throw new Error(data.error); }
+
+        allPromoData = data;
+        populateFilter(data);
+        renderPromo(data);
+      } catch (error) {
+        console.error('Fetch error:', error);
+        document.getElementById('promo-container').innerHTML = `
+          <div class="promo-empty"><p>Gagal memuat data dari database.</p></div>`;
+      }
+    }
+
+    function populateFilter(data) {
+      const selectPaket = document.getElementById('filter-paket');
+      const packages = [...new Set(data.map(item => item.nama_paket))];
+      packages.sort().forEach(paket => {
+        const option = document.createElement('option');
+        option.value = paket; option.textContent = paket;
+        selectPaket.appendChild(option);
+      });
+    }
+
+    function formatRupiah(angka) {
+      if (!angka || isNaN(angka)) return 'Rp 0';
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+    }
+
+    function renderPromo(data) {
+      const container = document.getElementById('promo-container');
+      window.promoStoreData = {};
+
+      if (data.length === 0) {
+        container.innerHTML = `<div class="promo-empty"><i class="fa-solid fa-box-open"></i> Data tidak ditemukan.</div>`;
+        document.getElementById('total-data').innerText = `0 mobil ditemukan`;
+        return;
+      }
+
+      const groupedByTipeMobil = {};
+      data.forEach(item => {
+        if (!groupedByTipeMobil[item.tipe_mobil]) groupedByTipeMobil[item.tipe_mobil] = {};
+        const paketKey = item.nama_paket + "_" + item.skema_bayar;
+        if (!groupedByTipeMobil[item.tipe_mobil][paketKey]) {
+          groupedByTipeMobil[item.tipe_mobil][paketKey] = {
+            paket: item.nama_paket,
+            skema: item.skema_bayar,
+            otr: item.otr,
+            foto: item.foto || '../images/promo-default.jpg',
+            cicilan_list: []
+          };
+        }
+        groupedByTipeMobil[item.tipe_mobil][paketKey].cicilan_list.push(item);
+      });
+
+      let html = '';
+      let totalCarsFound = 0;
+      let storeCounter = 0;
+      const sortedTipeMobil = Object.keys(groupedByTipeMobil).sort();
+
+      sortedTipeMobil.forEach(tipeMobil => {
+        const paketList = groupedByTipeMobil[tipeMobil];
+        totalCarsFound++;
+
+        html += `
+          <div class="car-section">
+            <div class="car-title-header">
+              <i class="fa-solid fa-car-side" style="color:var(--primary-red, #d32f2f); margin-right:8px;"></i> ${tipeMobil}
+            </div>
+            <div class="promo-paket-grid">
+        `;
+
+        for (const paketKey in paketList) {
+          const carData = paketList[paketKey];
+          carData.cicilan_list.sort((a, b) => a.tenor - b.tenor);
+
+          const previewItem = carData.cicilan_list[carData.cicilan_list.length - 1];
+          const previewAngsuran = previewItem.angsuran || previewItem.angsuran_per_bulan || 0;
+          const previewTdp = previewItem.tdp || previewItem.tbp || previewItem.otf || 0;
+
+          const dataKey = 'promo_' + storeCounter++;
+          window.promoStoreData[dataKey] = {
+            mobil: tipeMobil,
+            detail: carData
+          };
+
+          // HEADER KARTU MERAH DIRAPIKAN AGAR MENDUKUNG TEKS SANGAT PANJANG
+          html += `
+          <div class="promo-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; background: var(--primary-red, #d32f2f); color: #fff; padding: 10px 12px; font-size:12px; font-weight:600; gap:8px;">
+              <div style="flex:1; line-height:1.4;"><i class="fa-solid fa-tag" style="margin-right:4px;"></i> ${carData.paket}</div>
+              <span style="font-size:10px; background:rgba(255,255,255,0.2); padding:3px 6px; border-radius:3px; white-space:nowrap; margin-top:2px;">${carData.skema}</span>
+            </div>
+
+            <div class="main-tenor-preview">
+              <div class="main-tenor-title">Mulai Dari</div>
+              <div class="main-tenor-price">${formatRupiah(previewAngsuran)} <span style="font-size:11px; font-weight:normal; color:#6c757d;">/bln</span></div>
+            </div>
+
+            <button type="button" class="btn-detail-promo" onclick="bukaModal('${dataKey}')">
+              Lihat Detail Promo <i class="fa-solid fa-chevron-right" style="font-size:10px; margin-left:6px;"></i>
+            </button>
+          </div>
+          `;
+        }
+        html += `</div></div>`;
+      });
+
+      document.getElementById('total-data').innerText = `${totalCarsFound} tipe mobil ditemukan`;
+      container.innerHTML = html;
+    }
+
+    function bukaModal(dataKey) {
+      try {
+        const pData = window.promoStoreData[dataKey];
+        if (!pData) return;
+
+        const tipeMobil = pData.mobil;
+        const carData = pData.detail;
+
+        document.getElementById('modalCarTitle').innerText = `${tipeMobil} - ${carData.paket}`;
+        document.getElementById('modalSkemaBadge').innerText = carData.skema;
+
+
+        const srcFoto = carData.foto && carData.foto !== '../images/promo-default.jpg' ? carData.foto : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop';
+        document.getElementById('modalPromoImg').src = srcFoto;
+
+        let tenorHtml = '';
+        carData.cicilan_list.forEach(item => {
+          const angsuran = item.angsuran || item.angsuran_per_bulan || 0;
+          const tdp = item.tdp || item.tbp || item.otf || 0;
+
+          tenorHtml += `
+            <div class="modal-tenor-card">
+              <div class="modal-tenor-row">
+                <span class="t-bulan"><i class="fa-regular fa-calendar-days"></i> ${item.tenor} Bulan</span>
+                <span class="t-cicilan">${formatRupiah(angsuran)} <span style="font-size:10px; font-weight:normal; color:#6c757d;">/bln</span></span>
+              </div>
+              <div class="modal-grid-info">
+                <div>
+                  <span>TDP (Uang Muka)</span>
+                  <strong>${formatRupiah(tdp)}</strong>
+                </div>
+          `;
+
+          if (item.jhj) {
+            tenorHtml += `
+                <div>
+                  <span>Jaminan Jual</span>
+                  <strong>${formatRupiah(item.jhj)}</strong>
+                </div>`;
+          }
+          if (item.angsuran_terakhir) {
+            tenorHtml += `
+                <div style="grid-column: span 2; margin-top:2px;">
+                  <span>Angsuran Terakhir</span>
+                  <strong>${formatRupiah(item.angsuran_terakhir)}</strong>
+                </div>`;
+          }
+          tenorHtml += `</div></div>`;
+        });
+        document.getElementById('modalTenorContainer').innerHTML = tenorHtml;
+
+        document.getElementById('modalWaBtn').onclick = function (e) {
+          e.stopPropagation();
+          const text = `Halo, saya tertarik dengan promo berikut:\n\n*Mobil:* ${tipeMobil}\n*Paket:* ${carData.paket}\n*Skema:* ${carData.skema}\n\nMohon informasi syarat dan pengajuan kreditnya ya. Terima kasih!`;
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        };
+
+        document.getElementById('customPromoModal').classList.add('show-modal');
+      } catch (err) {
+        console.error("Terjadi masalah saat memuat modal:", err);
+      }
+    }
+
+    function tutupModal() {
+      document.getElementById('customPromoModal').classList.remove('show-modal');
+    }
+
+    // Interaksi modern: close modal dengan ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('customPromoModal');
+        if (modal && modal.classList.contains('show-modal')) {
+          tutupModal();
+        }
+      }
+    });
+
+    function applyFilter() {
+      const searchVal = document.getElementById('search-mobil').value.toLowerCase();
+      const filterPaket = document.getElementById('filter-paket').value;
+
+      const filtered = allPromoData.filter(item => {
+        const matchSearch = item.tipe_mobil.toLowerCase().includes(searchVal);
+        const matchPaket = filterPaket === "" || item.nama_paket === filterPaket;
+        return matchSearch && matchPaket;
+      });
+
+      renderPromo(filtered);
+    }
+  </script>
+</body>
+
+</html>

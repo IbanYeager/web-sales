@@ -1,18 +1,44 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sales App - Merchandise</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* Tambahan CSS Khusus untuk Menu Kategori Horizontal */
+    .category-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 14px 15px;
+      -webkit-overflow-scrolling: touch;
+      /* Smooth scroll di iOS */
+      scrollbar-width: none;
+      /* Sembunyikan scrollbar di Firefox */
+    }
+
+    .category-scroll::-webkit-scrollbar {
+      display: none;
+      /* Sembunyikan scrollbar di Chrome/Safari */
+    }
+
+    .category-scroll .category-item {
+      flex: 0 0 auto;
+      /* Mencegah ikon tergencet saat menu lebih dari lebar layar */
+      min-width: 65px;
+      /* Standar lebar per item agar konsisten */
+    }
+  </style>
 </head>
+
 <body>
   <div class="mobile-app">
     <header class="header-page">
       <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h2>Merchandise</h2>
-      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
     </header>
 
     <div class="container" style="margin-top: 18px;">
@@ -25,7 +51,8 @@
             </p>
           </div>
           <div style="flex-shrink:0;">
-            <span style="font-size:11px;font-weight:800;color:var(--primary-blue);background:#eef3fb;border:1px solid #dbe6ff;padding:6px 10px;border-radius:999px;">
+            <span
+              style="font-size:11px;font-weight:800;color:var(--primary-blue);background:#eef3fb;border:1px solid #dbe6ff;padding:6px 10px;border-radius:999px;">
               <i class="fa-solid fa-bag-shopping" style="margin-right:6px;"></i> Ready Stock
             </span>
           </div>
@@ -37,9 +64,10 @@
       </div>
 
       <div class="card" style="padding: 0;">
-        <div class="category-grid" style="padding: 14px 15px; grid-template-columns: repeat(5, 1fr); overflow-x: auto;">
+        <div class="category-scroll">
           <a href="#" class="category-item" onclick="selectCategory(event,'Semua')">
-            <div class="category-icon" style="background:#ebf5fb; color:var(--primary-blue);"><i class="fa-solid fa-border-all" aria-hidden="true"></i></div>
+            <div class="category-icon" style="background:#ebf5fb; color:var(--primary-blue);"><i
+                class="fa-solid fa-border-all" aria-hidden="true"></i></div>
             <span class="category-text">Semua</span>
           </a>
           <a href="#" class="category-item" onclick="selectCategory(event,'Kaos')">
@@ -54,9 +82,33 @@
             <div class="category-icon"><i class="fa-solid fa-shirt -fall" aria-hidden="true"></i></div>
             <span class="category-text">Jaket</span>
           </a>
-          <a href="#" class="category-item" onclick="selectCategory(event,'Mug & Botol')">
+          <a href="#" class="category-item" onclick="selectCategory(event,'Tumbler')">
             <div class="category-icon"><i class="fa-solid fa-mug-hot" aria-hidden="true"></i></div>
-            <span class="category-text">Mug</span>
+            <span class="category-text">Tumbler</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Payung')">
+            <div class="category-icon"><i class="fa-solid fa-umbrella" aria-hidden="true"></i></div>
+            <span class="category-text">Payung</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Keychain')">
+            <div class="category-icon"><i class="fa-solid fa-key" aria-hidden="true"></i></div>
+            <span class="category-text">Keychain</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Lanyard')">
+            <div class="category-icon"><i class="fa-solid fa-id-badge" aria-hidden="true"></i></div>
+            <span class="category-text">Lanyard</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Stiker')">
+            <div class="category-icon"><i class="fa-solid fa-sticker-mule" aria-hidden="true"></i></div>
+            <span class="category-text">Stiker</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'Tote Bag')">
+            <div class="category-icon"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i></div>
+            <span class="category-text">Tote Bag</span>
+          </a>
+          <a href="#" class="category-item" onclick="selectCategory(event,'T-shirt')">
+            <div class="category-icon"><i class="fa-solid fa-shirt" aria-hidden="true"></i></div>
+            <span class="category-text">T-shirt</span>
           </a>
         </div>
       </div>
@@ -66,13 +118,22 @@
       </div>
 
       <div id="loadingIndicator" style="text-align:center; padding: 30px; font-size:12px; color:var(--text-muted);">
-        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:24px; margin-bottom:10px; color:var(--primary-red);"></i><br>
+        <i class="fa-solid fa-circle-notch fa-spin"
+          style="font-size:24px; margin-bottom:10px; color:var(--primary-red);"></i><br>
         Memuat data dari server...
       </div>
 
       <div class="grid-2" id="merchGrid" style="margin-bottom: 110px;">
-        </div>
+      </div>
     </div>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span></a>
+            <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i><span class="nav-label">Pricelist</span></a>
+            <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i><span class="nav-label">Promo</span></a>
+            <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i><span class="nav-label">Test Drive</span></a>
+            <a href="profil.html" class="nav-item"><i class="fa-solid fa-user"></i><span class="nav-label">Profil</span></a>
+        </nav>
   </div>
 
   <script>
@@ -89,20 +150,25 @@
 
     // Fungsi Format Rupiah
     function formatRupiah(angka) {
-      return new Intl.NumberFormat('id-ID', { 
-        style: 'currency', 
-        currency: 'IDR', 
-        minimumFractionDigits: 0 
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
       }).format(angka);
     }
 
     // Fungsi ikon kategori
     function getIconByName(name) {
       const n = name.toLowerCase();
-      if (n.includes('kaos') || n.includes('shirt') || n.includes('polo')) return 'fa-shirt';
+      if (n.includes('kaos') || n.includes('shirt') || n.includes('polo') || n.includes('t-shirt') || n.includes('tshirt')) return 'fa-shirt';
       if (n.includes('topi') || n.includes('hat') || n.includes('cap')) return 'fa-hat-cowboy';
-      if (n.includes('jaket') || n.includes('jacket') || n.includes('sweater')) return 'fa-jacket-fall';
-      if (n.includes('mug') || n.includes('botol') || n.includes('tumbler')) return 'fa-mug-hot';
+      if (n.includes('jaket') || n.includes('jacket') || n.includes('sweater') || n.includes('hoodie')) return 'fa-jacket-fall';
+      if (n.includes('mug') || n.includes('botol') || n.includes('tumbler') || n.includes('gelas')) return 'fa-mug-hot';
+      if (n.includes('umbrella') || n.includes('payung')) return 'fa-umbrella';
+      if (n.includes('keychain') || n.includes('key fob') || n.includes('keystrap') || n.includes('key strap') || n.includes('key case') || n.includes('keycase') || n.includes('key')) return 'fa-key';
+      if (n.includes('lanyard')) return 'fa-id-badge';
+      if (n.includes('sticker')) return 'fa-sticker-mule';
+      if (n.includes('tote')) return 'fa-bag-shopping';
       return 'fa-box-open';
     }
 
@@ -128,19 +194,19 @@
     function cardMerch(group, groupIndex) {
       // Default: ambil varian pertama (Misal S) untuk tampilan awal
       const def = group.variants[0];
-      
+
       // PERBAIKAN PATH GAMBAR: Menambahkan '../' di depan path database
       let imageSrc = 'https://placehold.co/600x400/f1f2f6/a0aab5?text=No+Image';
       if (group.image && group.image !== 'NULL') {
-          // Jika path dari database sudah pakai http (URL eksternal), gunakan apa adanya.
-          // Jika tidak, tambahkan '../' agar mengarah ke root folder yang benar.
-          if(group.image.startsWith('http')) {
-              imageSrc = group.image;
-          } else {
-              imageSrc = '../' + group.image; 
-          }
+        // Jika path dari database sudah pakai http (URL eksternal), gunakan apa adanya.
+        // Jika tidak, tambahkan '../' agar mengarah ke root folder yang benar.
+        if (group.image.startsWith('http')) {
+          imageSrc = group.image;
+        } else {
+          imageSrc = '../' + group.image;
+        }
       }
-      
+
       // Membuat Opsi Dropdown Ukuran
       let sizeOptions = group.variants.map((v, i) => {
         const sizeLabel = v.size ? v.size : 'All Size';
@@ -203,7 +269,7 @@
       card.querySelector('.price-display').textContent = formatRupiah(extractNumber(variant.retail_price));
       card.querySelector('.stock-cabang-display').textContent = variant.stock_cabang || 0;
       card.querySelector('.stock-tam-display').textContent = variant.stock_tam || 0;
-      
+
       // Update aksi tombol dengan ukuran dan part number baru
       const btn = card.querySelector('.btn-request');
       btn.setAttribute('onclick', `requestMerch('${groupedMerch[groupIndex].name}', '${variant.part_number}', '${variant.size || 'All Size'}')`);
@@ -213,7 +279,7 @@
     function renderGrid(kategori) {
       const grid = document.getElementById('merchGrid');
       document.getElementById('kategoriTitle').textContent = kategori === 'Semua' ? 'Semua Merchandise' : `Kategori: ${kategori}`;
-      
+
       if (!grid) return;
       grid.innerHTML = '';
 
@@ -226,7 +292,14 @@
           if (kategori === 'Kaos') return n.includes('kaos') || n.includes('polo') || n.includes('shirt');
           if (kategori === 'Topi') return n.includes('topi') || n.includes('cap') || n.includes('hat');
           if (kategori === 'Jaket') return n.includes('jaket') || n.includes('jacket') || n.includes('sweater') || n.includes('hoodie');
-          if (kategori === 'Mug & Botol') return n.includes('mug') || n.includes('botol') || n.includes('tumbler') || n.includes('gelas');
+          if (kategori === 'Mug & Botol') return n.includes('mug') || n.includes('botol') || n.includes('gelas');
+          if (kategori === 'Tumbler') return n.includes('tumbler') || n.includes('botol') || n.includes('mug');
+          if (kategori === 'Payung') return n.includes('umbrella') || n.includes('payung');
+          if (kategori === 'Keychain') return n.includes('keychain') || n.includes('key fob') || n.includes('keystrap') || n.includes('key strap') || n.includes('key case') || n.includes('keycase');
+          if (kategori === 'Lanyard') return n.includes('lanyard');
+          if (kategori === 'Stiker') return n.includes('sticker');
+          if (kategori === 'Tote Bag') return n.includes('tote') || n.includes('tote bag');
+          if (kategori === 'T-shirt') return n.includes('t-shirt') || n.includes('tshirt') || n.includes('tshirt');
           return false;
         });
       }
@@ -259,18 +332,18 @@
     // Fetch API
     async function fetchMerchandiseData() {
       const loading = document.getElementById('loadingIndicator');
-      
+
       try {
         const response = await fetch('../api/api_merchandise.php');
         const json = await response.json();
 
         if (json.ok) {
-            rawData = json.data;
-            groupedMerch = groupDataByName(rawData); // Olah data mentah menjadi berkelompok
-            loading.style.display = 'none';
-            renderGrid(selectedKategori);
+          rawData = json.data;
+          groupedMerch = groupDataByName(rawData); // Olah data mentah menjadi berkelompok
+          loading.style.display = 'none';
+          renderGrid(selectedKategori);
         } else {
-            loading.innerHTML = `<span style="color:var(--primary-red);"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat data: ${json.message}</span>`;
+          loading.innerHTML = `<span style="color:var(--primary-red);"><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat data: ${json.message}</span>`;
         }
       } catch (error) {
         console.error("Kesalahan koneksi:", error);
@@ -283,4 +356,5 @@
     });
   </script>
 </body>
+
 </html>

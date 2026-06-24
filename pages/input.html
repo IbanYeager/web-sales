@@ -1,112 +1,355 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales App - Input Aktivitas</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .mobile-app {
+            padding-bottom: 140px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="mobile-app" style="padding-bottom: 100px;">
-    <header class="header-page">
-        <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-        <h2>Input Aktivitas</h2>
-        <i class="fa-solid fa-circle-info"></i>
-    </header>
+    <div class="mobile-app" style="padding-bottom: 140px;">
+        <header class="header-page">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>Input Aktivitas</h2>
+        </header>
 
-    <div class="container" style="margin-top: 20px;">
-        <h3 class="section-title" style="margin-bottom: 5px;">Isi Aktivitas Anda</h3>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Lengkapi informasi aktivitas dan foto kegiatan Anda saat ini.</p>
+        <div class="container" style="margin-top: 20px;">
+            <h3 class="section-title" style="margin-bottom: 5px;">Isi Aktivitas Anda</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 25px;">Lengkapi informasi aktivitas dan
+                foto kegiatan Anda saat ini.</p>
 
-        <form id="formAktivitas">
-            <div class="form-group">
-                <label>Jenis Aktivitas <span style="color: var(--primary-red);">*</span></label>
-                <select id="jenisAktivitas" class="form-control" required>
-                    <option value="" disabled selected>Pilih aktivitas...</option>
-                    <option value="visit">Visit Customer</option>
-                    <option value="followup">Follow Up</option>
-                    <option value="testdrive">Test Drive</option>
-                </select>
-            </div>
+            <form id="formAktivitas">
+                <div class="form-group">
+                    <label>Jenis Aktivitas <span style="color: var(--primary-red);">*</span></label>
+                    <select id="jenisAktivitas" class="form-control" required>
+                        <option value="" disabled selected>Pilih aktivitas...</option>
+                        <option value="Live Tiktok">Live Tiktok</option>
+                        <option value="Digital Marketing">Digital Marketing</option>
+                        <option value="Follow Up Database">Follow Up Database</option>
+                        <option value="Refrensi">Refrensi</option>
+                        <option value="RO">RO</option>
+                        <option value="Weekend Sales">Weekend Sales</option>
+                        <option value="Pameran Display">Pameran Display</option>
+                        <option value="Movex">Movex</option>
+                        <option value="Canvasing Digital">Canvasing Digital</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label>Keterangan Aktivitas <span style="color: var(--primary-red);">*</span></label>
-                <textarea id="keteranganAktivitas" class="form-control" placeholder="Tuliskan keterangan detail di sini..." required></textarea>
-            </div>
+                <div class="form-group">
+                    <label>Keterangan Aktivitas <span style="color: var(--primary-red);">*</span></label>
+                    <textarea id="keteranganAktivitas" class="form-control" placeholder="Tuliskan keterangan detail..."
+                        required rows="3"></textarea>
+                </div>
 
-            <div class="form-group">
-                <label>Lokasi <span style="color: var(--primary-red);">*</span></label>
-                <div class="lokasi-box">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fa-solid fa-location-dot" style="color: var(--primary-red);"></i>
-                        <div class="lokasi-text" id="lokasiValue">
-                            <p>Bandung, Jawa Barat</p>
-                            <span>Lokasi otomatis terdeteksi</span>
+                <div class="form-group">
+                    <label>Lokasi <span style="color: var(--primary-red);">*</span></label>
+                    <div class="lokasi-box">
+                        <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%;">
+                            <div
+                                style="background: #fef2f2; color: var(--primary-red); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="lokasi-text" id="lokasiValue">
+                                <p>Menunggu akses lokasi...</p>
+                                <span>Mengambil GPS...</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-lokasi" onclick="getLocation()">Perbarui</button>
+                    </div>
+                    <div id="map-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Foto Aktivitas <span style="color: var(--primary-red);">*</span></span>
+                        <span style="font-size: 10px; color: var(--text-muted); font-weight: 500;" id="photoCount">0/5
+                            Foto</span>
+                    </label>
+
+                    <div class="photo-grid" id="photoGrid">
+                        <div class="upload-btn-box" id="uploadButtonBox"
+                            onclick="document.getElementById('inputFoto').click()">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Tambah</span>
                         </div>
                     </div>
-                    <button type="button" class="btn-outline" onclick="getLocation()">Ambil Lokasi</button>
+                    <input type="file" id="inputFoto" accept="image/*" multiple hidden onchange="handleNewFiles(event)">
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <div class="form-group">
-                <label>Foto Aktivitas <span style="color: var(--primary-red);">*</span></label>
-                <div class="photo-preview" id="photoPreview" style="flex-wrap: wrap; height: auto; min-height: 120px; padding: 10px; gap: 10px;">
-                    <i class="fa-regular fa-image" style="font-size: 40px; opacity: 0.5;"></i>
-                </div>
-                <input type="file" id="inputFoto" accept="image/*" multiple hidden onchange="handleFileSelect(event)">
-                <div class="btn-upload" onclick="document.getElementById('inputFoto').click()">
-                    <i class="fa-solid fa-camera"></i> Tambah Foto (Maks. 5)
-                </div>
-            </div>
-        </form>
+        <div class="fixed-bottom">
+            <button type="button" class="btn-main" id="btnSubmit" onclick="simpanAktivitasBaru()"
+                style="justify-content: center; background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue)); box-shadow: var(--shadow-blue);">
+                <i class="fa-regular fa-paper-plane"></i>
+                <span>Simpan Aktivitas</span>
+            </button>
+            <p
+                style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 10px; font-weight: 500;">
+                <i class="fa-solid fa-shield-halved" style="color: var(--green-success); margin-right: 4px;"></i>
+                Aktivitas direkam otomatis ke sistem database
+            </p>
+        </div>
     </div>
 
-    <div class="fixed-bottom">
-        <button type="button" class="btn-main" onclick="simpanData()" style="justify-content: center; background: var(--primary-blue);">
-            <i class="fa-regular fa-paper-plane" style="margin-right: 10px;"></i> Simpan Aktivitas
-        </button>
-        <p style="text-align: center; font-size: 10px; color: var(--text-muted); margin-top: 10px;">
-            <i class="fa-solid fa-lock"></i> Aktivitas akan dikirim ke supervisor
-        </p>
-    </div>
-</div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../script.js"></script>
 
-<script src="../script.js"></script>
-<script>
-  (function () {
-    const logged = localStorage.getItem('loggedIn') === 'true';
-    const selectedModel = localStorage.getItem('selectedTestDriveUnitModel');
-    const selectedTipe = localStorage.getItem('selectedTestDriveUnitTipe');
+    <script>
+        // ==========================================
+        // 1. STATE FOTO AKTIVITAS
+        // ==========================================
+        let fotoAktivitasList = [];
+        const maksFoto = 5;
 
-    // Prefill hanya jika ada pilihan unit test drive
-    if (!selectedModel) return;
+        function handleNewFiles(event) {
+            const files = event.target.files;
+            if (fotoAktivitasList.length + files.length > maksFoto) {
+                alert(`Maksimal hanya boleh ${maksFoto} foto.`);
+                return;
+            }
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    fotoAktivitasList.push({ file: file, preview: e.target.result });
+                    renderPhotoGrid();
+                };
+                reader.readAsDataURL(file);
+            }
+            event.target.value = '';
+        }
 
-    const form = document.getElementById('formAktivitas');
-    if (!form) return;
+        function hapusFoto(index) {
+            fotoAktivitasList.splice(index, 1);
+            renderPhotoGrid();
+        }
 
-    const select = form.querySelector('select.form-control');
-    if (select) {
-      select.value = 'testdrive';
-    }
+        function renderPhotoGrid() {
+            const grid = document.getElementById('photoGrid');
+            const countText = document.getElementById('photoCount');
+            countText.textContent = `${fotoAktivitasList.length}/${maksFoto} Foto`;
+            grid.innerHTML = '';
+            fotoAktivitasList.forEach((fotoObj, index) => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                item.innerHTML = `
+                <img src="${fotoObj.preview}" alt="Foto ${index + 1}">
+                <button type="button" class="remove-btn" onclick="hapusFoto(${index})"><i class="fa-solid fa-xmark"></i></button>`;
+                grid.appendChild(item);
+            });
+            if (fotoAktivitasList.length < maksFoto) {
+                const uploadBox = document.createElement('div');
+                uploadBox.className = 'upload-btn-box';
+                uploadBox.onclick = () => document.getElementById('inputFoto').click();
+                uploadBox.innerHTML = `<i class="fa-solid fa-plus"></i><span>Tambah</span>`;
+                grid.appendChild(uploadBox);
+            }
+        }
 
-    const textarea = form.querySelector('textarea.form-control');
-    if (textarea) {
-      // kalau user sudah mengetik, jangan timpa
-      const existing = textarea.value ? textarea.value.trim() : '';
-      if (!existing) {
-        const unitText = `Unit Test Drive: ${selectedModel}${selectedTipe ? ' (' + selectedTipe + ')' : ''}`;
-        textarea.value = unitText;
-      }
-    }
+        // ==========================================
+        // 2. FUNGSI GPS DAN PETA (MAP)
+        // ==========================================
+        let gpsWatcher;
+        let gpsTimeout;
+        let posisiTerbaik = null;
 
-    // Bersihkan setelah dipakai (agar tidak mengganggu jenis aktivitas berikutnya)
-    // Jika Anda ingin selalu tersimpan, hapus bagian ini.
-    localStorage.removeItem('selectedTestDriveUnitId');
-    localStorage.removeItem('selectedTestDriveUnitModel');
-    localStorage.removeItem('selectedTestDriveUnitTipe');
-  })();
-</script>
+        let map; // Variabel penyimpan peta
+        let marker; // Penanda lokasi (Pin)
+        let circle; // Lingkaran radius akurasi
+
+        const TARGET_AKURASI = 30;
+        const TOLERANSI_MAX = 100;
+        const WAKTU_TUNGGU = 15000;
+
+        function getLocation() {
+            const lokasiText = document.querySelector('#lokasiValue p');
+            const lokasiSpan = document.querySelector('#lokasiValue span');
+
+            if (navigator.geolocation) {
+                lokasiText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Membaca sinyal...';
+                lokasiSpan.innerText = 'Mencari akurasi terbaik...';
+
+                if (gpsWatcher) navigator.geolocation.clearWatch(gpsWatcher);
+                clearTimeout(gpsTimeout);
+                posisiTerbaik = null;
+
+                gpsTimeout = setTimeout(() => {
+                    navigator.geolocation.clearWatch(gpsWatcher);
+                    if (posisiTerbaik && posisiTerbaik.coords.accuracy <= TOLERANSI_MAX) {
+                        showPosition(posisiTerbaik, true);
+                    } else {
+                        const akurasiMeleset = posisiTerbaik ? Math.round(posisiTerbaik.coords.accuracy) : 'Unknown';
+                        lokasiText.innerText = "Sinyal GPS Lemah";
+                        lokasiSpan.innerText = `Akurasi ${akurasiMeleset}m (Max ${TOLERANSI_MAX}m). Buka Google Maps sebentar lalu coba lagi.`;
+                    }
+                }, WAKTU_TUNGGU);
+
+                gpsWatcher = navigator.geolocation.watchPosition(
+                    async (position) => {
+                        const akurasi = Math.round(position.coords.accuracy);
+
+                        // Render peta secara live selagi mencari titik terbaik
+                        updateMapUI(position.coords.latitude, position.coords.longitude, akurasi);
+
+                        if (!posisiTerbaik || akurasi < posisiTerbaik.coords.accuracy) {
+                            posisiTerbaik = position;
+                            lokasiSpan.innerText = `Menstabilkan... (Akurasi: ${akurasi}m)`;
+                        }
+
+                        if (akurasi <= TARGET_AKURASI) {
+                            clearTimeout(gpsTimeout);
+                            navigator.geolocation.clearWatch(gpsWatcher);
+                            await showPosition(position, false);
+                        }
+                    },
+                    showError,
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            } else {
+                lokasiText.innerText = "GPS tidak didukung";
+            }
+        }
+
+        // Fungsi Membangun dan Mengupdate Peta
+        function updateMapUI(lat, lon, akurasi) {
+            const mapContainer = document.getElementById('map-container');
+            mapContainer.style.display = 'block'; // Tampilkan kotak peta
+
+            if (!map) {
+                // Inisialisasi Peta Pertama Kali
+                map = L.map('map-container').setView([lat, lon], 16);
+
+                // Menggunakan peta gratis dari OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                marker = L.marker([lat, lon]).addTo(map);
+                circle = L.circle([lat, lon], { radius: akurasi, color: '#007bff', fillColor: '#007bff', fillOpacity: 0.2 }).addTo(map);
+            } else {
+                // Update posisi jika peta sudah ada
+                map.setView([lat, lon]);
+                marker.setLatLng([lat, lon]);
+                circle.setLatLng([lat, lon]);
+                circle.setRadius(akurasi);
+            }
+
+            // Fix agar peta tidak glitch saat div muncul
+            setTimeout(() => { map.invalidateSize(); }, 100);
+        }
+
+        async function showPosition(position, isForced) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const akurasi = Math.round(position.coords.accuracy);
+
+            const lokasiText = document.querySelector('#lokasiValue p');
+            const lokasiSpan = document.querySelector('#lokasiValue span');
+
+            lokasiText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menerjemahkan alamat...';
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                const data = await response.json();
+
+                if (data && data.address) {
+                    let jalan = data.address.road || "";
+                    let kelurahan = data.address.village || data.address.suburb || data.address.neighbourhood || "";
+                    let kecamatan = data.address.city_district || data.address.county || "";
+                    let kota = data.address.city || data.address.town || data.address.municipality || "";
+                    let provinsi = data.address.state || "";
+
+                    let bagianAlamat = [jalan, kelurahan, kecamatan, kota, provinsi];
+                    let alamatLengkap = bagianAlamat.filter(item => item.trim() !== "").join(", ");
+
+                    lokasiText.innerText = alamatLengkap;
+                    lokasiSpan.innerText = `Akurasi GPS: ${akurasi} meter`;
+                    lokasiText.dataset.lat = lat; lokasiText.dataset.lon = lon;
+                } else {
+                    lokasiText.innerText = `${lat}, ${lon}`;
+                    lokasiSpan.innerText = `Akurasi GPS: ${akurasi} meter`;
+                }
+            } catch (error) {
+                lokasiText.innerText = `${lat}, ${lon}`;
+                lokasiSpan.innerText = `Akurasi: ${akurasi} meter (Offline Mode)`;
+            }
+        }
+
+        function showError(error) {
+            const lokasiText = document.querySelector('#lokasiValue p');
+            const lokasiSpan = document.querySelector('#lokasiValue span');
+            clearTimeout(gpsTimeout);
+            if (error.code == error.PERMISSION_DENIED) {
+                lokasiText.innerText = "Izin Lokasi Ditolak";
+                lokasiSpan.innerText = "Buka pengaturan browser > Izinkan lokasi";
+            } else {
+                lokasiText.innerText = "Sinyal GPS Lemah";
+                lokasiSpan.innerText = "Pindah ke luar ruangan tanpa atap";
+            }
+        }
+
+        window.onload = function () { getLocation(); };
+
+        // ==========================================
+        // 3. FUNGSI SIMPAN KE DATABASE (VIA API PHP)
+        // ==========================================
+        async function simpanAktivitasBaru() {
+            const form = document.getElementById('formAktivitas');
+            const jenis = document.getElementById('jenisAktivitas').value;
+            const keterangan = document.getElementById('keteranganAktivitas').value.trim();
+            const lokasi = document.querySelector('#lokasiValue p').innerText;
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+            if (fotoAktivitasList.length === 0) { alert('Wajib melampirkan minimal 1 foto aktivitas!'); return; }
+
+            const formData = new FormData();
+            formData.append('tipe_Aktivitas', jenis);
+            formData.append('keterangan', keterangan);
+            formData.append('lokasi', lokasi);
+            fotoAktivitasList.forEach((fotoObj) => { formData.append('foto[]', fotoObj.file); });
+
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 10px;"></i> Menyimpan...';
+            btnSubmit.disabled = true;
+
+            try {
+                const response = await fetch('../api/api_simpan_aktivitas.php', { method: 'POST', body: formData });
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert("Aktivitas berhasil disimpan ke Database!");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Gagal menyimpan: " + result.message);
+                    btnSubmit.innerHTML = '<i class="fa-regular fa-paper-plane" style="margin-right: 10px;"></i> Simpan Aktivitas';
+                    btnSubmit.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Terjadi kesalahan saat menghubungi server.");
+                btnSubmit.innerHTML = '<i class="fa-regular fa-paper-plane" style="margin-right: 10px;"></i> Simpan Aktivitas';
+                btnSubmit.disabled = false;
+            }
+        }
+    </script>
 </body>
+
 </html>

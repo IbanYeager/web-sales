@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,198 +8,221 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
 </head>
+
 <body>
 
-<div class="mobile-app" style="padding-bottom: 110px;">
-    <header class="header-page">
-        <h2>Profil</h2>
-        <i class="fa-solid fa-circle-info"></i>
-    </header>
+    <div class="mobile-app" style="padding-bottom: 110px;">
+        <header class="header-page">
+            <h2>Profil</h2>
+        </header>
 
-    <div class="container" style="margin-top: 10px;">
-        <div id="profilContentLoggedOut" style="display:none;">
-            <div class="card" style="padding: 18px;">
-                <h3 class="section-title" style="margin-bottom: 10px;">Profil kosong</h3>
-                <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;">Untuk melihat data profil Sales, silakan login terlebih dahulu.</p>
-                <button class="btn-main" style="background: var(--primary-blue); justify-content: center;" onclick="window.location.href='login.html'">
-                    <i class="fa-solid fa-right-to-bracket" style="margin-right: 10px;"></i> Login dulu
-                </button>
+        <div class="container" style="margin-top: 10px;">
+            <div id="profilContentLoggedOut" style="display:none;">
+                <div class="card" style="padding: 18px;">
+                    <h3 class="section-title" style="margin-bottom: 10px;">Profil kosong</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;">Untuk
+                        melihat data profil Sales, silakan login terlebih dahulu.</p>
+                    <button class="btn-main" style="background: var(--primary-blue); justify-content: center;"
+                        onclick="window.location.href='login.html'">
+                        <i class="fa-solid fa-right-to-bracket" style="margin-right: 10px;"></i> Login dulu
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div id="profilContentLoggedIn" style="display:none;">
-            <div class="card" style="padding: 18px;">
-                <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="position:relative;">
-                        <img src="" alt="Profile" class="avatar" style="width:74px;height:74px;border-radius:50%;border:3px solid var(--primary-red);background:#fff;object-fit:cover;">
-                        <div class="status-dot" style="width:16px;height:16px;right:6px;bottom:6px;position:absolute;"></div>
-                    </div>
-                    <div>
-                        <h3 id="namaSalesEl" style="color:var(--text-dark);font-size:18px;margin-bottom:4px;">Memuat...</h3>
-                        <p id="peranSalesEl" style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">Memuat...</p>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                            <span style="font-size:11px;font-weight:700;color:var(--primary-blue);background:#eef3fb;border:1px solid #dbe6ff;padding:6px 10px;border-radius:999px;">
-                                <i class="fa-solid fa-location-dot" style="margin-right:6px;"></i><span id="cabangSalesText">Kiara Condong</span>
-                            </span>
+            <div id="profilContentLoggedIn" style="display:none;">
+                <div class="card" style="padding: 18px;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <div style="position:relative;">
+                            <img src="" alt="Profile" class="avatar"
+                                style="width:74px;height:74px;border-radius:50%;border:3px solid var(--primary-red);background:#fff;object-fit:cover;">
+                            <div class="status-dot"
+                                style="width:16px;height:16px;right:6px;bottom:6px;position:absolute;"></div>
+                        </div>
+                        <div>
+                            <h3 id="namaSalesEl" style="color:var(--text-dark);font-size:18px;margin-bottom:4px;">
+                                Memuat...</h3>
+                            <p id="peranSalesEl"
+                                style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">
+                                Memuat...</p>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                <span
+                                    style="font-size:11px;font-weight:700;color:var(--primary-blue);background:#eef3fb;border:1px solid #dbe6ff;padding:6px 10px;border-radius:999px;">
+                                    <i class="fa-solid fa-location-dot" style="margin-right:6px;"></i><span
+                                        id="cabangSalesText">Kiara Condong</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <h3 class="section-title" style="margin-top:18px;">Informasi</h3>
-            <div class="card" style="padding:0; overflow:hidden;">
-                <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-size:12px;color:var(--text-muted);font-weight:700;">Nama</span>
-                    <span id="infoNama" style="font-size:12px;color:var(--text-dark);font-weight:700;">Memuat...</span>
+                <h3 class="section-title" style="margin-top:18px;">Informasi</h3>
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <div
+                        style="padding:14px 18px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;color:var(--text-muted);font-weight:700;">Nama</span>
+                        <span id="infoNama"
+                            style="font-size:12px;color:var(--text-dark);font-weight:700;">Memuat...</span>
+                    </div>
+                    <div
+                        style="padding:14px 18px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;color:var(--text-muted);font-weight:700;">Jabatan</span>
+                        <span id="infoJabatan"
+                            style="font-size:12px;color:var(--text-dark);font-weight:700;">Memuat...</span>
+                    </div>
+                    <div
+                        style="padding:14px 18px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;color:var(--text-muted);font-weight:700;">SPV</span>
+                        <span id="infoSpv"
+                            style="font-size:12px;color:var(--text-dark);font-weight:700;">Memuat...</span>
+                    </div>
+                    <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;color:var(--text-muted);font-weight:700;">Cabang</span>
+                        <span id="infoCabang" style="font-size:12px;color:var(--text-dark);font-weight:700;">Kiara
+                            Condong</span>
+                    </div>
                 </div>
-                <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-size:12px;color:var(--text-muted);font-weight:700;">Jabatan</span>
-                    <span id="infoJabatan" style="font-size:12px;color:var(--text-dark);font-weight:700;">Memuat...</span>
-                </div>
-                <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-size:12px;color:var(--text-muted);font-weight:700;">Cabang</span>
-                    <span id="infoCabang" style="font-size:12px;color:var(--text-dark);font-weight:700;">Kiara Condong</span>
+
+                <h3 class="section-title" style="margin-top:18px;">Pengaturan</h3>
+                <div class="card" style="padding:14px 18px;">
+                    <div style="height:10px;"></div>
+                    <button class="btn-outline-blue"
+                        style="border-color:var(--primary-red);color:var(--primary-red); width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;"
+                        onclick="logoutUser()">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <h3 class="section-title" style="margin-top:18px;">Pengaturan</h3>
-            <div class="card" style="padding:14px 18px;">
-                <button class="btn-outline-blue" style="background:transparent; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;" onclick="alert('Fitur edit profil belum diimplementasi');">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit Profil
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+            <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
+            <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
+            <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
+            <a href="profil.html" class="nav-item active"><i class="fa-solid fa-user"></i></a>
+        </nav>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        const avatarEl = document.querySelector('.avatar');
+        avatarEl.style.cursor = 'pointer';
+        avatarEl.onclick = () => openPhotoModal();
+
+        function openPhotoModal() { document.getElementById('photoModal').classList.add('show'); }
+        function closePhotoModal() { document.getElementById('photoModal').classList.remove('show'); }
+        function triggerFileSelect() { document.getElementById('fileInput').click(); closePhotoModal(); }
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            const salesId = localStorage.getItem('salesId');
+
+            if (file && salesId) {
+                const formData = new FormData();
+                formData.append('foto', file);
+                formData.append('sales_id', salesId);
+
+                try {
+                    const avatar = document.querySelector('.avatar');
+                    avatar.style.opacity = '0.5';
+
+                    // URL FETCH MENGGUNAKAN RELATIF PATH (Mundur ke folder api)
+                    const res = await fetch('../api/api_upload_foto.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    // Menerima response JSON dari server
+                    const data = await res.json();
+
+                    if (data.ok) {
+                        avatar.src = data.path;
+                        localStorage.setItem('fotoSales', data.path);
+                        alert('Foto profil berhasil diperbarui!');
+                    } else {
+                        alert('Error dari server: ' + data.message);
+                        console.error("Server Message:", data.message);
+                    }
+                } catch (e) {
+                    // Tangkap jika file PHP mengembalikan error HTML atau koneksi putus
+                    console.error("Terjadi kesalahan:", e);
+                    alert('Gagal mengunggah foto ke server. Cek console browser Anda (F12).');
+                } finally {
+                    document.querySelector('.avatar').style.opacity = '1';
+                }
+            }
+        }
+
+        (function () {
+            const loggedIn = localStorage.getItem('loggedIn') === 'true';
+            const inEl = document.getElementById('profilContentLoggedIn');
+            const outEl = document.getElementById('profilContentLoggedOut');
+
+            if (!inEl || !outEl) return;
+
+            if (loggedIn) {
+                inEl.style.display = 'block';
+                outEl.style.display = 'none';
+
+                const namaEl = document.getElementById('namaSalesEl');
+                const peranEl = document.getElementById('peranSalesEl');
+                const cabangEl = document.getElementById('cabangSalesText');
+                const avatarImg = document.querySelector('.avatar');
+
+                const infoNama = document.getElementById('infoNama');
+                const infoJabatan = document.getElementById('infoJabatan');
+                const infoSpv = document.getElementById('infoSpv');
+                const infoCabang = document.getElementById('infoCabang');
+
+                const namaFallback = localStorage.getItem('namaSales') || 'Nama Sales';
+                const peranFallback = localStorage.getItem('peranSales') || 'Sales Consultant';
+                const spvFallback = localStorage.getItem('spvSales') || '-';
+                const fotoFallback = localStorage.getItem('fotoSales');
+                const cabangLocked = 'Tunas Toyota Kiara Condong';
+
+                if (namaEl) namaEl.textContent = namaFallback;
+                if (peranEl) peranEl.textContent = peranFallback;
+                if (cabangEl) cabangEl.textContent = cabangLocked;
+
+                if (infoNama) infoNama.textContent = namaFallback;
+                if (infoJabatan) infoJabatan.textContent = peranFallback;
+                if (infoSpv) infoSpv.textContent = spvFallback;
+                if (infoCabang) infoCabang.textContent = cabangLocked;
+
+                if (avatarImg) {
+                    if (fotoFallback && fotoFallback.trim() !== '') {
+                        avatarImg.src = fotoFallback;
+                    } else {
+                        avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaFallback)}&background=f4f7f6&color=c8102e`;
+                    }
+                }
+            } else {
+                inEl.style.display = 'none';
+                outEl.style.display = 'block';
+            }
+        })();
+
+        window.logoutUser = function () {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        };
+    </script>
+    <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
+
+    <div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Foto Profil</h3>
+                <button class="btn-close-modal" onclick="closePhotoModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-main" onclick="triggerFileSelect()">
+                    <i class="fa-solid fa-camera"></i> Pilih Foto dari Galeri
                 </button>
-                <div style="height:10px;"></div>
-                <button class="btn-outline-blue" style="border-color:var(--primary-red);color:var(--primary-red); width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;" onclick="logoutUser()">
-                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
-                </button>
+                <button class="btn-outline-blue" onclick="closePhotoModal()">Batal</button>
             </div>
         </div>
     </div>
-
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
-        <a href="pricelist.html" class="nav-item"><i class="fa-solid fa-clipboard-list"></i></a>
-        <a href="promo.html" class="nav-item"><i class="fa-solid fa-percent"></i></a>
-        <a href="testdrive.html" class="nav-item"><i class="fa-solid fa-car-side"></i></a>
-        <a href="profil.html" class="nav-item active"><i class="fa-solid fa-user"></i></a>
-    </nav>
-</div>
-
-<script src="../script.js"></script>
-<script>
-    const avatarEl = document.querySelector('.avatar');
-    avatarEl.style.cursor = 'pointer';
-    avatarEl.onclick = () => openPhotoModal();
-
-    function openPhotoModal() { document.getElementById('photoModal').classList.add('show'); }
-    function closePhotoModal() { document.getElementById('photoModal').classList.remove('show'); }
-    function triggerFileSelect() { document.getElementById('fileInput').click(); closePhotoModal(); }
-
-    async function handleFileUpload(event) {
-        const file = event.target.files[0];
-        const salesId = localStorage.getItem('salesId');
-
-        if (file && salesId) {
-            const formData = new FormData();
-            formData.append('foto', file);
-            formData.append('sales_id', salesId);
-
-            try {
-                const avatar = document.querySelector('.avatar');
-                avatar.style.opacity = '0.5';
-
-                // URL FETCH MENGGUNAKAN RELATIF PATH (Mundur ke folder api)
-                const res = await fetch('../api/api_upload_foto.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                // Menerima response JSON dari server
-                const data = await res.json();
-
-                if (data.ok) {
-                    avatar.src = data.path;
-                    localStorage.setItem('fotoSales', data.path);
-                    alert('Foto profil berhasil diperbarui!');
-                } else {
-                    alert('Error dari server: ' + data.message);
-                    console.error("Server Message:", data.message);
-                }
-            } catch (e) {
-                // Tangkap jika file PHP mengembalikan error HTML atau koneksi putus
-                console.error("Terjadi kesalahan:", e);
-                alert('Gagal mengunggah foto ke server. Cek console browser Anda (F12).');
-            } finally {
-                document.querySelector('.avatar').style.opacity = '1';
-            }
-        }
-    }
-    
-    (function () {
-        const loggedIn = localStorage.getItem('loggedIn') === 'true';
-        const inEl = document.getElementById('profilContentLoggedIn');
-        const outEl = document.getElementById('profilContentLoggedOut');
-        
-        if (!inEl || !outEl) return;
-
-        if (loggedIn) {
-            inEl.style.display = 'block';
-            outEl.style.display = 'none';
-
-            const namaEl = document.getElementById('namaSalesEl');
-            const peranEl = document.getElementById('peranSalesEl');
-            const cabangEl = document.getElementById('cabangSalesText');
-            const avatarImg = document.querySelector('.avatar');
-
-            const infoNama = document.getElementById('infoNama');
-            const infoJabatan = document.getElementById('infoJabatan');
-            const infoCabang = document.getElementById('infoCabang');
-
-            const namaFallback = localStorage.getItem('namaSales') || 'Nama Sales';
-            const peranFallback = localStorage.getItem('peranSales') || 'Sales Consultant';
-            const fotoFallback = localStorage.getItem('fotoSales');
-            const cabangLocked = 'Tunas Toyota Kiara Condong';
-
-            if (namaEl) namaEl.textContent = namaFallback;
-            if (peranEl) peranEl.textContent = peranFallback;
-            if (cabangEl) cabangEl.textContent = cabangLocked;
-
-            if (infoNama) infoNama.textContent = namaFallback;
-            if (infoJabatan) infoJabatan.textContent = peranFallback;
-            if (infoCabang) infoCabang.textContent = cabangLocked;
-
-            if (avatarImg) {
-                if (fotoFallback && fotoFallback.trim() !== '') {
-                    avatarImg.src = fotoFallback;
-                } else {
-                    avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaFallback)}&background=f4f7f6&color=c8102e`;
-                }
-            }
-        } else {
-            inEl.style.display = 'none';
-            outEl.style.display = 'block';
-        }
-    })();
-
-    window.logoutUser = function () {
-        localStorage.clear();
-        window.location.href = 'login.html';
-    };
-</script>
-<input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
-
-<div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-header">
-            <h3>Foto Profil</h3>
-            <button class="btn-close-modal" onclick="closePhotoModal()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button class="btn-main" onclick="triggerFileSelect()">
-                <i class="fa-solid fa-camera"></i> Pilih Foto dari Galeri
-            </button>
-            <button class="btn-outline-blue" onclick="closePhotoModal()">Batal</button>
-        </div>
-    </div>
-</div>
 </body>
+
 </html>

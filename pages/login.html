@@ -1,180 +1,503 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales App - Login</title>
+    <title>Sales App - Login | Tunas Toyota</title>
+    <meta name="description" content="Login ke Sales App Tunas Toyota - Platform manajemen penjualan terpadu">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .mobile-app {
+            padding-bottom: 0;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* Full gradient top area */
+        .login-hero {
+            background: linear-gradient(155deg, #8b0519 0%, #c8102e 45%, #e8192c 100%);
+            padding: 60px 24px 70px 24px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .login-hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .login-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .login-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 85%;
+            max-width: 290px;
+            height: 76px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            margin: 0 auto 22px auto;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            padding: 12px 24px;
+            position: relative;
+            z-index: 1;
+            animation: scale-in 0.5s var(--spring) both;
+        }
+
+        .login-logo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .login-hero-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.6px;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            animation: float-up 0.5s 0.1s var(--ease-out) both;
+        }
+
+        .login-hero-sub {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            animation: float-up 0.5s 0.15s var(--ease-out) both;
+        }
+
+        /* Desktop-only branding features — hidden on mobile */
+        .login-hero-features {
+            display: none;
+        }
+
+        /* Desktop-only form header — hidden on mobile */
+        .login-form-card-header {
+            display: none;
+        }
+
+        /* Form card */
+        .login-form-card {
+            background: white;
+            border-radius: 34px 34px 0 0;
+            padding: 32px 22px 40px 22px;
+            margin-top: -24px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 -4px 30px rgba(15, 23, 42, 0.1);
+            animation: float-up 0.55s 0.15s var(--ease-out) both;
+            min-height: calc(100vh - 220px);
+        }
+
+        .login-divider {
+            width: 40px;
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin: 0 auto 28px auto;
+        }
+
+        .form-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .form-label-row label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap .input-modern {
+            padding-left: 46px;
+        }
+
+        .security-card {
+            background: linear-gradient(135deg, #f0f6ff, #eef3fb);
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .security-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .security-text h5 {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 3px;
+        }
+
+        .security-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* =============================================
+           RESPONSIVE DESKTOP LAYOUT (≥768px)
+           ============================================= */
+        @media (min-width: 768px) {
+
+            /* Override global body constraints for login page */
+            body {
+                background: linear-gradient(155deg, #8b0519 0%, #c8102e 45%, #e8192c 100%) !important;
+                background-attachment: fixed !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            /* Card wrapper: side-by-side two-column layout */
+            .mobile-app {
+                max-width: 960px;
+                width: 94vw;
+                min-height: auto;
+                border-radius: 28px;
+                overflow: hidden;
+                box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35), 0 8px 32px rgba(0, 0, 0, 0.2);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                background: none;
+                align-items: stretch;
+                padding-bottom: 0;
+                margin: 32px 0;
+            }
+
+            /* Left panel: hero */
+            .login-hero {
+                padding: 56px 40px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                border-radius: 0;
+            }
+
+            .login-hero::before {
+                top: -100px;
+                left: -100px;
+                width: 400px;
+                height: 400px;
+            }
+
+            .login-logo-wrap {
+                width: 80%;
+                max-width: 240px;
+                height: 68px;
+                margin-bottom: 28px;
+            }
+
+            .login-hero-title {
+                font-size: 30px;
+                margin-bottom: 8px;
+            }
+
+            .login-hero-sub {
+                font-size: 14px;
+            }
+
+            /* Show desktop feature list */
+            .login-hero-features {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 32px;
+                width: 100%;
+                max-width: 260px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .login-hero-feature {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 12px;
+                padding: 10px 14px;
+                text-align: left;
+                animation: float-up 0.5s 0.3s var(--ease-out) both;
+            }
+
+            .login-hero-feature i {
+                font-size: 15px;
+                color: rgba(255, 255, 255, 0.9);
+                width: 18px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .login-hero-feature span {
+                font-size: 12px;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+            /* Right panel: form */
+            .login-form-card {
+                border-radius: 0;
+                margin-top: 0;
+                min-height: 0;
+                padding: 48px 48px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: none;
+                animation: none;
+            }
+
+            /* Show desktop form header */
+            .login-form-card-header {
+                display: block;
+                margin-bottom: 28px;
+            }
+
+            .login-form-card-header h2 {
+                font-size: 26px;
+                font-weight: 900;
+                color: var(--text-dark);
+                letter-spacing: -0.6px;
+                margin-bottom: 6px;
+            }
+
+            .login-form-card-header p {
+                font-size: 13px;
+                color: var(--text-muted);
+                font-weight: 500;
+            }
+
+            /* Hide mobile-only pill divider */
+            .login-divider {
+                display: none;
+            }
+        }
+
+        @media (min-width: 1100px) {
+            .mobile-app {
+                max-width: 1080px;
+            }
+
+            .login-form-card {
+                padding: 56px 64px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div class="mobile-app">
 
-<div class="mobile-app" style="padding-bottom: 30px; position: relative;">
-    
-    <!-- Background Merah Melengkung di Belakang -->
-    <div class="login-bg"></div>
+        <!-- Hero section with logo -->
+        <div class="login-hero">
+            <div class="login-logo-wrap">
+                <img src="https://static.wixstatic.com/media/bce131_784db0a25e784dd7a840402d11e94630~mv2.png/v1/fill/w_680,h_72,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Logo%20Tunas%20Toyota.png"
+                    alt="Tunas Toyota Logo">
+            </div>
+            <h1 class="login-hero-title">Sales App</h1>
+            <p class="login-hero-sub">Tunas Toyota — Kiara Condong</p>
 
-    <!-- Header Transparan -->
-    <header class="header-login">
-    </header>
+            <!-- Desktop-only feature highlights -->
+            <div class="login-hero-features">
+                <div class="login-hero-feature">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Monitor target & penjualan real-time</span>
+                </div>
+                <div class="login-hero-feature">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Manajemen prospek & test drive</span>
+                </div>
+                <div class="login-hero-feature">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Data aman & terenkripsi</span>
+                </div>
+            </div>
+        </div>
 
-    <div class="container" style="margin-top: 10px;">
-        
-        <!-- Kartu Login Utama -->
-        <div class="login-card">
-            <div style="display: flex; justify-content: center; margin-bottom: -50px; margin-top: -30px;">
-                <!-- PATH GAMBAR DIPERBAIKI MUNDUR 1 FOLDER -->
-                <img src="../image/download-removebg-preview.png" style="width: 200px; height: 200px; object-fit: contain;">
+        <!-- Form Card -->
+        <div class="login-form-card">
+            <!-- Desktop-only form header -->
+            <div class="login-form-card-header">
+                <h2>Masuk ke Akun Anda</h2>
+                <p>Silakan masukkan kredensial Anda untuk melanjutkan</p>
             </div>
 
-            <div class="input-group">
-                <label>Username</label>
-                <input type="text" class="input-modern" id="loginUsername" placeholder="Masukkan username" autocomplete="off" />
-                <i class="fa-solid fa-user input-icon"></i>
+            <div class="login-divider"></div>
+
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label
+                    style="font-size:13px;font-weight:700;color:var(--text-dark);display:block;margin-bottom:8px;">Username</label>
+                <div class="input-wrap">
+                    <input type="text" class="input-modern" id="loginUsername" placeholder="Masukkan username"
+                        autocomplete="off" />
+                    <i class="fa-solid fa-user input-icon"></i>
+                </div>
             </div>
 
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" class="input-modern" id="loginPassword" placeholder="Masukkan password" />
-                <i class="fa-solid fa-lock input-icon"></i>
-                <i class="fa-regular fa-eye-slash toggle-password" id="togglePassword" onclick="togglePass()"></i>
+            <div class="input-group" style="margin-bottom: 10px;">
+                <div class="form-label-row">
+                    <label>Password</label>
+                    <a href="#" style="font-size:11px;font-weight:700;color:var(--primary-red);">Lupa Password?</a>
+                </div>
+                <div class="input-wrap">
+                    <input type="password" class="input-modern" id="loginPassword" placeholder="Masukkan password" />
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <i class="fa-regular fa-eye-slash toggle-password" id="togglePassword" onclick="togglePass()"></i>
+                </div>
             </div>
 
-            <div style="text-align: right; margin-bottom: 20px;">
-                <a href="#" style="font-size: 11px; font-weight: 700; color: var(--primary-red);">Lupa Password?</a>
-            </div>
-
-            <button id="loginBtn" class="btn-login" onclick="doLogin()">
+            <button id="loginBtn" class="btn-login" onclick="doLogin()" style="margin-top: 24px;">
                 <span>Masuk Sekarang</span>
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
             </button>
 
             <div id="loginInlineMsg" class="msg-box"></div>
-        </div>
 
-        <!-- Kartu Informasi Tambahan -->
-        <div class="card" style="padding: 15px; margin-top: 20px; border: 1px solid var(--border-color); box-shadow: none;">
-            <div style="display:flex; gap:12px; align-items:center;">
-                <div style="width:38px; height:38px; border-radius:10px; background:#ebf5fb; color:var(--primary-blue); display:flex; justify-content:center; align-items:center; flex-shrink:0; font-size:16px;">
+            <div class="security-card">
+                <div class="security-icon">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
-                <div>
-                    <h4 style="font-size:12px; font-weight:800; color: var(--text-dark); margin-bottom:2px;">Akses Terlindungi</h4>
-                    <p style="font-size:10px; color: var(--text-muted); line-height:1.4;">
-                        Data Anda dienkripsi secara aman. Hanya untuk penggunaan internal Tunas Toyota.
-                    </p>
+                <div class="security-text">
+                    <h5>Akses Terlindungi</h5>
+                    <p>Data dienkripsi secara aman. Hanya untuk penggunaan internal Tunas Toyota.</p>
                 </div>
             </div>
         </div>
-
     </div>
-</div>
 
-<!-- PATH SCRIPT JS DIPERBAIKI -->
-<script src="../script.js"></script>
-<script>
-    // Fitur Lihat/Sembunyikan Password
-    function togglePass() {
-        const passInput = document.getElementById('loginPassword');
-        const eyeIcon = document.getElementById('togglePassword');
-        
-        if (passInput.type === 'password') {
-            passInput.type = 'text';
-            eyeIcon.classList.remove('fa-eye-slash');
-            eyeIcon.classList.add('fa-eye');
-        } else {
-            passInput.type = 'password';
-            eyeIcon.classList.remove('fa-eye');
-            eyeIcon.classList.add('fa-eye-slash');
-        }
-    }
-
-    // Fungsi Utama Login
-    async function doLogin() {
-        const username = document.getElementById('loginUsername')?.value?.trim();
-        const password = document.getElementById('loginPassword')?.value;
-        const btn = document.getElementById('loginBtn');
-        const inlineMsg = document.getElementById('loginInlineMsg');
-
-        // Helper untuk memunculkan pesan
-        const showMsg = (text, type = 'error') => {
-            if (!inlineMsg) return;
-            inlineMsg.style.display = 'block';
-            inlineMsg.textContent = text;
-            
-            if (type === 'error') {
-                inlineMsg.className = 'msg-box msg-error';
+    <script src="../script.js"></script>
+    <script>
+        function togglePass() {
+            const passInput = document.getElementById('loginPassword');
+            const eyeIcon = document.getElementById('togglePassword');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
             } else {
-                inlineMsg.className = 'msg-box msg-info';
+                passInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
             }
-        };
-
-        if (!username || !password) {
-            showMsg('Username dan password wajib diisi!', 'error');
-            return;
         }
 
-        try {
-            // State Loading
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Memproses...</span>';
-            }
-            showMsg('Menghubungkan ke server...', 'info');
+        async function doLogin() {
+            const username = document.getElementById('loginUsername')?.value?.trim();
+            const password = document.getElementById('loginPassword')?.value;
+            const btn = document.getElementById('loginBtn');
+            const inlineMsg = document.getElementById('loginInlineMsg');
 
-            // URL FETCH MENGGUNAKAN RELATIF PATH (Mundur ke folder api)
-            const res = await fetch('../api/api_login.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+            const showMsg = (text, type = 'error') => {
+                if (!inlineMsg) return;
+                inlineMsg.style.display = 'block';
+                inlineMsg.textContent = text;
+                inlineMsg.className = type === 'error' ? 'msg-box msg-error' : 'msg-box msg-info';
+            };
 
-            const data = await res.json();
-
-            if (!data.ok) {
-                showMsg(data.message || 'Login gagal, periksa kembali data Anda.', 'error');
+            if (!username || !password) {
+                showMsg('Username dan password wajib diisi!', 'error');
                 return;
             }
 
-            // Jika sukses, ubah tampilan sukses sesaat
-            showMsg('Login berhasil! Mengarahkan...', 'info');
-            if (btn) {
-                btn.style.background = '#27ae60'; // Warna hijau sukses
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Berhasil</span>';
-            }
+            try {
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Memproses...</span>';
+                }
+                showMsg('Menghubungkan ke server...', 'info');
 
-            // Set data ke LocalStorage
-            localStorage.setItem('loggedIn', 'true');
-            localStorage.setItem('salesId', String(data.sales.id));
-            localStorage.setItem('namaSales', data.sales.name || '');
-            localStorage.setItem('fotoSales', data.sales.foto || '');
-            localStorage.setItem('peranSales', 'Sales Consultant');
-            localStorage.setItem('cabangSales', 'Tunas Toyota Kiara Condong');
+                const res = await fetch('../api/api_login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
 
-            // Pindah ke halaman index.html (Sama-sama di folder pages)
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 800);
+                const data = await res.json();
 
-        } catch (e) {
-            // Error ini akan muncul jika file PHP mengembalikan error text bukan JSON (misal XAMPP mati/DB error)
-            showMsg('Gagal terhubung ke Server. Pastikan MySQL menyala dan Database sudah ada.', 'error');
-            console.error("Detail Error:", e);
-        } finally {
-            // Kembalikan tombol ke semula jika ada error
-            if (btn && inlineMsg.className.includes('msg-error')) {
-                btn.disabled = false;
-                btn.innerHTML = '<span>Masuk Sekarang</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                if (!data.ok) {
+                    showMsg(data.message || 'Login gagal, periksa kembali data Anda.', 'error');
+                    return;
+                }
+
+                showMsg('Login berhasil! Mengarahkan...', 'info');
+                if (btn) {
+                    btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Berhasil!</span>';
+                }
+
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('salesId', String(data.sales.id));
+                localStorage.setItem('namaSales', data.sales.name || '');
+                localStorage.setItem('fotoSales', data.sales.foto || '');
+                localStorage.setItem('spvSales', data.sales.spv || '');
+                localStorage.setItem('peranSales', 'Sales Consultant');
+                localStorage.setItem('cabangSales', 'Tunas Toyota Kiara Condong');
+                localStorage.setItem('idSales', data.sales.id);
+
+                setTimeout(() => { window.location.href = 'index.html'; }, 800);
+
+            } catch (e) {
+                showMsg('Gagal terhubung ke Server. Pastikan MySQL menyala dan Database sudah ada.', 'error');
+                console.error("Detail Error:", e);
+            } finally {
+                if (btn && inlineMsg && inlineMsg.className.includes('msg-error')) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Masuk Sekarang</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                }
             }
         }
-    }
 
-    // Eksekusi login saat menekan tombol "Enter" di keyboard
-    document.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            doLogin();
-        }
-    });
-</script>
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') doLogin();
+        });
+    </script>
 </body>
+
 </html>

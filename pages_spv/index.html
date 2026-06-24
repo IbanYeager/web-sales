@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPV Desktop - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style_spv.css">
+</head>
+<body>
+  <div class="spv-shell">
+    <aside class="spv-sidebar">
+      <div class="spv-brand">
+        <div class="spv-logo"><i class="fa-solid fa-user-tie"></i></div>
+        <div>
+          <h1>SPV Panel</h1>
+          <p>Desktop Supervisor</p>
+        </div>
+      </div>
+
+      <nav class="spv-nav">
+        <a href="index.html" id="navDash" class="active"><i class="fa-solid fa-gauge"></i>Dashboard</a>
+        <a href="target.html" id="navTarget"><i class="fa-solid fa-bullseye"></i>Target</a>
+        <a href="approval.html" id="navApproval"><i class="fa-solid fa-check-to-slot"></i>Approval</a>
+        <a href="aktivitas.html" id="navAktivitas"><i class="fa-solid fa-list-check"></i>Aktivitas</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-danger" style="width:100%;" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Keluar
+        </button>
+      </div>
+    </aside>
+
+    <main class="spv-main">
+      <div class="spv-topbar">
+        <h2 id="pageTitle">Dashboard SPV</h2>
+        <div class="spv-user">
+          <img id="spvAvatar" src="" alt="Avatar">
+          <div class="meta">
+            <span class="name" id="spvNama">Memuat...</span>
+            <span class="role" id="spvRole">Memuat...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:16px;">
+        <section class="spv-card">
+          <h3 style="margin:0 0 16px; font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;">Target DO Bulan Ini</h3>
+          <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:14px;">
+            <div style="flex:1;">
+              <div style="font-size:32px; font-weight:900; color:var(--accent-blue); letter-spacing:-1px;" id="dashTarget">0</div>
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-top:2px;">Target</div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:32px; font-weight:900; color:var(--primary-green); letter-spacing:-1px;" id="dashRealisasi">0</div>
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-top:2px;">Realisasi</div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:32px; font-weight:900; color:var(--primary-red); letter-spacing:-1px;" id="dashSisa">0</div>
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-top:2px;">Sisa</div>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-fill green" id="targetProgress" style="width:0%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:10px; align-items:center;">
+            <span style="font-size:12px; color:var(--muted); font-weight:600;" id="dashPeriode">Memuat...</span>
+            <span class="badge badge-approved" id="dashPersen">0%</span>
+          </div>
+        </section>
+
+        <section class="spv-card">
+          <h3 style="margin:0 0 16px; font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;">Ringkasan</h3>
+          <div class="grid-3" style="gap:10px;">
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center;">
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px;">Pending</div>
+              <div style="font-size:24px; font-weight:900; color:var(--primary-yellow);" id="dashPending">0</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center;">
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px;">Aktivitas</div>
+              <div style="font-size:24px; font-weight:900; color:var(--accent-blue);" id="dashAktif">0</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center;">
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px;">Sales</div>
+              <div style="font-size:24px; font-weight:900; color:var(--primary-green);">1</div>
+            </div>
+          </div>
+          <p style="margin-top:12px; color:var(--muted); font-size:12px; font-weight:500; line-height:1.5;" id="dashSisaPesan"></p>
+        </section>
+      </div>
+
+      <section class="spv-card">
+        <div class="section-head">
+          <h3>Akses Cepat</h3>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="location.href='approval.html'">
+            <i class="fa-solid fa-check-to-slot"></i> Approval
+          </button>
+          <button class="btn btn-red" onclick="location.href='target.html'">
+            <i class="fa-solid fa-bullseye"></i> Target
+          </button>
+          <button class="btn" onclick="location.href='aktivitas.html'">
+            <i class="fa-solid fa-list-check"></i> Aktivitas
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    
+
+    
+
+    function renderUser(){
+      const nama = localStorage.getItem('namaSales') || 'SPV';
+      const peran = localStorage.getItem('peranSales') || 'Supervisor';
+      const cabang = localStorage.getItem('cabangSales') || '-';
+      document.getElementById('spvNama').textContent = nama;
+      document.getElementById('spvRole').textContent = peran;
+      document.getElementById('dashCabang').textContent = cabang;
+
+      const avatar = localStorage.getItem('fotoSales');
+      const avatarEl = document.getElementById('spvAvatar');
+      avatarEl.src = (avatar && avatar.trim() !== '')
+        ? avatar
+        : `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=f4f7f6&color=c8102e`;
+    }
+
+    async function loadTarget(){
+      const idSales = localStorage.getItem('salesId') || localStorage.getItem('idSales') || 0;
+      // endpoint target saat ini butuh id_sales. Untuk SPV nanti bisa dipakai id sales aggregator atau dibuat endpoint spv.
+      // sementara: bila SPV login butuh idSales, gunakan nilai ini.
+      if(!idSales || Number(idSales) === 0){
+        document.getElementById('dashPeriode').textContent = 'Target: butuh salesId dari login.';
+        return;
+      }
+
+      try{
+        const res = await fetch(`../api/api_target.php?id_sales=${idSales}`);
+        const data = await res.json();
+        if(data.status === 'success'){
+          document.getElementById('dashTarget').textContent = data.target_total;
+          document.getElementById('dashRealisasi').textContent = data.realisasi_total;
+          document.getElementById('dashSisa').textContent = data.sisa;
+          document.getElementById('dashPersen').textContent = data.persentase + '%';
+          document.getElementById('dashPeriode').textContent = data.periode;
+          document.getElementById('dashSisaPesan').textContent = data.sisa > 0 ? `Sisa ${data.sisa} unit lagi` : '🎉 Target tercapai!';
+          // animate progress bar
+          const pct = Math.min(data.persentase || 0, 100);
+          setTimeout(() => {
+            const bar = document.getElementById('targetProgress');
+            if (bar) bar.style.width = pct + '%';
+          }, 300);
+        }else if(data.status === 'empty'){
+          document.getElementById('dashPeriode').textContent = data.message || 'Belum ada target.';
+        }
+      }catch(e){
+        document.getElementById('dashPeriode').textContent = 'Gagal memuat target.';
+        console.error(e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      guardSPV();
+      renderUser();
+      loadTarget();
+
+      // placeholder: approval pending & aktivitas hari ini
+      document.getElementById('dashPending').textContent = 0;
+      document.getElementById('dashAktif').textContent = 0;
+    });
+  </script>
+</body>
+</html>
+

@@ -1,84 +1,338 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales App - Kalkulator</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../style.css" />
-</head>
-<body>
-  <div class="mobile-app">
-    <header class="header-page">
-      <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-      <h2>Kalkulator</h2>
-      <i class="fa-solid fa-calculator" aria-hidden="true"></i>
-    </header>
-
-    <div class="container" style="margin-top:18px;">
-      <div class="card" style="padding:18px;">
-        <h3 class="section-title" style="margin-bottom:6px;">Simulasi Cicilan (Demo)</h3>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Masukkan estimasi harga dan TDP untuk melihat estimasi cicilan.</p>
-
-        <div class="form-group" style="margin-top:14px;">
-          <label>Harga Mobil (Rp)</label>
-          <input class="form-control" type="number" id="hargaMobil" value="200000000" />
-        </div>
-
-        <div class="form-group">
-          <label>TDP (Rp)</label>
-          <input class="form-control" type="number" id="tdp" value="30000000" />
-        </div>
-
-        <div class="form-group">
-          <label>Tahun Pembiayaan</label>
-          <select class="form-control" id="tahun">
-            <option value="3">3 Tahun</option>
-            <option value="4" selected>4 Tahun</option>
-            <option value="5">5 Tahun</option>
-          </select>
-        </div>
-
-        <button class="btn-main" style="margin-top:8px;">
-          <i class="fa-solid fa-wand-magic-sparkles" style="margin-right:10px;"></i>
-          Simulasikan
-        </button>
-        <div id="hasilKalkulasi" style="margin-top:14px; font-size:12px; color:var(--text-muted); line-height:1.6;"></div>
-      </div>
-
-      <div class="card">
-        <div class="section-title" style="margin:0 0 10px 0; font-size:14px;">Catatan</div>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
-          Perhitungan di sini demo sederhana. Nanti bisa diganti menggunakan rumus/parameter pembiayaan yang sebenarnya.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.querySelector('.btn-main');
-      if(!btn) return;
-      btn.addEventListener('click', () => {
-        const harga = Number(document.getElementById('hargaMobil').value || 0);
-        const tdp = Number(document.getElementById('tdp').value || 0);
-        const tahun = Number(document.getElementById('tahun').value || 0);
-        const bulan = tahun * 12;
-
-        if (harga <= 0) {
-          document.getElementById('hasilKalkulasi').innerHTML = 'Harga tidak valid.';
-          return;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales App - Kalkulator Cicilan</title>
+    <meta name="description" content="Simulasi cicilan kendaraan Toyota untuk membantu proses sales">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        .mobile-app {
+            padding-bottom: 40px;
         }
 
-        // Demo: cicilan = (harga - tdp) / bulan
-        const pokok = Math.max(harga - tdp, 0);
-        const cicilan = bulan > 0 ? pokok / bulan : 0;
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-        const formatRp = (n) => 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        document.getElementById('hasilKalkulasi').innerHTML = `Estimasi cicilan per bulan (demo): <b>${formatRp(cicilan)}</b> untuk ${tahun} tahun (${bulan} bulan).`;
-      });
-    });
-  </script>
+        /* Result card */
+        .result-card {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            border-radius: 22px;
+            padding: 22px;
+            color: white;
+            box-shadow: var(--shadow-blue);
+            margin-bottom: 18px;
+            display: none;
+            animation: float-up 0.4s var(--ease-out);
+        }
+
+        .result-card.show {
+            display: block;
+        }
+
+        .result-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-amount {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+
+        .result-period {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .result-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            margin: 16px 0;
+        }
+
+        .result-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .breakdown-item {}
+
+        .breakdown-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .breakdown-value {
+            font-size: 15px;
+            font-weight: 800;
+            color: white;
+        }
+
+        /* Slider style */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-red), var(--secondary-red));
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(232, 25, 44, 0.35);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+        }
+
+        .range-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* Tenor tabs */
+        .tenor-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tenor-tab {
+            flex: 1;
+            padding: 10px 6px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-color);
+            background: white;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-spring);
+        }
+
+        .tenor-tab.active {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            color: white;
+            box-shadow: var(--shadow-red);
+        }
+
+        .tenor-tab:active {
+            transform: scale(0.95);
+        }
+
+        /* Info note */
+        .calc-note {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .calc-note i {
+            color: #0284c7;
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .calc-note p {
+            font-size: 12px;
+            color: #075985;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Value display above slider */
+        .value-display {
+            background: white;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mobile-app">
+        <header class="header-page">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2>Kalkulator Cicilan</h2>
+        </header>
+
+        <div class="container" style="margin-top: 0;">
+
+            <!-- Result card -->
+            <div class="result-card" id="resultCard">
+                <div class="result-label">Estimasi Cicilan / Bulan</div>
+                <div class="result-amount" id="resultAmount">Rp 0</div>
+                <div class="result-period" id="resultPeriod">— bulan</div>
+                <div class="result-divider"></div>
+                <div class="result-breakdown">
+                    <div class="breakdown-item">
+                        <div class="breakdown-label">Harga OTR</div>
+                        <div class="breakdown-value" id="brkHarga">Rp 0</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-label">TDP</div>
+                        <div class="breakdown-value" id="brkTdp">Rp 0</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-label">Pokok Pinjaman</div>
+                        <div class="breakdown-value" id="brkPokok">Rp 0</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-label">Total Bayar</div>
+                        <div class="breakdown-value" id="brkTotal">Rp 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form card -->
+            <div class="card">
+                <h3 class="section-title" style="margin-bottom:4px;">Simulasi Cicilan</h3>
+                <p style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">
+                    Masukkan detail kendaraan untuk estimasi cicilan bulanan.
+                </p>
+
+                <div class="form-group">
+                    <label>Harga OTR Kendaraan</label>
+                    <div class="value-display" id="displayHarga">Rp 200.000.000</div>
+                    <input type="range" id="rangeHarga" min="100000000" max="800000000" step="5000000" value="200000000"
+                        oninput="updateHarga(this.value)">
+                    <div class="range-labels">
+                        <span class="range-label">Rp 100 Jt</span>
+                        <span class="range-label">Rp 800 Jt</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Uang Muka / TDP</label>
+                    <div class="value-display" id="displayTdp">Rp 30.000.000</div>
+                    <input type="range" id="rangeTdp" min="10000000" max="200000000" step="5000000" value="30000000"
+                        oninput="updateTdp(this.value)">
+                    <div class="range-labels">
+                        <span class="range-label">Rp 10 Jt</span>
+                        <span class="range-label">Rp 200 Jt</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="margin-bottom:10px;display:block;">Tenor Pembiayaan</label>
+                    <div class="tenor-tabs">
+                        <div class="tenor-tab" onclick="setTenor(1, this)">1 Th</div>
+                        <div class="tenor-tab" onclick="setTenor(2, this)">2 Th</div>
+                        <div class="tenor-tab active" onclick="setTenor(3, this)">3 Th</div>
+                        <div class="tenor-tab" onclick="setTenor(4, this)">4 Th</div>
+                        <div class="tenor-tab" onclick="setTenor(5, this)">5 Th</div>
+                    </div>
+                </div>
+
+                <button class="btn-main" id="btnCalc" onclick="hitung()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Simulasikan Cicilan</span>
+                </button>
+            </div>
+
+            <!-- Note -->
+            <div class="calc-note">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>Perhitungan bersifat <strong>estimasi</strong>. Angka aktual tergantung suku bunga dan kebijakan
+                    leasing yang berlaku.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        let currentTenor = 3;
+
+        const formatRp = (n) => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+
+        function updateHarga(val) {
+            const v = Number(val);
+            document.getElementById('displayHarga').textContent = formatRp(v);
+        }
+
+        function updateTdp(val) {
+            const v = Number(val);
+            document.getElementById('displayTdp').textContent = formatRp(v);
+        }
+
+        function setTenor(th, el) {
+            currentTenor = th;
+            document.querySelectorAll('.tenor-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function hitung() {
+            const harga = Number(document.getElementById('rangeHarga').value);
+            const tdp = Number(document.getElementById('rangeTdp').value);
+            const tahun = currentTenor;
+            const bulan = tahun * 12;
+
+            const btn = document.getElementById('btnCalc');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Menghitung...</span>';
+
+            setTimeout(() => {
+                const pokok = Math.max(harga - tdp, 0);
+                const bunga = 0.095; // 9.5% p.a. flat
+                const cicilan = (pokok + (pokok * bunga * tahun)) / bulan;
+                const total = cicilan * bulan + tdp;
+
+                document.getElementById('resultAmount').textContent = formatRp(cicilan);
+                document.getElementById('resultPeriod').textContent = `${bulan} bulan (${tahun} tahun)`;
+                document.getElementById('brkHarga').textContent = formatRp(harga);
+                document.getElementById('brkTdp').textContent = formatRp(tdp);
+                document.getElementById('brkPokok').textContent = formatRp(pokok);
+                document.getElementById('brkTotal').textContent = formatRp(total);
+
+                document.getElementById('resultCard').classList.add('show');
+                document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> <span>Hitung Ulang</span>';
+            }, 500);
+        }
+    </script>
 </body>
-</html>
 
+</html>
